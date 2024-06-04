@@ -9,7 +9,7 @@ import {
     barChartBoxRevenue, 
     pieChartBoxProduct,
     bigChartBoxRevenue
- } from "@/actions/data";
+ } from "@/services/data";
 import prismadb from "@/lib/prismadb";
 import { format } from "date-fns";
 import { BarChartBox } from "@/components/analytics/barChart-box";

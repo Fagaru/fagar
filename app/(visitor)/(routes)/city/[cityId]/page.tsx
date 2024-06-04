@@ -1,147 +1,48 @@
-import prismadb from "@/lib/prismadb";
-import { format } from "date-fns";
-import { formatter } from "@/lib/utils";
+"use client";
 
-import { 
-    chartBoxUser, 
-    chartBoxRevenue, 
-    chartBoxProduct, 
-    chartBoxConversion, 
-    barChartBoxVisit, 
-    barChartBoxRevenue, 
-    pieChartBoxProduct,
-    bigChartBoxRevenue
- } from "@/actions/data";
+import { useEffect, useState } from 'react';
+import getCorporations from '@/services/getCorporations';
+import { Corporation } from '@/types/corporation';
 
- import { ChartBox } from "@/components/analytics/chart-box";
-import { TopBox } from "@/components/analytics/top-box";
-import { BarChartBox } from "@/components/analytics/barChart-box";
-import { PieChartBox } from "@/components/analytics/pieChart-box";
-import { BigChartBox } from "@/components/analytics/bigChart-box";
-import { getProducts } from "@/actions/get-products";
-import { getOrders } from "@/actions/get-orders";
-
-
-const HomePage = async ({
-    params
-}: {
-    params: { corporationId: string }
-}) => {
-    // const sizes = await prismadb.size.findMany({
-    //     where: {
-    //         corporationId: params.corporationId
-    //     },
-    //     orderBy: {
-    //         createdAt: 'desc'
-    //     }
-    // });
-
-    // const formattedSizes: SizeColumn[] = sizes.map((item) => ({
-    //     id: item.id,
-    //     name: item.name,
-    //     value: item.value,
-    //     createdAt: format(item.createdAt, "MMMM do, yyyy")
-    // }));
-
-    const orders = await getOrders(params.corporationId, "accepted", "in preparation");
-
-    const formattedData = orders.map((item) => ({
-        products: item.orderItems.map((orderItem) => orderItem.product.name),
-        totalPrice: item.orderItems.reduce((total, item) => {
-            return total + Number(item.product.price)*Number(item.quantity)
-        }, 0),
-        createdAt: format(item.createdAt, "MMMM do, yyyy")
-    }));
-
-    const totalPrices = formatter.format(formattedData.reduce((total, item) => {
-        return total + item.totalPrice
-    }, 0));
-
-    const totalPoducts = formattedData.reduce((total, item) => {
-        return total + item.products.length
-    }, 0);
-
-    const formattedProducts = {
-        color: "skyblue",
-        icon: "/productIcon.svg",
-        title: "Total Products",
-        number: totalPoducts,
-        dataKey: "product",
-        percentage: 21,
-        chartData: formattedData.map((item) => (
-          { name: item.createdAt, product: item.products.length } 
-        ))
-      };
-
-    const formattedProfit = {
-        color: "#8884d8",
-        icon: "/productIcon.svg",
-        title: "Profit Earned",
-        number: totalPrices,
-        dataKey: "profit",
-        percentage: 21,
-        chartData: formattedData.map((item) => (
-          { name: item.createdAt, profit: item.totalPrice } 
-        ))
-      };
-
-    const formattedRevenue = {
-        color: "teal",
-        icon: "/productIcon.svg",
-        title: "Total revenue",
-        number: totalPrices,
-        dataKey: "revenue",
-        percentage: 21,
-        chartData: formattedData.map((item) => (
-          { name: item.createdAt, revenue: item.totalPrice } 
-        ))
-      };
-
-    
-    const formattedOrders = {
-        color: "#8884d8",
-        icon: "/productIcon.svg",
-        title: "Total Orders",
-        number: formattedData.length,
-        dataKey: "order",
-        percentage: 21,
-        chartData: formattedData.map((item) => (
-          { name: item.createdAt, order: 1 } 
-        ))
-      };
-      console.log("formattedData", formattedOrders);
-
-    return (
-        <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(180px,auto)]">
-            <div className="row-span-3 p-5 rounded-[10px] border-solid border-[1px]">
-                <TopBox />
-            </div>
-            <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                <ChartBox data={formattedOrders}/>
-            </div>
-            <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                <ChartBox data={formattedProducts}/>
-            </div>
-            <div className="row-span-3 p-5 rounded-[10px] border-solid border-[1px]">
-                <PieChartBox data={pieChartBoxProduct}/>
-            </div>
-            <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                <ChartBox data={chartBoxConversion}/>
-            </div>
-            <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                <ChartBox data={formattedRevenue}/>
-            </div>
-            <div className="col-span-2 row-span-2 p-5 rounded-[10px] border-solid border-[1px]">
-                <BigChartBox data={bigChartBoxRevenue}/>
-            </div>
-            <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                <BarChartBox data={barChartBoxVisit} />
-            </div>
-            <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                <BarChartBox data={formattedProfit} />
-            </div>
-        </div>
-    );
+interface CityPageProps {
+    params: {
+        cityId: string;
+    }
 }
 
-export default HomePage;
+const CityPage: React.FC<CityPageProps> = ({
+    params
+}) => {
+    const [corporations, setCorporations] = useState<Corporation[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    console.log("PARAMS", params.cityId)
+
+    useEffect(() => {
+        const fetchCorporations = async () => {
+        try {
+            const data = await getCorporations({
+                cityId: params.cityId
+            });
+            setCorporations(data);
+        } catch (err) {
+            setError("Failed to fetch corporations");
+        }
+        };
+
+        fetchCorporations();
+    }, []);
+
+    return (
+        <div>
+        <h1>City Id {params.cityId}</h1>
+        {error && <p>{error}</p>}
+        <ul>
+            {corporations.map((item) => (
+            <li key={item._id}>{item.name}</li>
+            ))}
+        </ul>
+        </div>
+    );
+};
+
+export default CityPage;

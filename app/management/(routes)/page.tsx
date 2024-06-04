@@ -1,9 +1,9 @@
 
-interface AdministrationPageProps {
+interface ManagementPageProps {
     params: {userId: string}
 };
 
-const AdministrationPage: React.FC<AdministrationPageProps> = async({
+const ManagementPage: React.FC<ManagementPageProps> = async({
     params
 }) => {
     return (
@@ -15,4 +15,4 @@ const AdministrationPage: React.FC<AdministrationPageProps> = async({
     );
 }
 
-export default AdministrationPage;
+export default ManagementPage;

@@ -1,19 +1,14 @@
 
 import { redirect } from "next/navigation";
 
-import prismadb from "@/lib/prismadb";
 import Navbar from "@/components/navbar";
-import { InBoxProvider } from "@/providers/inbox-provider";
 import { SideBar } from "@/components/side-bar";
-import { GoogleApiProvider } from "@/providers/googleApi-provider";
 
 
 export default async function DashboardLayout({
-   children,
-   params 
+   children
 } : {
-    children: React.ReactNode;
-    params: {corporationId: string}
+    children: React.ReactNode
 }) {
     // const { userId } = auth();
     const userId = "1234";
@@ -23,16 +18,6 @@ export default async function DashboardLayout({
     // }
 
     
-    const corporation = await prismadb.corporation.findFirst({
-        where: {
-            id: params.corporationId,
-            userId
-        }
-    });
-
-    if (!corporation) {
-        redirect('/');
-    }
 
     return (
         <>
@@ -41,7 +26,6 @@ export default async function DashboardLayout({
                 <SideBar className=""/>
                 <div className="w-full bg-gray-50 dark:bg-slate-900">
                     {children}
-                    <InBoxProvider params={params} />
                 </div>
             </div>
         </>
