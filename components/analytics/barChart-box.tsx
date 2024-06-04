@@ -1,6 +1,6 @@
 "use client";
 
-import { topDealUsers } from "@/actions/data";
+import { topDealUsers } from "@/services/data";
 import { User, Users } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";

@@ -1,24 +1,20 @@
 
 import { redirect } from "next/navigation";
 
-import { MongoClient } from 'mongodb';
-import prismadb from "@/lib/prismadb";
-import prisma from '@/lib/prisma';
+// import { MongoClient } from 'mongodb';
+
 
 import dbConnect from '../../lib/dbConnect';
 import Corporation from '@/models/corporation.model';
 
 import Navbar from "@/components/navbar";
-import { InBoxProvider } from "@/providers/inbox-provider";
 import { SideBar } from "@/components/side-bar";
 
 
 export default async function DashboardLayout({
-   children,
-   params 
+   children
 } : {
     children: React.ReactNode;
-    params: {corporationId: string}
 }) {
     // const { userId } = auth();
     const userId = "1234";
@@ -94,26 +90,26 @@ export default async function DashboardLayout({
     //     await client.close();
     // }
 
-    const corporation = new Corporation({
-        name,
-        description
-    })
+    // const corporation = new Corporation({
+    //     name,
+    //     description
+    // })
 
-    await corporation.save();
-    console.log(corporation);
+    // await corporation.save();
+    // console.log(corporation);
 
-    if (!corporation) {
-        redirect('/home');
-    }
+    // if (!corporation) {
+    //     redirect('/home');
+    // }
+
+    // redirect('/');
 
     return (
         <>
             <Navbar />
             <div className="flex flex-row">
-                <SideBar className=""/>
                 <div className="w-full bg-gray-50 dark:bg-slate-900">
                     {children}
-                    <InBoxProvider params={params} />
                 </div>
             </div>
         </>

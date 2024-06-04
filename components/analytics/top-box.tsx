@@ -1,6 +1,6 @@
 "use client";
 
-import { topDealUsers } from "@/actions/data";
+import { topDealUsers } from "@/services/data";
 
 interface TopBoxProps {
     data: any

@@ -1,86 +1,37 @@
-import prismadb from "@/lib/prismadb";
-import { CreditCard, DollarSign, Package } from "lucide-react";
+"use client";
 
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatter } from "@/lib/utils";
-import { getTotalRevenue } from "@/actions/get-total-revenue";
-import { getSalesCount } from "@/actions/get-sales-count";
-import { getStockCount } from "@/actions/get-stock-count";
-import { Overview } from "@/components/overview";
-import { getGraphRevenue } from "@/actions/get-graph-revenue";
+import { useEffect, useState } from 'react';
+import getCorporations from '@/services/getCorporations';
+import { Corporation } from '@/types/corporation';
 
+const HomePage = () => {
+  const [corporations, setCorporations] = useState<Corporation[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-interface DashboardPageProps {
-    params: {corporationId: string}
+  useEffect(() => {
+    const fetchCorporations = async () => {
+      try {
+        const data = await getCorporations({});
+        setCorporations(data);
+      } catch (err) {
+        setError("Failed to fetch corporations");
+      }
+    };
+
+    fetchCorporations();
+  }, []);
+
+  return (
+    <div>
+      <h1>Corporations</h1>
+      {error && <p>{error}</p>}
+      <ul>
+        {corporations.map((item) => (
+          <li key={item._id}>{item.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
-const DashboardPage: React.FC<DashboardPageProps> = async({
-    params
-}) => {
-    const totalRevenue = await getTotalRevenue(params.corporationId);
-    const salesCount = await getSalesCount(params.corporationId);
-    const stockCount = await getStockCount(params.corporationId);
-    const graphRevenue = await getGraphRevenue(params.corporationId);
-
-    return (
-        <div className="flex-col">
-            <div className="flex-1 space-y-4 p-8 pt-6">
-                <Heading title="Dashboard" description="Overview of your corporation" />
-                <Separator />
-                <div className="grid gap-4 grid-cols-3">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">
-                                Total Revenue
-                            </CardTitle>
-                            <DollarSign className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">
-                                {formatter.format(totalRevenue)}
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">
-                                Sales
-                            </CardTitle>
-                            <CreditCard className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">
-                                +{salesCount}
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">
-                                Products In Stock
-                            </CardTitle>
-                            <Package className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">
-                                {stockCount}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-                <Card className="col-span-4">
-                    <CardHeader>
-                        <CardTitle>Overview</CardTitle>
-                    </CardHeader>
-                    <CardContent className="pl-2">
-                        <Overview data={graphRevenue}/>
-                    </CardContent>
-                </Card>
-            </div>
-        </div>
-    );
-};
-
-export default DashboardPage;
+export default HomePage;

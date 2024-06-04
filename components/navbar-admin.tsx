@@ -1,6 +1,5 @@
 import { MainNavAdmin } from "@/components/main-nav-admin";
 import UserAccount from "./user-account";
-import prismadb from "@/lib/prismadb";
 import { ThemeToggle } from "@/components/theme-toggle";
 import AvatarModal from "@/components/modals/avatar-modal";
 
