@@ -1,11 +1,21 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-const Schema = mongoose.Schema;
+export interface ISubscription extends Document {
+  label: string;
+  description: string;
+  price: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-const subscriptionSchema = new Schema({
-    label: { type: String, required: true },
-    description: { type: String },
-    price: { type: String },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
-  }, { _id: false });
+const SubscriptionSchema: Schema = new Schema({
+  label: { type: String, required: true },
+  description: { type: String },
+  price: { type: Number },
+}, {
+  timestamps: true,
+});
+
+const Subscription: Model<ISubscription> = mongoose.models.Subscription || mongoose.model<ISubscription>('Subscription', SubscriptionSchema);
+
+export default Subscription;

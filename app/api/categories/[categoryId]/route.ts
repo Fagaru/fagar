@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
 import Category from '@/models/category.model';
+import mongoose from "mongoose";
 
 export async function PATCH (
     req: Request,
@@ -15,13 +16,16 @@ export async function PATCH (
 
         // if (!userId) {
         //     return new NextResponse("Unauthorized", { status: 401 });
+        if (!mongoose.Types.ObjectId.isValid(params.categoryId)) {
+            return new NextResponse('Invalid category ID', { status: 400 });
+          }
         
         await dbConnect();
         // Récupérer la CATEGORY actuelle
         const currentCategory = await Category.findById(params.categoryId);
     
         if (!currentCategory) {
-          throw new Error('CATEGORY not found');
+            return new NextResponse('Category not found', { status: 404 });
         }
     
         // Mettre à jour la CATEGORY

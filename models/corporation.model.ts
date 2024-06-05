@@ -1,9 +1,91 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-const Schema = mongoose.Schema;
+// Interface for Address Subschema
+interface IAddress {
+  lat: string;
+  lng: string;
+  placeId: string;
+  label: string;
+  country: string;
+  regionId: mongoose.Types.ObjectId;
+  cityId: mongoose.Types.ObjectId;
+  postCode: string;
+  streetName: string;
+  streetNum: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
-// Address Subschema
-const addressSchema = new Schema({
+// Interface for Image Subschema
+interface IImage {
+  url: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Interface for Schedule Subschema
+interface ISchedule {
+  dayWeek: string;
+  begin_am: Date;
+  end_am: Date;
+  begin_pm: Date;
+  end_pm: Date;
+  available: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Interface for Subscription Subschema
+interface ISubscription {
+  starting_date: Date;
+  closing_date: Date;
+  isPaid: boolean;
+  isSuspended: boolean;
+  isActive: boolean;
+  subscription: mongoose.Types.ObjectId;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Interface for Review Subschema
+interface IReview {
+  userId: string;
+  comment: string;
+  stars: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Interface for Corporation Document
+export interface ICorporation extends Document {
+  name: string;
+  userId: string;
+  phone: string;
+  mail_pro: string;
+  description: string;
+  siretNum: string;
+  siren_num: string;
+  codeNAF: string;
+  linkFacebook: string;
+  linkInstagram: string;
+  linkLinkedIn: string;
+  linkX: string;
+  starting_date: Date;
+  numEmplyees: string;
+  address: IAddress;
+  categoryId: mongoose.Types.ObjectId;
+  tags: mongoose.Types.ObjectId[];
+  images: IImage[];
+  schedules: ISchedule[];
+  reviews: IReview[];
+  subscription: ISubscription;
+  isActive: boolean;
+  isSuspended: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+const addressSchema: Schema = new Schema({
   lat: { type: String },
   lng: { type: String },
   placeId: { type: String },
@@ -16,17 +98,15 @@ const addressSchema = new Schema({
   streetNum: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
-}, { _id: false }); // No need for a separate _id for embedded documents
+}, { _id: false });
 
-// Image Subschema
-const imageSchema = new Schema({
+const imageSchema: Schema = new Schema({
   url: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 }, { _id: false });
 
-// Schedule Subschema
-const scheduleSchema = new Schema({
+const scheduleSchema: Schema = new Schema({
   dayWeek: { type: String },
   begin_am: { type: Date },
   end_am: { type: Date },
@@ -37,8 +117,7 @@ const scheduleSchema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 }, { _id: false });
 
-// Subscription Subschema
-const subscriptionSchema = new Schema({
+const subscriptionSchema: Schema = new Schema({
   starting_date: { type: Date },
   closing_date: { type: Date },
   isPaid: { type: Boolean, default: false },
@@ -49,16 +128,15 @@ const subscriptionSchema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 }, { _id: false });
 
-// Review Subschema
-const reviewSchema = new Schema({
+const reviewSchema: Schema = new Schema({
   userId: { type: String },
   comment: { type: String },
-  stars: { type: String }, // étoiles 1 à 5
+  stars: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 }, { _id: false });
 
-const corporationSchema = new Schema({
+const corporationSchema: Schema = new Schema({
   name: { type: String, required: true },
   userId: { type: String },
   phone: { type: String },
@@ -73,17 +151,19 @@ const corporationSchema = new Schema({
   linkX: { type: String },
   starting_date: { type: Date },
   numEmplyees: { type: String },
-  address: addressSchema, // Embedded address
+  address: addressSchema,
   categoryId: { type: Schema.Types.ObjectId, ref: 'Category' },
   tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
-  images: [imageSchema], // Embedded images
-  schedules: [scheduleSchema], // Embedded schedules
-  reviews: [reviewSchema], // Embedded reviews
-  subscription: subscriptionSchema, // Embedded subscription
+  images: [imageSchema],
+  schedules: [scheduleSchema],
+  reviews: [reviewSchema],
+  subscription: subscriptionSchema,
   isActive: { type: Boolean, default: false },
   isSuspended: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-}, { timestamps: true });
+}, {
+  timestamps: true,
+});
 
-export default mongoose.model('Corporation', corporationSchema);
+const Corporation: Model<ICorporation> = mongoose.models.Corporation || mongoose.model<ICorporation>('Corporation', corporationSchema);
+
+export default Corporation;

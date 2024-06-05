@@ -1,6 +1,5 @@
 "use client";
 
-import { Billboard } from "@prisma/client";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,19 +23,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
+import { City } from "@/types/city";
 
 const formSchema = z.object({
     label: z.string().min(1),
     imageUrl: z.string().min(1),
 });
 
-type BillboardFormValues = z.infer<typeof formSchema>;
+type CityType = z.infer<typeof formSchema>;
 
-interface BillboardFormProps {
-    initialData: Billboard | null;   
+interface CityFormValues {
+    initialData: City | null;   
 }
 
-export const BillboardForm: React.FC<BillboardFormProps> = ({
+export const CityForm: React.FC<CityFormValues> = ({
     initialData
 }) => {
     const params = useParams();
@@ -45,29 +45,30 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const title = initialData ? "Edit billboard" : "Create billboard";
-    const description = initialData ? "Edit billboard" : "Add a new billboard";
-    const toastMessage = initialData ? "Billboard updated" : "Billboard created";
+    const title = initialData ? "Edit City" : "Create city";
+    const description = initialData ? "Edit city" : "Add a new city";
+    const toastMessage = initialData ? "City updated" : "City created";
     const action = initialData ? "Save changes" : "Create";
 
-    const form = useForm<BillboardFormValues> ({
+    const form = useForm<CityType>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData || {
             label: '',
-            imageUrl: ''
+            imageUrl: '',
         }
     });
 
-    const onSubmit = async (data: BillboardFormValues) => {
+    const onSubmit = async (data: CityType) => {
         try {
             setLoading(true);
-            if (initialData){
-                await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+            if (initialData) {
+                console.log("SUBMIT 2", params.cityId)
+                await axios.patch(`/api/cities/${params.cityId}`, data);
             } else {
-                await axios.post(`/api/${params.storeId}/billboards`, data);
+                await axios.post(`/api/cities`, data);
             }
             router.refresh();
-            router.push(`/${params.storeId}/billboards`);
+            router.push(`/dashboard/cities`);
             toast.success(toastMessage);
         } catch (error) {
             toast.error("Something went wrong.");
@@ -79,12 +80,12 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+            await axios.delete(`/api/cities/${params.cityId}`);
             router.refresh();
-            router.push(`/${params.storeId}/billboards`);
-            toast.success("Billboard deleted.");
+            router.push(`/dashboard/cities`);
+            toast.success("City deleted.");
         } catch (error) {
-            toast.error("Make sure you removed all categories using this billboard first.");
+            toast.error("Make sure you removed all corporations using this city first.");
         } finally {
             setLoading(false);
             setOpen(false);
@@ -144,7 +145,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                                <FormItem>
                                     <FormLabel>Label</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Billboard label" {...field} />
+                                        <Input disabled={loading} placeholder="City label" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                </FormItem>

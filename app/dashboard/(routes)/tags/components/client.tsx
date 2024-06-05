@@ -9,13 +9,15 @@ import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@radix-ui/react-separator";
 import { ApiList } from "@/components/ui/api-list";
 
-import { CategoryColumn, columns } from "./columns";
+import { columns } from "./columns";
 
-interface CategoryClientProps {
-    data: CategoryColumn[]
+import { Tag } from '@/types/tag';
+
+interface TagClientProps {
+    data: Tag[]
 }
 
-export const CategoryClient: React.FC<CategoryClientProps> = ({
+export const TagClient: React.FC<TagClientProps> = ({
     data
 }) => {
     const router = useRouter();
@@ -25,19 +27,19 @@ export const CategoryClient: React.FC<CategoryClientProps> = ({
         <>
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`Categories (${data.length})`}
-                    description="Manage categories for your store"
+                    title={`Tags (${data.length})`}
+                    description="Liste de nos tags"
                 />
-                <Button onClick={() => router.push(`/${params.storeId}/categories/new`)}>
+                <Button onClick={() => router.push(`/dashboard/tags/new`)}>
                     <Plus className="mr-2 h-4 w-4"/>
                     Add New
                 </Button>
             </div>
             <Separator />
-            <DataTable searchKey="name" columns={columns} data={data} />
-            <Heading title="API" description="API calls for Categories" />
+            <DataTable searchKey="label" columns={columns} data={data} />
+            <Heading title="API" description="API calls for Tags" />
             <Separator />
-            <ApiList entityName="categories" entityIdName="categoryId"/>
+            <ApiList entityName="billboards" entityIdName="billboardId"/>
         </>
     );
 }

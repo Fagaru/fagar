@@ -1,4 +1,3 @@
-// types/corporation.d.ts
 export interface Corporation {
     _id: string;
     name: string;

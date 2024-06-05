@@ -1,12 +1,19 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-const Schema = mongoose.Schema;
+export interface IRegion extends Document {
+  label: string;
+  imageUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-const regionSchema = new Schema({
-    label: { type: String, required: true },
-    imageUrl: { type: String },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
-  }, { timestamps: true });
+const RegionSchema: Schema = new Schema({
+  label: { type: String, required: true },
+  imageUrl: { type: String, required: true },
+}, {
+  timestamps: true,
+});
 
-export default mongoose.model('Region', regionSchema);
+const Region: Model<IRegion> = mongoose.models.Region || mongoose.model<IRegion>('Region', RegionSchema);
+
+export default Region;

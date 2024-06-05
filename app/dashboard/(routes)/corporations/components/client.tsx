@@ -9,13 +9,14 @@ import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@radix-ui/react-separator";
 import { ApiList } from "@/components/ui/api-list";
 
-import { ProductColumn, columns } from "./columns";
+import { columns } from "./columns";
+import { Corporation } from '@/types/corporation';
 
-interface ProductClientProps {
-    data: ProductColumn[]
+interface CorporationClientProps {
+    data: Corporation[]
 }
 
-export const ProductsClient: React.FC<ProductClientProps> = ({
+export const CorporationsClient: React.FC<CorporationClientProps> = ({
     data
 }) => {
     const router = useRouter();
@@ -25,10 +26,10 @@ export const ProductsClient: React.FC<ProductClientProps> = ({
         <>
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`Products (${data.length})`}
-                    description="Manage products for your store"
+                    title={`Entreprises (${data.length})`}
+                    description="Liste de nos entreprises"
                 />
-                <Button onClick={() => router.push(`/${params.storeId}/products/new`)}>
+                <Button onClick={() => router.push(`/${params.storeId}/corporation/new`)}>
                     <Plus className="mr-2 h-4 w-4"/>
                     Add New
                 </Button>

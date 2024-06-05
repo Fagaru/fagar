@@ -9,13 +9,15 @@ import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@radix-ui/react-separator";
 import { ApiList } from "@/components/ui/api-list";
 
-import { BillboardColumn, columns } from "./columns";
+import { columns } from "./columns";
 
-interface BillboardClientProps {
-    data: BillboardColumn[]
+import { Category } from '@/types/category';
+
+interface CategoryClientProps {
+    data: Category[]
 }
 
-export const BillboardClient: React.FC<BillboardClientProps> = ({
+export const CategoryClient: React.FC<CategoryClientProps> = ({
     data
 }) => {
     const router = useRouter();
@@ -25,17 +27,17 @@ export const BillboardClient: React.FC<BillboardClientProps> = ({
         <>
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`Billboards (${data.length})`}
-                    description="Manage billboards for your store"
+                    title={`Categories (${data.length})`}
+                    description="Liste de nos catégories"
                 />
-                <Button onClick={() => router.push(`/${params.storeId}/billboards/new`)}>
+                <Button onClick={() => router.push(`/dashboard/categories/new`)}>
                     <Plus className="mr-2 h-4 w-4"/>
                     Add New
                 </Button>
             </div>
             <Separator />
             <DataTable searchKey="label" columns={columns} data={data} />
-            <Heading title="API" description="API calls for Billboards" />
+            <Heading title="API" description="API calls for Categories" />
             <Separator />
             <ApiList entityName="billboards" entityIdName="billboardId"/>
         </>
