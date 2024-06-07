@@ -4,8 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import City from "@/models/city.model";
 
 export async function POST(
-    req: Request,
-    { params } : { params: { cityId: string }}
+    req: Request
 ) {
     try {
         // const { userId } = auth();

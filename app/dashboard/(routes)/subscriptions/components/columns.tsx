@@ -11,6 +11,10 @@ export const columns: ColumnDef<Subscription>[] = [
     header: "Label",
   },
   {
+    accessorKey: "price",
+    header: "Prix en euros",
+  },
+  {
     accessorKey: "createdAt",
     header: "Date",
   },

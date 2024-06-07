@@ -24,10 +24,11 @@ import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { Subscription } from "@/types/subscription";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
     label: z.string().min(1),
-    description: z.string().min(50),
+    description: z.string().min(10),
     price: z.number(),
 });
 
@@ -66,10 +67,10 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
             if (initialData) {
                 await axios.patch(`/api/subscriptions/${params.subscriptionId}`, data);
             } else {
-                await axios.post(`/api/subscriptions`, data);
+                await axios.post('/api/subscriptions', data);
             }
             router.refresh();
-            router.push(`/dashboard/subscriptions`);
+            router.push('/dashboard/subscriptions');
             toast.success(toastMessage);
         } catch (error) {
             toast.error("Something went wrong.");
@@ -122,12 +123,12 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
                     <FormField 
                         control={form.control}
-                        name="label"
+                        name="description"
                         render={({ field }) => (
                            <FormItem>
-                                <FormLabel>Label</FormLabel>
+                                <FormLabel>Description</FormLabel>
                                 <FormControl>
-                                    <Input disabled={loading} placeholder="Nom de l'offre" {...field} />
+                                    <Textarea disabled={loading} placeholder="Description brève de l'offre" {...field} />
                                 </FormControl>
                                 <FormMessage />
                            </FormItem>
@@ -136,12 +137,12 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
                     <div className="grid grid-cols-3 gap-8">
                         <FormField 
                             control={form.control}
-                            name="description"
+                            name="label"
                             render={({ field }) => (
                                <FormItem>
                                     <FormLabel>Label</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Description" {...field} />
+                                        <Input disabled={loading} placeholder="Nom de l'offre" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                </FormItem>

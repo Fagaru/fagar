@@ -30,7 +30,7 @@ export const SubscriptionClient: React.FC<SubscriptionClientProps> = ({
                     title={`Formules (${data.length})`}
                     description="Liste de nos offres d'abonnement"
                 />
-                <Button onClick={() => router.push(`/dashboard/subscription/new`)}>
+                <Button onClick={() => router.push(`/dashboard/subscriptions/new`)}>
                     <Plus className="mr-2 h-4 w-4"/>
                     Add New
                 </Button>

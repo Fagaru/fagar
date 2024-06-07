@@ -62,7 +62,6 @@ export const CityForm: React.FC<CityFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                console.log("SUBMIT 2", params.cityId)
                 await axios.patch(`/api/cities/${params.cityId}`, data);
             } else {
                 await axios.post(`/api/cities`, data);
