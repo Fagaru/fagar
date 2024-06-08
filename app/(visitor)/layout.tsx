@@ -7,8 +7,9 @@ import { redirect } from "next/navigation";
 import dbConnect from '../../lib/dbConnect';
 import Corporation from '@/models/corporation.model';
 
-import Navbar from "@/components/navbar";
 import { SideBar } from "@/components/side-bar";
+import Header from "@/components/header";
+import Container from "@/components/ui/container";
 
 
 export default async function DashboardLayout({
@@ -106,12 +107,14 @@ export default async function DashboardLayout({
 
     return (
         <>
-            <Navbar />
+        <Container>
+            <Header />
             <div className="flex flex-row">
                 <div className="w-full bg-gray-50 dark:bg-slate-900">
                     {children}
                 </div>
             </div>
+        </Container>
         </>
     );
 }

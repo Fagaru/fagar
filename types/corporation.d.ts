@@ -78,7 +78,7 @@ interface Review {
     _id: string;
     userId: string;
     comment: string;
-    stars: string;
+    stars: number;
     createdAt: Date;
     updatedAt: Date;
 }  

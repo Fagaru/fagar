@@ -51,7 +51,7 @@ interface ISubscription {
 interface IReview {
   userId: string;
   comment: string;
-  stars: string;
+  stars: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -131,7 +131,7 @@ const subscriptionSchema: Schema = new Schema({
 const reviewSchema: Schema = new Schema({
   userId: { type: String },
   comment: { type: String },
-  stars: { type: String },
+  stars: { type: Number },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 }, { _id: false });

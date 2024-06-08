@@ -1,6 +1,5 @@
 "use client";
 
-import { Store } from ".prisma/client";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { 
