@@ -1,40 +1,21 @@
-import prismadb from "@/lib/prismadb";
 import { format } from "date-fns";
 
-import { CategoryClient } from "./components/client";
-import { CategoryColumn } from "./components/columns";
+import { TagClient } from "./components/client";
+import { Tag } from '@/types/tag';
+import getTags from "@/services/getTags";
 
-const CategoriesPage = async ({
-    params
-}: {
-    params: { storeId: string }
-}) => {
-    const categories = await prismadb.category.findMany({
-        where: {
-            storeId: params.storeId
-        },
-        include: {
-            billboard: true,
-        },
-        orderBy: {
-            createdAt: 'desc'
-        }
-    });
+const TagsPage = async () => {
+    const tags = await getTags();
 
-    const formattedCategories: CategoryColumn[] = categories.map((item) => ({
-        id: item.id,
-        name: item.name,
-        billboardLabel: item.billboard.label,
-        createdAt: format(item.createdAt, "MMMM do, yyyy")
-    }));
+    const formattedTags = tags
 
     return (
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-                <CategoryClient data={formattedCategories}/>
+                <TagClient data={formattedTags}/>
             </div>
         </div>
     );
 }
 
-export default CategoriesPage;
+export default TagsPage;

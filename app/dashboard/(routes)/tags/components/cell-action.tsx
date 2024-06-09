@@ -16,10 +16,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { CategoryColumn } from "./columns";
+import { Tag } from '@/types/tag';
 
 interface CellActionProps {
-    data: CategoryColumn;
+    data: Tag;
 }
 
 export const CellAction: React.FC<CellActionProps>= ({
@@ -33,17 +33,17 @@ export const CellAction: React.FC<CellActionProps>= ({
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id);
-        toast.success("Category Id copied to the clipboard.")
+        toast.success("Tag Id copied to the clipboard.")
     };
 
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
+            await axios.delete(`/api/tags/${data._id}`);
             router.refresh();
-            toast.success("Category deleted.");
+            toast.success("Tag deleted.");
         } catch (error) {
-            toast.error("Make sure you removed all products using this category first.");
+            toast.error("Make sure you removed all corporations using this tag first.");
         } finally {
             setLoading(false);
             setOpen(false);
@@ -69,11 +69,11 @@ export const CellAction: React.FC<CellActionProps>= ({
                     <DropdownMenuLabel>
                         Actions
                     </DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => onCopy(data.id)}>
+                    <DropdownMenuItem onClick={() => onCopy(data._id)}>
                         <Copy className="mr-2 h-4 w-4" />
                         Copy Id
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/categories/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/dashboard/tags/${data._id}`)}>
                         <Edit className="mr-2 h-4 w-4" />
                         Update
                     </DropdownMenuItem>

@@ -1,25 +1,24 @@
 import { format } from "date-fns";
 
-import { BillboardClient } from "./components/client";
-import { BillboardColumn } from "./components/columns";
+import { CategoryClient } from "./components/client";
+import { Category } from '@/types/category';
+import getCategories from "@/services/getCategories";
 
-const CategoriesPage = async ({
-    params
-}: {
-    params: { storeId: string }
-}) => {
-    const billboards: any = null
+const CategoriesPage = async () => {
+    const categories = await getCategories({});
 
-    const formattedBillboards: BillboardColumn[] = billboards.map((item) => ({
-        id: item.id,
-        label: item.label,
-        createdAt: format(item.createdAt, "MMMM do, yyyy")
-    }));
+    // const formattedCategories = categories.map((item: Category) => ({
+    //     id: item._id,
+    //     label: item.label,
+    //     createdAt: format(item.createdAt, "MMMM do, yyyy")
+    // }));
+
+    const formattedCategories = categories
 
     return (
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-                <BillboardClient data={formattedBillboards}/>
+                <CategoryClient data={formattedCategories}/>
             </div>
         </div>
     );

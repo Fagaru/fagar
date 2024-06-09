@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
 import City from '@/models/city.model';
+import mongoose from "mongoose";
 
 export async function PATCH (
     req: Request,
@@ -15,16 +16,20 @@ export async function PATCH (
 
         // if (!userId) {
         //     return new NextResponse("Unauthorized", { status: 401 });
+
+        if (!mongoose.Types.ObjectId.isValid(params.cityId)) {
+            return new NextResponse('Invalid city ID', { status: 400 });
+        }
         
         await dbConnect();
-        // Récupérer la City actuelle
+        // Récupérer la CITY actuelle
         const currentCity = await City.findById(params.cityId);
     
         if (!currentCity) {
-          throw new Error('City not found');
+            return new NextResponse('City not found', { status: 404 });
         }
     
-        // Mettre à jour la City
+        // Mettre à jour la CitY
         const filter = {_id: params.cityId};
         const updatedCity = await City.updateOne(
             filter, 
@@ -34,7 +39,7 @@ export async function PATCH (
             }
         );
 
-        console.log('Updated City:', updatedCity);
+        console.log('Updated CITY:', updatedCity);
 
         return NextResponse.json(updatedCity);
     } catch (error) {
@@ -58,7 +63,7 @@ export async function DELETE (
 
         const currentCity = await City.findById(params.cityId);
         if (!currentCity) {
-            throw new Error('City not found');
+            throw new Error('CITY not found');
         }
         
         const deleteCity = await City.deleteOne(filter);
@@ -71,28 +76,13 @@ export async function DELETE (
 };
 
 export async function GET(
-    req: Request
+    req: Request,
+    { params }: { params: {cityId: string}}
 ) {
     try {
         await dbConnect();
-
-        const { searchParams } = new URL(req.url);
-        const label = searchParams.get("cityLabel") || undefined;
-        const cityId = searchParams.get("cityId") || undefined;
-        // Construire la requête de recherche
-        const query: any = {};
-
-        // Filtrer par nom de ville
-        if (label) {
-            query.label = label;
-        }
-    
-        // Filtrer par cityId
-        if (cityId) {
-            query['_id'] = cityId;
-        }
-
-        const city = await City.findOne(query);
+        const filter = {_id: params.cityId};
+        const city = await City.findOne(filter);
 
         return NextResponse.json(city);
     } catch (error) {

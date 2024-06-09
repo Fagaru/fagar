@@ -100,11 +100,11 @@ export function SideBar({
             <div className="gap-3 mb-3">
                 <span className="text-xs font-extralight">LISTS</span>
                 <Link 
-                    key='/dashboard/stores'
-                    href='/dashboard/stores'
+                    key='/dashboard/corporations'
+                    href='/dashboard/corporations'
                     className={cn(
                         "flex items-center gap-5 m-1 p-[10px] rounded-[5px] transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                        (pathname === '/dashboard/stores') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                        (pathname === '/dashboard/corporations') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
                     )}
                 >
                 <ShoppingCart size="20px"/>
@@ -130,7 +130,7 @@ export function SideBar({
                     )}
                 >
                 <Target size="20px"/>
-                <span className="text-sm/[20px]">Cities</span>
+                <span className="text-sm/[20px]">Villes</span>
                 </Link>
                 <Link 
                     key='/dashboard/regions'
@@ -141,7 +141,7 @@ export function SideBar({
                     )}
                 >
                 <Album size="20px"/>
-                <span className="text-sm/[20px]">Regions</span>
+                <span className="text-sm/[20px]">Régions</span>
                 </Link>
                 <Link 
                     key='/dashboard/tags'
@@ -183,15 +183,15 @@ export function SideBar({
             <div className="gap-3 mb-3">
                 <span className="text-xs font-extralight">PRO</span>
                 <Link 
-                    key='/dashboard/pro'
-                    href='/dashboard'
+                    key='/dashboard/subscriptions'
+                    href='/dashboard/subscriptions'
                     className={cn(
                         "flex items-center gap-5 m-1 p-[10px] rounded-[5px] transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                        (pathname === '/dashboard') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                        (pathname === '/dashboard/subscriptions') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
                     )}
                 >
                 <TrendingUp size="20px"/>
-                    <span className="text-sm/[20px]">Check offers</span>
+                    <span className="text-sm/[20px]">Nos offres</span>
                 </Link>
             </div>
         </div>

@@ -4,8 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import City from "@/models/city.model";
 
 export async function POST(
-    req: Request,
-    { params } : { params: { cityId: string }}
+    req: Request
 ) {
     try {
         // const { userId } = auth();
@@ -26,21 +25,6 @@ export async function POST(
         if (!imageUrl) {
             return new NextResponse("Image URL is required", {  status: 400});
         }
-
-        if (!params.cityId) {
-            return new NextResponse("City ID is required", {  status: 400});
-        }
-
-        // const storeByUserId = await prismadb.store.findFirst({
-        //     where: {
-        //         id: params.storeId,
-        //         userId
-        //     }
-        // });
-
-        // if (!storeByUserId) {
-        //     return new NextResponse("Unauthorized", {  status: 403});
-        // }
 
         await dbConnect();
         const city = new City({

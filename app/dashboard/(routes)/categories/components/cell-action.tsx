@@ -16,10 +16,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { BillboardColumn } from "./columns";
+import { Category } from '@/types/category';
 
 interface CellActionProps {
-    data: BillboardColumn;
+    data: Category;
 }
 
 export const CellAction: React.FC<CellActionProps>= ({
@@ -33,17 +33,17 @@ export const CellAction: React.FC<CellActionProps>= ({
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id);
-        toast.success("Billboard Id copied to the clipboard.")
+        toast.success("Category Id copied to the clipboard.")
     };
 
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+            await axios.delete(`/api/categories/${data._id}`);
             router.refresh();
-            toast.success("Billboard deleted.");
+            toast.success("Categories deleted.");
         } catch (error) {
-            toast.error("Make sure you removed all categories using this billboard first.");
+            toast.error("Make sure you removed all corporations using this categories first.");
         } finally {
             setLoading(false);
             setOpen(false);
@@ -69,11 +69,11 @@ export const CellAction: React.FC<CellActionProps>= ({
                     <DropdownMenuLabel>
                         Actions
                     </DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => onCopy(data.id)}>
+                    <DropdownMenuItem onClick={() => onCopy(data._id)}>
                         <Copy className="mr-2 h-4 w-4" />
                         Copy Id
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/dashboard/categories/${data._id}`)}>
                         <Edit className="mr-2 h-4 w-4" />
                         Update
                     </DropdownMenuItem>
