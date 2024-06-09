@@ -4,19 +4,9 @@ import { Category } from '@/types/category';
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/categories`;
 
-interface Query {
-  categoryId?: string
-}
-
-const getCategories = async (query: Query): Promise<Category[]> => {
+const getCategories = async (): Promise<Category[]> => {
   try {
-    const url = qs.stringifyUrl({
-      url: URL,
-      query: {
-        categoryId: query.categoryId
-      }
-    })
-    const res = await fetch(url);
+    const res = await fetch(URL);
     
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);

@@ -5,7 +5,7 @@ import { Category } from '@/types/category';
 import getCategories from "@/services/getCategories";
 
 const CategoriesPage = async () => {
-    const categories = await getCategories({});
+    const categories = await getCategories();
 
     // const formattedCategories = categories.map((item: Category) => ({
     //     id: item._id,
