@@ -40,7 +40,7 @@ const ContactForm = ({
 
   return (
     <div>
-      <span className='font-medium'>Contacter {name_pro}</span>
+      <span className='font-medium pl-2'>Contacter {name_pro}</span>
       <div className="m-2">
         
         <div className="flex relative mb-2">
