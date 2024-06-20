@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { Trash } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Trash, X } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
@@ -34,12 +34,20 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Corporation } from "@/types/corporation";
 import { Category } from "@/types/category";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
     name: z.string().min(1),
     userId: z.string().min(1).optional(),
     images: z.object({ url: z.string() }).array(),
     categoryId: z.string().min(1),
+    mail_pro: z.string().min(1),
+    phone: z.string().min(1),
+    description: z.string().min(20),
+    linkFacebook: z.string().min(0).optional(),
+    linkInstagram: z.string().min(0).optional(),
+    linkLinkedIn: z.string().min(0).optional(),
+    linkX: z.string().min(0).optional(),
     isActive: z.boolean().default(false).optional(),
     isSuspended: z.boolean().default(false).optional(),
 });
@@ -167,15 +175,56 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                            </FormItem>
                         )}
                     />
-                    <div className="grid grid-cols-3 gap-8">
+                    <div className="relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(50px,auto)]">
                         <FormField 
                             control={form.control}
                             name="name"
                             render={({ field }) => (
                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>Nom de votre entreprise</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Product name" {...field} />
+                                        <Input disabled={loading} placeholder="ex: Fagar Inc" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
+                        <FormField 
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel>Téléphone</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} type="phone" placeholder="ex: 06 31 45 85 94" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
+                        <div className="relative row-span-2 col-span-2 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="description"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel>Description</FormLabel>
+                                        <FormControl>
+                                            <Textarea disabled={loading} placeholder="Faites une bréve présentation de votre entreprise" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                        <FormField 
+                            control={form.control}
+                            name="mail_pro"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel>Adresse Mail</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} type="email" placeholder="ex: entreprise@fagar.com" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                </FormItem>
@@ -214,6 +263,58 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                     </Select>
                                     <FormMessage />
                                </FormItem>   
+                            )}
+                        />
+                        <FormField 
+                            control={form.control}
+                            name="linkFacebook"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel className="flex items-center"><Facebook size={30} className="pr-2" />Lien vers votre compte Facebook</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} placeholder="..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
+                        <FormField 
+                            control={form.control}
+                            name="linkInstagram"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel className="flex items-center"><Instagram size={30} className="pr-2" /> Lien vers votre compte Instagram </FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} placeholder="..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
+                        <FormField 
+                            control={form.control}
+                            name="linkLinkedIn"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel className="flex items-center"><Linkedin size={30} className="pr-2" />Lien vers votre compte LinkedIn</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} placeholder="..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
+                        <FormField 
+                            control={form.control}
+                            name="linkX"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel className="flex items-center"><X size={30} className="pr-2" />Lien vers votre compte X</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} placeholder="..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
                             )}
                         />
                         

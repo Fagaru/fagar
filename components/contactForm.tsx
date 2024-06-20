@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 
 import { Input } from '@/components/ui/input';
-import { Textarea } from './ui/textarea';
-import { Button } from './ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 
 const ContactForm = ({
   name_pro, mail_pro

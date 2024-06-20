@@ -9,7 +9,9 @@ import getCorporations from '@/services/getCorporations';
 import Image from "next/image";
 import { ReviewSection } from '@/components/reviewSection';
 import Link from 'next/link';
-import { Facebook, Instagram, MapPinned, Phone, X } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, MapPinned, Phone, X } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import getCategory from '@/services/getCategory';
 import { Category } from '@/types/category';
 
@@ -37,12 +39,10 @@ const CorporationPage = () => {
             try {
                 let categoryId = null;
                 if(corporation?.categoryId) {
-                
                     // Appelez le service getCategory avec un categoryId valide
-                    categoryId = corporation?.categoryId.toString()
-                    const cat = await getCategory({ categoryId });
+                    categoryId = corporation?.categoryId.toString();
+                    const cat = await getCategory({ categoryId: categoryId });
                     setCategory(cat);
-                    console.log("CATEGORY: ", category.label);
                 }
                 console.log("CATEGORY: ", categoryId);
             } catch (err) {
@@ -84,26 +84,8 @@ const CorporationPage = () => {
                                 </span>
                             </div>
                         ))}
-                        {/* <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                            <Image 
-                                        fill
-                                        src={corporation.images[1]?.url || "/default_image.jpg"}
-                                        alt="Image"
-                                        className="object-cover object-center"
-                                    />
-                                </div>
-                        </div>
-                        <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                            Image 3
-                        </div>
-                        <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                            Image 4
-                        </div>
-                        <div className="p-5 rounded-[10px] border-solid border-[1px]">
-                            Image 5
-                        </div> */}
                     </div>
-                    <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(100px,auto)]">
+                    <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(100px,auto)]">
                         <div className="p-5 row-span-1 col-span-2 rounded-[10px] border-solid border-y-[1px] h-25">
                             {/* {corporation.address?.label} */}
                             Paris, France
@@ -121,18 +103,20 @@ const CorporationPage = () => {
                             </div>
                             <span className='pl-12 font-light text-sm'>{category?.label}</span>
                         </div>
-                        <div className="p-5 row-span-1 rounded-[10px]">
+                        <div className="row-span-1 rounded-[10px]">
                             <div className="pl-20 pt-10">
                                 <Link
                                     key={`/pros/${corporation._id}`}
                                     href={`/pros/${corporation._id}`}
+                                    className='grid grid-cols-1 justify-items-stretch'
                                 >
-                                    <span className='font-medium pr-10'>Laisser un avis</span>
+                                    <span className='font-medium justify-self-center pb-1'>Laisser un avis</span>
                                     <ReviewSection stars={4} rating_mode="no-value" />
+                                    <Button className='justify-self-center'> Ecrire un avis</Button>
                                 </Link>
                             </div>
                         </div>
-                        <div className="flex items-center p-5 row-span-1 col-span-2 rounded-[10px] border-solid border-y-[1px]">
+                        <div className="flex justify-between p-5 row-span-1 col-span-2 rounded-[10px] border-solid border-y-[1px]">
                             <div className='grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-1 items-center'>
                                 <div className='flex items-center'>
                                     <div className="aspect-square relative w-10 h-10 sm:rounded-full overflow-hidden">
@@ -158,7 +142,7 @@ const CorporationPage = () => {
                             <span className='font-medium pb-2'>Contact & réseaux sociaux</span>
                             <div className='flex items-center relative p-2'>
                                 <Phone />
-                                <span className='font-light pl-10'>06 51 45 74 21</span>
+                                <span className='font-light pl-10'>{corporation.phone}</span>
                             </div>
                             <div className='flex items-center relative p-2'>
                                 <MapPinned />
@@ -166,15 +150,19 @@ const CorporationPage = () => {
                             </div>
                             <div className='flex items-center relative p-2'>
                                 <Instagram />
-                                <span className='font-light pl-10'>Compte Instagram</span>
+                                <span className='font-light pl-10'>{corporation.linkInstagram}</span>
                             </div>
                             <div className='flex items-center relative p-2'>
                                 <Facebook />
-                                <span className='font-light pl-10'>Compte Facebook</span>
+                                <span className='font-light pl-10'>{corporation.linkFacebook}</span>
+                            </div>
+                            <div className='flex items-center relative p-2'>
+                                <Linkedin />
+                                <span className='font-light pl-10'>{corporation.linkLinkedIn}</span>
                             </div>
                             <div className='flex items-center relative p-2'>
                                 <X />
-                                <span className='font-light pl-10'>Compte X</span>
+                                <span className='font-light pl-10'>{corporation.linkX}</span>
                             </div>
                             <div className='flex items-center relative pt-2'>
                                 <ContactForm name_pro={corporation.name} mail_pro={corporation.mail_pro}/>

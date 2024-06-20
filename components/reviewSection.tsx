@@ -49,7 +49,7 @@ export const ReviewSection = ({stars, rating_mode}) => {
     );
   } else if (rating_mode === "no-value") {
     return (
-      <Rating name="no-value" value={null} emptyIcon={<StarIcon color='#FF495F' className='pt-1' size={27}/>} />
+      <Rating name="no-value" value={null} emptyIcon={<StarIcon color='#FF495F' className='pt-1' size={27}/>} className='justify-self-center' />
     );
   }
 
