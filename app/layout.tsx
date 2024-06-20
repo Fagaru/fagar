@@ -9,8 +9,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Admin Dashboard',
-  description: 'Admin Dashboard',
+  title: 'Fagar',
+  description: 'Plus proche de chez vous',
 }
 
 export default function RootLayout({

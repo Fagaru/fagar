@@ -69,8 +69,6 @@ export default async function DashboardLayout({
 
     // const client = new MongoClient(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
-    const name = 'First Corporation'
-    const description = 'Default Description'
     // const price = '0.00'
     
     // try {
@@ -107,14 +105,16 @@ export default async function DashboardLayout({
 
     return (
         <>
-        <Container>
+        <div className="bg-gray-50 dark:bg-slate-950">
             <Header />
-            <div className="flex flex-row">
-                <div className="w-full bg-gray-50 dark:bg-slate-900">
-                    {children}
+            <Container>
+                <div className="flex flex-row">
+                    <div className="w-full">
+                        {children}
+                    </div>
                 </div>
-            </div>
-        </Container>
+            </Container>
+        </div>
         </>
     );
 }

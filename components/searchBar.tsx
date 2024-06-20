@@ -42,7 +42,7 @@ const SearchBar = () => {
         />
         {query && (
           <button onClick={clearQuery} className="absolute right-0 mr-2">
-            <X />
+            <X size={15} opacity={0.55}/>
           </button>
         )}
       </div>
@@ -56,7 +56,7 @@ const SearchBar = () => {
         />
         {address && (
           <button onClick={clearAddress} className="absolute right-0 mr-2">
-            <X />
+            <X size={15} opacity={0.55}/>
           </button>
         )}
       </div>

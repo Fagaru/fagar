@@ -96,7 +96,6 @@ export async function GET(
         // res.status(200).json(corporations);
         // Exécuter la requête de recherche
         const corporations = await Corporation.find(query)
-        .populate('categoryId') // Peupler la catégorie (si vous avez un modèle Category)
         .populate('address.cityId') // Peupler la ville
         .populate('address.regionId') // Peupler la région
         .exec();

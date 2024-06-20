@@ -27,7 +27,7 @@ import { City } from "@/types/city";
 
 const formSchema = z.object({
     label: z.string().min(1),
-    imageUrl: z.string().min(1),
+    images: z.object({ url: z.string() }).array(),
 });
 
 type CityType = z.infer<typeof formSchema>;
@@ -54,7 +54,7 @@ export const CityForm: React.FC<CityFormValues> = ({
         resolver: zodResolver(formSchema),
         defaultValues: initialData || {
             label: '',
-            imageUrl: '',
+            images: [],
         }
     });
 
@@ -120,16 +120,16 @@ export const CityForm: React.FC<CityFormValues> = ({
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
                     <FormField 
                         control={form.control}
-                        name="imageUrl"
+                        name="images"
                         render={({ field }) => (
                            <FormItem>
-                                <FormLabel>Background image</FormLabel>
+                                <FormLabel>Images</FormLabel>
                                 <FormControl>
                                     <ImageUpload 
-                                        value={field.value ? [field.value] : []}
+                                        value={field.value.map((image) => image.url)}
                                         disabled={loading}
-                                        onChange={(url) => field.onChange(url)}
-                                        onRemove={(url) => field.onChange("")}
+                                        onChange={(url) => field.onChange([...field.value, { url }])}
+                                        onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
                                     />
                                 </FormControl>
                                 <FormMessage />

@@ -39,6 +39,7 @@ export async function PATCH (
           body.tags = currentCorporation.tags;
         }
     
+        await dbConnect();
         // Mettre à jour la corporation
         const filter = {_id: params.corporationId};
         const updatedCorporation = await Corporation.updateOne(
@@ -69,6 +70,7 @@ export async function DELETE (
         //     return new NextResponse("Unauthorized", { status: 401 });
         // }
 
+        await dbConnect();
         const filter = {_id: params.corporationId};
 
         const currentCorporation = await Corporation.findOne(filter);
@@ -90,6 +92,7 @@ export async function GET(
     { params }: { params: {corporationId: string}}
 ) {
     try {
+        await dbConnect();
         const filter = {_id: params.corporationId};
         const corporation = await Corporation.findOne(filter);
 
