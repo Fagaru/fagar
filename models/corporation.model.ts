@@ -25,11 +25,11 @@ interface IImage {
 
 // Interface for Schedule Subschema
 interface ISchedule {
-  dayWeek: string;
-  begin_am: Date;
-  end_am: Date;
-  begin_pm: Date;
-  end_pm: Date;
+  dayWeek: number;
+  begin_am: string;
+  end_am: string;
+  begin_pm: string;
+  end_pm: string;
   available: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -107,11 +107,11 @@ const imageSchema: Schema = new Schema({
 }, { _id: false });
 
 const scheduleSchema: Schema = new Schema({
-  dayWeek: { type: String },
-  begin_am: { type: Date },
-  end_am: { type: Date },
-  begin_pm: { type: Date },
-  end_pm: { type: Date },
+  dayWeek: { type: Number },
+  begin_am: { type: String },
+  end_am: { type: String },
+  begin_pm: { type: String },
+  end_pm: { type: String },
   available: { type: String, default: "closed" },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
@@ -142,9 +142,9 @@ const corporationSchema: Schema = new Schema({
   phone: { type: String },
   mail_pro: { type: String },
   description: { type: String },
-  siretNum: { type: String },
+  siret_num: { type: String },
   siren_num: { type: String },
-  codeNAF: { type: String },
+  code_naf: { type: String },
   linkFacebook: { type: String },
   linkInstagram: { type: String },
   linkLinkedIn: { type: String },

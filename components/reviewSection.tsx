@@ -32,8 +32,10 @@ export const ReviewSection = ({stars, rating_mode}) => {
   } else if (rating_mode === "read-only") {
     return (
       <>
-        <Typography component="legend" className='font-medium pl-5'>{value} étoiles</Typography>
-        <Rating name="read-only" value={value} readOnly size="large" emptyIcon={<StarIcon color='#FF495F' className='pt-1' size={27}/>} />
+        <Typography component="legend" className='font-medium pl-5 flex justify-center items-center'>{value} étoiles</Typography>
+        <div className='flex justify-center items-center'>
+          <Rating name="read-only" value={value} readOnly size="large" emptyIcon={<StarIcon color='#FF495F' className='pt-1' size={27}/>} />
+        </div>
       </>
     );
   } else if (rating_mode === "disabled") {

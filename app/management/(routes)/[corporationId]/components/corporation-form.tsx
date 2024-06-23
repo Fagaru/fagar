@@ -3,8 +3,8 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { Facebook, Instagram, Linkedin, Trash, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { CalendarCheck, Facebook, Instagram, Linkedin, Trash, X } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { 
-    Select, 
+    Select as UiSelect, 
     SelectContent, 
     SelectItem, 
     SelectTrigger, 
@@ -35,29 +35,61 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Corporation } from "@/types/corporation";
 import { Category } from "@/types/category";
 import { Textarea } from "@/components/ui/textarea";
+import { Controller } from "react-hook-form";
+import getTags from "@/services/getTags";
+import { Tag } from "@/types/tag";
 
-const formSchema = z.object({
-    name: z.string().min(1),
-    userId: z.string().min(1).optional(),
-    images: z.object({ url: z.string() }).array(),
-    categoryId: z.string().min(1),
-    mail_pro: z.string().min(1),
-    phone: z.string().min(1),
-    description: z.string().min(20),
-    linkFacebook: z.string().min(0).optional(),
-    linkInstagram: z.string().min(0).optional(),
-    linkLinkedIn: z.string().min(0).optional(),
-    linkX: z.string().min(0).optional(),
-    isActive: z.boolean().default(false).optional(),
-    isSuspended: z.boolean().default(false).optional(),
+import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
+
+// import Tag as TagType from "@/types/tag";
+
+
+const daysOfWeek = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+
+const scheduleSchema = z.object({
+    dayWeek: z.number().min(0).max(6),
+    begin_am: z.string().optional(),
+    end_am: z.string().optional(),
+    begin_pm: z.string().optional(),
+    end_pm: z.string().optional(),
+    available: z.string().min(1),
 });
 
-const formSchemaAddress = z.object({
+const addressSchema = z.object({
     name: z.string().min(1),
     lat: z.string(),
     lng: z.string(),
     placeId: z.string().min(1),
     label: z.string().min(1),
+});
+
+const tagSchema = z.object({
+    _id: z.string().min(1),
+    label: z.string().min(1)
+});
+
+const formSchema = z.object({
+    name: z.string().min(1),
+    userId: z.string().min(1).optional(),
+    images: z.object({ url: z.string() }).array(),
+    address: z.string().min(1).optional(),
+    tags: tagSchema.array().optional(),
+    categoryId: z.string().min(1),
+    mail_pro: z.string().min(1),
+    phone: z.string().min(1),
+    description: z.string().min(20),
+    schedules: scheduleSchema.array().optional(),
+    linkFacebook: z.string().min(0).optional(),
+    linkInstagram: z.string().min(0).optional(),
+    linkLinkedIn: z.string().min(0).optional(),
+    linkX: z.string().min(0).optional(),
+    starting_date: z.string().refine(val => !isNaN(Date.parse(val)), { message: "Invalid date format" }).optional(), // Nouvelle ligne pour valider la date
+    siret_num: z.string().optional(),
+    siren_num: z.string().optional(),
+    code_naf: z.string().optional(),
+    isActive: z.boolean().default(false).optional(),
+    isSuspended: z.boolean().default(false).optional(),
 });
 
 type CorporationFormValues = z.infer<typeof formSchema>;
@@ -76,6 +108,23 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+    const [newTag, setNewTag] = useState("");
+    const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+
+    useEffect(() => {
+        // Fetch available tags from the backend
+        const fetchTags = async () => {
+            try {
+                const fetchedData = await getTags();
+                setAvailableTags(fetchedData);
+            } catch (error) {
+                console.error('Error fetching tags', error);
+            }
+        };
+
+        fetchTags();
+    }, []);
 
     const title = initialData ? "Edit company" : "Create company";
     const description = initialData ? "Edit company" : "Add a new company";
@@ -85,20 +134,46 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     const form = useForm<CorporationFormValues> ({
         resolver: zodResolver(formSchema),
         defaultValues: initialData ? {
-            ...initialData
+            ...initialData,
+            schedules: initialData.schedules.length > 0 ? initialData.schedules : daysOfWeek.map((day, index) => ({
+                dayWeek: index,
+                begin_am: '08:00',
+                end_am: '12:00',
+                begin_pm: '14:00',
+                end_pm: '17:00',
+                available: "closed"
+            }))
         } : {
             name: '',
             userId: '',
             images: [],
             categoryId: '',
+            tags: [],
             isActive: false,
             isSuspended: false,
+            schedules: daysOfWeek.map((day, index) => ({
+                dayWeek: index,
+                begin_am: '08:00',
+                end_am: '12:00',
+                begin_pm: '14:00',
+                end_pm: '17:00',
+                available: "open"
+            })),
+            starting_date: "",
+            siret_num: '',
+            siren_num: '',
+            code_naf: '',
+            linkFacebook: '',
+            linkInstagram: '',
+            linkLinkedIn: '',
+            linkX: ''
         }
     });
 
     const onSubmit = async (data: CorporationFormValues) => {
         try {
             setLoading(true);
+            console.log("SCHEDULE ", data.tags);
             if (initialData){
                 await axios.patch(`/api/corporations/${params.corporationId}`, data);
             } else {
@@ -114,6 +189,18 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
         }
     };
 
+    const handleAddTag = async (value) => {
+        if (newTag.trim()) {
+            try {
+                setSelectedTags((prevTags) => [...prevTags, value]);
+                setNewTag("");
+                toast.success('Tag added');
+            } catch (error) {
+                toast.error('Error adding tag');
+            }
+        }
+    };
+
     const onDelete = async () => {
         try {
             console.log("Submit done !")
@@ -121,7 +208,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
             await axios.delete(`/api/corporations/${params.corporationId}`);
             router.refresh();
             router.push(`/management`);
-            toast.success("Product deleted.");
+            toast.success("Corporation deleted.");
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -202,21 +289,6 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                </FormItem>
                             )}
                         />
-                        <div className="relative row-span-2 col-span-2 p-5 rounded-[10px] border-solid border-[1px]">
-                            <FormField 
-                                control={form.control}
-                                name="description"
-                                render={({ field }) => (
-                                <FormItem>
-                                        <FormLabel>Description</FormLabel>
-                                        <FormControl>
-                                            <Textarea disabled={loading} placeholder="Faites une bréve présentation de votre entreprise" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                </FormItem>
-                                )}
-                            />
-                        </div>
                         <FormField 
                             control={form.control}
                             name="mail_pro"
@@ -232,11 +304,24 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                         />
                         <FormField 
                             control={form.control}
+                            name="address"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel>Adresse</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} type="address" placeholder="ex: 14 rue de la Fourche" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
+                        <FormField 
+                            control={form.control}
                             name="categoryId"
                             render={({ field }) => (
                                <FormItem>
                                     <FormLabel>Category</FormLabel>
-                                    <Select 
+                                    <UiSelect 
                                         disabled={loading} 
                                         onValueChange={field.onChange} 
                                         value={field.value} 
@@ -260,11 +345,169 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
-                                    </Select>
+                                    </UiSelect>
                                     <FormMessage />
                                </FormItem>   
                             )}
                         />
+                        
+                        {/* Add Tags */}
+                        <FormField
+                            control={form.control}
+                            name="tags"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Tags</FormLabel>
+                                    <FormControl>
+                                        <Controller
+                                            control={form.control}
+                                            name="tags"
+                                            render={({ field: { value, onChange } }) => (
+                                                <CreatableSelect 
+                                                    isMulti 
+                                                    options={availableTags}
+                                                    value={field.value}
+                                                    // defaultValue={selectedTags}
+                                                    // closeMenuOnSelect={false}
+                                                    onChange={onChange}
+                                                    placeholder="Sélectionner ou ajouter des tags"
+                                                    isDisabled={loading}
+                                                    onCreateOption={async (inputValue: string) => {
+                                                       try {
+                                                           const { data } = await axios.post('/api/tags', { label: inputValue });
+                                                           const newTag = { label: data.label };
+                                                           setAvailableTags((prevTags) => [...prevTags, data]);
+                                                           setSelectedTags((prevTags) => [...prevTags, data]);
+                                                           onChange([...value, data]);
+                                                           toast.success('Tag added');
+                                                       } catch (error) {
+                                                           toast.error('Error adding tag');
+                                                       }
+                                                    }}
+                                                 />
+                                            )}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <div className="relative row-span-1 col-span-2 p-5 rounded-[10px] border-solid border-[1px]">
+                        </div>
+                        <div className="relative row-span-2 col-span-4 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="description"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel>Description</FormLabel>
+                                        <FormControl>
+                                            <Textarea disabled={loading} placeholder="Faites une bréve présentation de votre entreprise" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+
+
+                        <div className="relative row-span-5 xl:col-span-2 lg:col-span-2 md:col-span-4 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="schedules"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormLabel>Horaires d'ouverture</FormLabel>
+                                    {daysOfWeek.map((day, index) => (
+                                        <div key={index} className="flex flex-col mb-4">
+                                            <FormLabel>{day}</FormLabel>
+                                            <div className="flex space-x-4">
+                                                <Controller
+                                                    name={`schedules.${index}.begin_am`}
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <Input
+                                                            type="time"
+                                                            placeholder="Begin AM"
+                                                            value={field.value || ''}
+                                                            onChange={(e) => field.onChange(e.target.value)}
+                                                            disabled={loading}
+                                                        />
+                                                    )}
+                                                />
+                                                <Controller
+                                                    name={`schedules.${index}.end_am`}
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <Input
+                                                            type="time"
+                                                            placeholder="End AM"
+                                                            value={field.value || ''}
+                                                            onChange={(e) => field.onChange(e.target.value)}
+                                                            disabled={loading}
+                                                        />
+                                                    )}
+                                                />
+                                                <Controller
+                                                    name={`schedules.${index}.begin_pm`}
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <Input
+                                                            type="time"
+                                                            placeholder="Begin PM"
+                                                            value={field.value || ''}
+                                                            onChange={(e) => field.onChange(e.target.value)}
+                                                            disabled={loading}
+                                                        />
+                                                    )}
+                                                />
+                                                <Controller
+                                                    name={`schedules.${index}.end_pm`}
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <Input
+                                                            type="time"
+                                                            placeholder="08:00"
+                                                            value={field.value || ''}
+                                                            onChange={(e) => field.onChange(e.target.value)}
+                                                            disabled={loading}
+                                                        />
+                                                    )}
+                                                />
+                                                <Controller
+                                                    name={`schedules.${index}.available`}
+                                                    control={form.control}
+                                                    render={({ field }) => (
+                                                        <UiSelect
+                                                            disabled={loading}
+                                                            onValueChange={field.onChange}
+                                                            value={field.value}
+                                                            defaultValue={field.value}
+                                                        >
+                                                            <FormControl>
+                                                                <SelectTrigger>
+                                                                    <SelectValue
+                                                                        defaultValue={field.value}
+                                                                        placeholder="Availability"
+                                                                    />
+                                                                </SelectTrigger>
+                                                            </FormControl>
+                                                            <SelectContent>
+                                                                <SelectItem value="open">Open</SelectItem>
+                                                                <SelectItem value="closed">Closed</SelectItem>
+                                                            </SelectContent>
+                                                        </UiSelect>
+                                                    )}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+
                         <FormField 
                             control={form.control}
                             name="linkFacebook"
@@ -317,7 +560,64 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                </FormItem>
                             )}
                         />
-                        
+                        <FormField 
+                            control={form.control}
+                            name="starting_date"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel className="flex items-center"><CalendarCheck size={30} className="pr-2" />Date de création de votre entreprise</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="date"
+                                            // placeholder="08:00"
+                                            value={field.value ? new Date(field.value).toISOString().split('T')[0] : ""}
+                                            onChange={(e) => field.onChange(e.target.value)}
+                                            disabled={loading}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
+                        <FormField 
+                            control={form.control}
+                            name="siret_num"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel>Siret</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} placeholder="..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
+                        <FormField 
+                            control={form.control}
+                            name="siren_num"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel>Siren</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} placeholder="..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
+                        <FormField 
+                            control={form.control}
+                            name="code_naf"
+                            render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel>Code NAF</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={loading} placeholder="..." {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                            )}
+                        />
                         <FormField 
                             control={form.control}
                             name="isActive"

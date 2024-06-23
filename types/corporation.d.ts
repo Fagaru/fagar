@@ -5,9 +5,9 @@ export interface Corporation {
     phone: string;
     mail_pro: string;
     description: string;
-    siretNum: string;
+    siret_num: string;
     siren_num: string;
-    codeNAF: string;
+    code_naf: string;
     linkFacebook: string;
     linkInstagram: string;
     linkLinkedIn: string;
@@ -52,11 +52,11 @@ interface Image {
   
 interface Schedule {
     _id: string;
-    dayWeek: string;
-    begin_am: Date;
-    end_am: Date;
-    begin_pm: Date;
-    end_pm: Date;
+    dayWeek: number;
+    begin_am: string;
+    end_am: string;
+    begin_pm: string;
+    end_pm: string;
     available: string;
     createdAt: Date;
     updatedAt: Date;
