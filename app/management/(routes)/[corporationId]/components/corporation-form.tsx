@@ -84,7 +84,7 @@ const formSchema = z.object({
     linkInstagram: z.string().min(0).optional(),
     linkLinkedIn: z.string().min(0).optional(),
     linkX: z.string().min(0).optional(),
-    starting_date: z.string().refine(val => !isNaN(Date.parse(val)), { message: "Invalid date format" }).optional(), // Nouvelle ligne pour valider la date
+    starting_date: z.string().refine(val => !isNaN(Date.parse(val)), { message: "Invalid date format" }).optional(),
     siret_num: z.string().optional(),
     siren_num: z.string().optional(),
     code_naf: z.string().optional(),
@@ -173,7 +173,34 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     const onSubmit = async (data: CorporationFormValues) => {
         try {
             setLoading(true);
-            console.log("SCHEDULE ", data.tags);
+            // Separate new tags and existing tags
+            
+            const newTags = data.tags?.filter(tag => tag._id === 'new');
+            if (newTags) {
+                const existingTags = data.tags?.filter(tag => tag._id !== 'new');
+
+                // Create new tags and get their new IDs
+                const createdTags = await Promise.all(newTags.map(async (tag) => {
+                    try {
+                        const response = await axios.post('/api/tags', { label: tag.label });
+                        toast.success('Tags added');
+                        return response.data; // Assuming the response data contains the new tag with its new ID
+                    } catch (error) {
+                        toast.error('Error creating tag');
+                        return null;
+                    }
+                }));
+
+                // Combine new IDs with existing tags
+                const allTags = existingTags?.concat(createdTags.filter(tag => tag !== null).map(tag => tag._id));
+                // Combine new IDs with existing tags and eliminate duplicates
+                const setTags = [...new Set(allTags)];
+                data.tags = setTags;
+            }
+
+            // Now, you can submit `allTags` as part of your form data
+
+            console.log("Tags submit ", data.tags);
             if (initialData){
                 await axios.patch(`/api/corporations/${params.corporationId}`, data);
             } else {
@@ -189,17 +216,19 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
         }
     };
 
-    const handleAddTag = async (value) => {
-        if (newTag.trim()) {
-            try {
-                setSelectedTags((prevTags) => [...prevTags, value]);
-                setNewTag("");
-                toast.success('Tag added');
-            } catch (error) {
-                toast.error('Error adding tag');
-            }
-        }
-    };
+    // const handleAddTag = async (value) => {
+    //     if (newTag.trim()) {
+    //         try {
+    //             console.log("SELECTED TAGS", selectedTags);
+    //             setSelectedTags((prevTags) => [...prevTags, value]);
+    //             setNewTag("");
+    //             console.log("SELECTED TAGS", selectedTags);
+    //             toast.success('Tag added');
+    //         } catch (error) {
+    //             toast.error('Error adding tag');
+    //         }
+    //     }
+    // };
 
     const onDelete = async () => {
         try {
@@ -262,33 +291,38 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                            </FormItem>
                         )}
                     />
-                    <div className="relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(50px,auto)]">
-                        <FormField 
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel>Nom de votre entreprise</FormLabel>
-                                    <FormControl>
-                                        <Input disabled={loading} placeholder="ex: Fagar Inc" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="phone"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel>Téléphone</FormLabel>
-                                    <FormControl>
-                                        <Input disabled={loading} type="phone" placeholder="ex: 06 31 45 85 94" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
+                    <div className="relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 xs:grid-cols-1 gap-5 p-2 auto-rows-[minmax(50px,auto)]">
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel>Nom de votre entreprise</FormLabel>
+                                        <FormControl>
+                                            <Input disabled={loading} placeholder="ex: Fagar Inc" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="phone"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel>Téléphone</FormLabel>
+                                        <FormControl>
+                                            <Input disabled={loading} type="phone" placeholder="ex: 06 31 45 85 94" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
                             name="mail_pro"
@@ -302,6 +336,8 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                </FormItem>
                             )}
                         />
+                        </div>
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
                             name="address"
@@ -315,6 +351,8 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                </FormItem>
                             )}
                         />
+                        </div>
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
                             name="categoryId"
@@ -350,9 +388,79 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                </FormItem>   
                             )}
                         />
-                        
+                        </div>
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            {/* Add Tags */}
+                            <FormField
+                                control={form.control}
+                                name="tags"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Tags</FormLabel>
+                                        <FormControl>
+                                        <Controller
+                                                control={form.control}
+                                                name="tags"
+                                                render={({ field: { value, onChange } }) => {
+                                                     // Map selected tags to availableTags to get full objects with labels
+                                                    const selectedTagObjects = value?.map(val => {
+                                                        let foundTag;
+                                                        if(val._id){
+                                                            foundTag = availableTags.find(tag => tag._id === val._id);
+                                                        } else {
+                                                            foundTag = availableTags.find(tag => tag._id === val);
+                                                        }
+                                                        // console.log("foundTag", foundTag);
+                                                        return {
+                                                            value: foundTag?._id,
+                                                            label: foundTag?.label,
+                                                        };
+                                                    });
+
+                                                    return (
+                                                        <CreatableSelect
+                                                            isMulti
+                                                            options={availableTags.map(tag => ({
+                                                                value: tag._id,
+                                                                label: tag.label,
+                                                            }))}
+                                                            value={selectedTagObjects}
+                                                            onChange={(selectedOptions) => {
+                                                                const selectedTagsOpt = selectedOptions.map(option => ({
+                                                                    _id: option.value,
+                                                                    label: option.label,
+                                                                }));
+                                                                onChange(selectedTagsOpt);
+                                                            }}
+                                                            placeholder="Sélectionner ou ajouter des tags"
+                                                            isDisabled={loading}
+                                                            onCreateOption={async (inputValue) => {
+                                                                const newTagLabel = inputValue.trim();
+                                                                const newTag = { label: newTagLabel, _id: 'new' };
+
+                                                                // Check for duplicates before adding
+                                                                const isDuplicate = availableTags.some(tag => tag.label === newTagLabel);
+                                                                if (!isDuplicate) {
+                                                                    setAvailableTags((prevTags) => [...prevTags, newTag]);
+                                                                    onChange([...new Set([...value, newTag])]);
+
+                                                                    toast.success('Tag added');
+                                                                } else {
+                                                                    toast.error('Tag already exists');
+                                                                }
+                                                            }}
+                                                        />
+                                                    );
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
                         {/* Add Tags */}
-                        <FormField
+                        {/* <FormField
                             control={form.control}
                             name="tags"
                             render={({ field }) => (
@@ -373,17 +481,31 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                     placeholder="Sélectionner ou ajouter des tags"
                                                     isDisabled={loading}
                                                     onCreateOption={async (inputValue: string) => {
-                                                       try {
-                                                           const { data } = await axios.post('/api/tags', { label: inputValue });
-                                                           const newTag = { label: data.label };
-                                                           setAvailableTags((prevTags) => [...prevTags, data]);
-                                                           setSelectedTags((prevTags) => [...prevTags, data]);
-                                                           onChange([...value, data]);
-                                                           toast.success('Tag added');
-                                                       } catch (error) {
-                                                           toast.error('Error adding tag');
-                                                       }
-                                                    }}
+                                                           try {
+                                                            //    const { data } = await axios.post('/api/tags', { label: inputValue });
+                                                                const newTag = { label: inputValue.trim(), _id: "new" };
+                                                                setAvailableTags((prevTags) => [...prevTags, newTag]);
+                                                                setSelectedTags((prevTags) => [...prevTags, newTag]);
+                                                                console.log("SELECTED TAGS", selectedTags);
+                                                                // await handleAddTag(inputValue);
+                                                                onChange([...value, newTag]);
+                                                                toast.success('Tag added');
+                                                           } catch (error) {
+                                                               toast.error('Error adding tag');
+                                                           }
+                                                        }}
+                                                    // onCreateOption={async (inputValue: string) => {
+                                                    //    try {
+                                                    //        const { data } = await axios.post('/api/tags', { label: inputValue });
+                                                    //        const newTag = { label: data.label };
+                                                    //        setAvailableTags((prevTags) => [...prevTags, data]);
+                                                    //        setSelectedTags((prevTags) => [...prevTags, data]);
+                                                    //        onChange([...value, data]);
+                                                    //        toast.success('Tag added');
+                                                    //    } catch (error) {
+                                                    //        toast.error('Error adding tag');
+                                                    //    }
+                                                    // }}
                                                  />
                                             )}
                                         />
@@ -391,10 +513,10 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                     <FormMessage />
                                 </FormItem>
                             )}
-                        />
-                        <div className="relative row-span-1 col-span-2 p-5 rounded-[10px] border-solid border-[1px]">
+                        /> */}
                         </div>
-                        <div className="relative row-span-2 col-span-4 p-5 rounded-[10px] border-solid border-[1px]">
+                        
+                        <div className="relative row-span-2 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="description"
@@ -411,7 +533,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                         </div>
 
 
-                        <div className="relative row-span-5 xl:col-span-2 lg:col-span-2 md:col-span-4 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-2 col-span-3 row-span-4 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="schedules"
@@ -507,117 +629,132 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-
-                        <FormField 
-                            control={form.control}
-                            name="linkFacebook"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel className="flex items-center"><Facebook size={30} className="pr-2" />Lien vers votre compte Facebook</FormLabel>
-                                    <FormControl>
-                                        <Input disabled={loading} placeholder="..." {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="linkInstagram"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel className="flex items-center"><Instagram size={30} className="pr-2" /> Lien vers votre compte Instagram </FormLabel>
-                                    <FormControl>
-                                        <Input disabled={loading} placeholder="..." {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="linkLinkedIn"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel className="flex items-center"><Linkedin size={30} className="pr-2" />Lien vers votre compte LinkedIn</FormLabel>
-                                    <FormControl>
-                                        <Input disabled={loading} placeholder="..." {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="linkX"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel className="flex items-center"><X size={30} className="pr-2" />Lien vers votre compte X</FormLabel>
-                                    <FormControl>
-                                        <Input disabled={loading} placeholder="..." {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="starting_date"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel className="flex items-center"><CalendarCheck size={30} className="pr-2" />Date de création de votre entreprise</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="date"
-                                            // placeholder="08:00"
-                                            value={field.value ? new Date(field.value).toISOString().split('T')[0] : ""}
-                                            onChange={(e) => field.onChange(e.target.value)}
-                                            disabled={loading}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="siret_num"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel>Siret</FormLabel>
-                                    <FormControl>
-                                        <Input disabled={loading} placeholder="..." {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="siren_num"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel>Siren</FormLabel>
-                                    <FormControl>
-                                        <Input disabled={loading} placeholder="..." {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="code_naf"
-                            render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel>Code NAF</FormLabel>
-                                    <FormControl>
-                                        <Input disabled={loading} placeholder="..." {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                            )}
-                        />
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="linkFacebook"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel className="flex items-center"><Facebook size={30} className="pr-2" />Lien vers votre compte Facebook</FormLabel>
+                                        <FormControl>
+                                            <Input disabled={loading} placeholder="..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                            </div>
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="linkInstagram"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel className="flex items-center"><Instagram size={30} className="pr-2" /> Lien vers votre compte Instagram </FormLabel>
+                                        <FormControl>
+                                            <Input disabled={loading} placeholder="..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                         </div>
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="linkLinkedIn"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel className="flex items-center"><Linkedin size={30} className="pr-2" />Lien vers votre compte LinkedIn</FormLabel>
+                                        <FormControl>
+                                            <Input disabled={loading} placeholder="..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="linkX"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel className="flex items-center"><X size={30} className="pr-2" />Lien vers votre compte X</FormLabel>
+                                        <FormControl>
+                                            <Input disabled={loading} placeholder="..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="relative row-span-1 xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="starting_date"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel className="flex items-center"><CalendarCheck size={30} className="pr-2" />Date de création de votre entreprise</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="date"
+                                                // placeholder="08:00"
+                                                value={field.value ? new Date(field.value).toISOString().split('T')[0] : ""}
+                                                onChange={(e) => field.onChange(e.target.value)}
+                                                disabled={loading}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="relative row-span-1 xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="siret_num"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel>Siret</FormLabel>
+                                        <FormControl>
+                                            <Input disabled={loading} placeholder="..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="relative row-span-1 xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="siren_num"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel>Siren</FormLabel>
+                                        <FormControl>
+                                            <Input disabled={loading} placeholder="..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="relative row-span-1 xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="code_naf"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel>Code NAF</FormLabel>
+                                        <FormControl>
+                                            <Input disabled={loading} placeholder="..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
                         <FormField 
                             control={form.control}
                             name="isActive"
