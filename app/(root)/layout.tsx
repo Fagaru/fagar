@@ -37,17 +37,6 @@ export default async function SetupLayout({
 
     // const corporation = await axios.get('https://fagaru.onrender.com/api/products/getById/64cea0808c2d65cf2d28cc73');
 
-    // const corporation = await prismadb.corporation.findFirst({
-    //     where: {
-    //         userId: user.id
-    //     }
-    // });
-    // const createFisrt = await prisma?.corporation.create({
-    //     data: {
-    //       name: 'abdoulaye',
-    //     },
-    //   })
-
     const label = 'Default Label'
     const description = 'Default Description'
     const price = '0.00'

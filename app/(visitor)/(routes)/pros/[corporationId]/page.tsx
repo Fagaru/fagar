@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import InfoSection from '@/components/infoSection';
 import ContactForm from '@/components/contactForm';
 import { Corporation } from '@/types/corporation';
-import getCorporations from '@/services/getCorporations';
+import getCorporation from '@/services/getCorporation';
 import Image from "next/image";
 import { ReviewSection } from '@/components/reviewSection';
 import Link from 'next/link';
@@ -17,7 +17,13 @@ import { Category } from '@/types/category';
 
 const daysOfWeek = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
-const CorporationPage = () => {
+interface CorporationPageProps {
+    params: {corporationId: string}
+};
+
+const CorporationPage: React.FC<CorporationPageProps> = ({
+    params
+}) => {
     const [corporation, setCorporation] = useState<Corporation | null>(null);
     const [category, setCategory] = useState<Category | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -26,8 +32,10 @@ const CorporationPage = () => {
     useEffect(() => {
         const fetchCorporation = async () => {
             try {
-                const data = await getCorporations({});
-                setCorporation(data[0]);
+                const data = await getCorporation({
+                    corporationId: params.corporationId
+                });
+                setCorporation(data);
             } catch (err) {
                 setError("Failed to fetch corporation");
             }

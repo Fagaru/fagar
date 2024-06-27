@@ -40,9 +40,9 @@ export const StoreModal = () => {
         try {
             setLoading(true);
 
-            const response = await axios.post('/api/stores', values);
-            // toast.success("Store created.");
-            window.location.assign(`/${response.data.id}`);
+            const response = await axios.post('/api/corporations', values);
+            toast.success("Première étape réussie.");
+            window.location.assign(`/management/${response.data._id}`);
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -52,7 +52,7 @@ export const StoreModal = () => {
 
     return (
         <Modal
-            title="Create Store"
+            title="Créer une page pour votre entreprise"
             description="Add a new store to manage products and categories"
             isOpen={storeModal.isOpen}
             onClose={storeModal.onClose}
@@ -66,11 +66,11 @@ export const StoreModal = () => {
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Name</FormLabel>
+                                        <FormLabel>Nom de votre entreprise</FormLabel>
                                         <FormControl>
                                             <Input
                                                 disabled={loading}
-                                                placeholder="E-Commerce" 
+                                                placeholder="..." 
                                                 {...field}
                                             />
                                         </FormControl>
@@ -83,9 +83,9 @@ export const StoreModal = () => {
                                     disabled={loading}
                                     variant="outline"
                                     onClick={storeModal.onClose}>
-                                        Cancel
+                                        Annuler
                                 </Button>
-                                <Button disabled={loading} type="submit">Continue</Button>
+                                <Button disabled={loading} type="submit">Continuer</Button>
                             </div>
                         </form>
                     </Form>  

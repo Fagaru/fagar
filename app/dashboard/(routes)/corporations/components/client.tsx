@@ -11,6 +11,7 @@ import { ApiList } from "@/components/ui/api-list";
 
 import { columns } from "./columns";
 import { Corporation } from '@/types/corporation';
+import AddCorporation from "@/components/AddCorporation";
 
 interface CorporationClientProps {
     data: Corporation[]
@@ -29,10 +30,7 @@ export const CorporationsClient: React.FC<CorporationClientProps> = ({
                     title={`Entreprises (${data.length})`}
                     description="Liste de nos entreprises"
                 />
-                <Button onClick={() => router.push(`/${params.storeId}/corporation/new`)}>
-                    <Plus className="mr-2 h-4 w-4"/>
-                    Add New
-                </Button>
+                <AddCorporation />
             </div>
             <Separator />
             <DataTable searchKey="name" columns={columns} data={data} />

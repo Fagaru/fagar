@@ -10,7 +10,7 @@ export const columns: ColumnDef<Corporation>[] = [
     header: "Name",
   },
   {
-    accessorKey: "categoryId",
+    accessorKey: "category",
     header: "Category",
   },
   {

@@ -109,8 +109,6 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [availableTags, setAvailableTags] = useState<Tag[]>([]);
-    const [newTag, setNewTag] = useState("");
-    const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
     useEffect(() => {
         // Fetch available tags from the backend
@@ -216,20 +214,6 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
         }
     };
 
-    // const handleAddTag = async (value) => {
-    //     if (newTag.trim()) {
-    //         try {
-    //             console.log("SELECTED TAGS", selectedTags);
-    //             setSelectedTags((prevTags) => [...prevTags, value]);
-    //             setNewTag("");
-    //             console.log("SELECTED TAGS", selectedTags);
-    //             toast.success('Tag added');
-    //         } catch (error) {
-    //             toast.error('Error adding tag');
-    //         }
-    //     }
-    // };
-
     const onDelete = async () => {
         try {
             console.log("Submit done !")
@@ -328,7 +312,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             name="mail_pro"
                             render={({ field }) => (
                                <FormItem>
-                                    <FormLabel>Adresse Mail</FormLabel>
+                                    <FormLabel>Adresse Email</FormLabel>
                                     <FormControl>
                                         <Input disabled={loading} type="email" placeholder="ex: entreprise@fagar.com" {...field} />
                                     </FormControl>
