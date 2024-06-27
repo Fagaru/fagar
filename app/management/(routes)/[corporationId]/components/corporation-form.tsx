@@ -205,7 +205,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                 await axios.post(`/api/corporations`, data);
             }
             router.refresh();
-            router.push(`/management/${params.corporationId}`);
+            router.push(`/pros/${params.corporationId}`);
             toast.success(toastMessage);
         } catch (error) {
             toast.error("Something went wrong.");
@@ -276,7 +276,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                         )}
                     />
                     <div className="relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 xs:grid-cols-1 gap-5 p-2 auto-rows-[minmax(50px,auto)]">
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="name"
@@ -291,7 +291,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="phone"
@@ -306,7 +306,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
                             name="mail_pro"
@@ -321,7 +321,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             )}
                         />
                         </div>
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
                             name="address"
@@ -336,7 +336,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             )}
                         />
                         </div>
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
                             name="categoryId"
@@ -373,7 +373,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             )}
                         />
                         </div>
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             {/* Add Tags */}
                             <FormField
                                 control={form.control}
@@ -442,62 +442,6 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                     </FormItem>
                                 )}
                             />
-
-                        {/* Add Tags */}
-                        {/* <FormField
-                            control={form.control}
-                            name="tags"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Tags</FormLabel>
-                                    <FormControl>
-                                        <Controller
-                                            control={form.control}
-                                            name="tags"
-                                            render={({ field: { value, onChange } }) => (
-                                                <CreatableSelect 
-                                                    isMulti 
-                                                    options={availableTags}
-                                                    value={field.value}
-                                                    // defaultValue={selectedTags}
-                                                    // closeMenuOnSelect={false}
-                                                    onChange={onChange}
-                                                    placeholder="Sélectionner ou ajouter des tags"
-                                                    isDisabled={loading}
-                                                    onCreateOption={async (inputValue: string) => {
-                                                           try {
-                                                            //    const { data } = await axios.post('/api/tags', { label: inputValue });
-                                                                const newTag = { label: inputValue.trim(), _id: "new" };
-                                                                setAvailableTags((prevTags) => [...prevTags, newTag]);
-                                                                setSelectedTags((prevTags) => [...prevTags, newTag]);
-                                                                console.log("SELECTED TAGS", selectedTags);
-                                                                // await handleAddTag(inputValue);
-                                                                onChange([...value, newTag]);
-                                                                toast.success('Tag added');
-                                                           } catch (error) {
-                                                               toast.error('Error adding tag');
-                                                           }
-                                                        }}
-                                                    // onCreateOption={async (inputValue: string) => {
-                                                    //    try {
-                                                    //        const { data } = await axios.post('/api/tags', { label: inputValue });
-                                                    //        const newTag = { label: data.label };
-                                                    //        setAvailableTags((prevTags) => [...prevTags, data]);
-                                                    //        setSelectedTags((prevTags) => [...prevTags, data]);
-                                                    //        onChange([...value, data]);
-                                                    //        toast.success('Tag added');
-                                                    //    } catch (error) {
-                                                    //        toast.error('Error adding tag');
-                                                    //    }
-                                                    // }}
-                                                 />
-                                            )}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /> */}
                         </div>
                         
                         <div className="relative row-span-2 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
@@ -517,7 +461,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                         </div>
 
 
-                        <div className="relative xl:lg:col-span-2 col-span-3 row-span-4 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-2 md:col-span-2 xs:col-span-3 row-span-4 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="schedules"
@@ -613,7 +557,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkFacebook"
@@ -628,7 +572,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                             </div>
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkInstagram"
@@ -643,7 +587,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                          </div>
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkLinkedIn"
@@ -658,7 +602,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkX"
@@ -673,7 +617,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="starting_date"
@@ -694,7 +638,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="siret_num"
@@ -709,7 +653,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="siren_num"
@@ -724,7 +668,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="code_naf"
