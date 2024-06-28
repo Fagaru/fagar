@@ -22,13 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <Container>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ToasterProvider />
           <ModalProvider />
           {children}
         </ThemeProvider>
-        </Container>
       </body>
     </html>
   )

@@ -13,7 +13,8 @@ const Header = async () => {
 
     return (
       <div className="border-b">
-          <div className="flex h-16 items-center px-4 mx-auto max-w-7xl">
+          {/* <div className="flex h-16 items-center px-4 mx-auto max-w-7xl"> */}
+          <div className="flex h-16 items-center px-4">
             <FagarLogo />
             <span className="text-lg font-medium text-baguet italic text-rose-600 ml-2">Fagar</span>
             <div className="flex-1 flex justify-center">

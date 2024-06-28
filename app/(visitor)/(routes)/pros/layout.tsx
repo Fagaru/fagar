@@ -1,8 +1,12 @@
 
 import { redirect } from "next/navigation";
 
+import dbConnect from '@/lib/dbConnect';
+import Corporation from '@/models/corporation.model';
+
 import { SideBar } from "@/components/side-bar";
 import Header from "@/components/header";
+import Container from "@/components/ui/container";
 
 
 export default async function DashboardLayout({
@@ -10,7 +14,7 @@ export default async function DashboardLayout({
 } : {
     children: React.ReactNode;
 }) {
-    // const { userId } = auth();
+
     const userId = "1234";
 
     // if (!userId) {
@@ -21,12 +25,16 @@ export default async function DashboardLayout({
 
     return (
         <>
-            <div className="bg-gray-50 dark:bg-slate-950">
+        <div className="bg-gray-50 dark:bg-slate-950">
+            <Container>
                 <Header />
-                <div className="w-full">
-                    {children}
+                <div className="flex flex-row">
+                    <div className="w-full">
+                        {children}
+                    </div>
                 </div>
-            </div> 
+            </Container>
+        </div>
         </>
     );
 }
