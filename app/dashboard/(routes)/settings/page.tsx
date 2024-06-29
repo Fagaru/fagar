@@ -1,10 +1,9 @@
 import { redirect } from "next/navigation";
 
-import { SettingsForm } from "./components/settings-form";
 
 interface SettingsPageProps {
     params: {
-        storeId: string;
+        userId: string;
     }
 };
 

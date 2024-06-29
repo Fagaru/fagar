@@ -153,7 +153,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
                             name="price"
                             render={({ field }) => (
                                <FormItem>
-                                    <FormLabel>Prix de l'abonnement mensuel</FormLabel>
+                                    <FormLabel>{"Prix de l'abonnement mensuel"}</FormLabel>
                                     <FormControl>
                                         <Input disabled={loading} placeholder="Prix" {...field} />
                                     </FormControl>

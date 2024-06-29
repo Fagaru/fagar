@@ -7,8 +7,16 @@ import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import { StarIcon } from 'lucide-react';
 
-export const ReviewSection = ({stars, rating_mode}) => {
-  const [value, setValue] = useState<number | null>(stars);
+interface ReviewSectionProps {
+  stars: number;
+  rating_mode: string;
+};
+
+export const ReviewSection: React.FC<ReviewSectionProps> = ({
+  stars,
+  rating_mode
+}) => {
+  const [value, setValue] = useState<number | null>(Number(stars));
   
 
   if (rating_mode === "controlled") {

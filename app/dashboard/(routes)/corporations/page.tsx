@@ -50,14 +50,14 @@ const CorporationsPage = async () => {
   }, {});
 
   // Format the corporations data to include category and tag labels
-  const formattedCorporations: Corporation[] = corporations.map((item) => ({
+  const formattedCorporations: any = corporations.map((item) => ({
     _id: item._id,
     name: item.name,
     isActive: item.isActive,
     isSuspended: item.isSuspended,
     user: item.userId || "Utilisateur inconnu",
     category: categoryMap[item.categoryId] || "Catégorie non reconnue",
-    tags: item.tags.map(tagId => tagMap[tagId] || "Tag non reconnu"),
+    tags: item.tags.map((tagId: string) => tagMap[tagId] || "Tag non reconnu"),
     subscription: subscriptionMap[item.subscription?.subscription] || "No souscrit",               //item.subscription,
     region: regionMap[item.address?.regionId] || "Région non reconnue",
     city: cityMap[item.address?.cityId] || "Ville non reconnue",

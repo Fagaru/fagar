@@ -7,7 +7,15 @@ import {
 } from "@/components/ui/collapsible"
 import { ChevronsUpDown } from 'lucide-react';
 
-const InfoSection = ({ title, content }) => {
+interface InfoSectionProps {
+  title: string;
+  content: React.ReactNode; // <-- Accept React elements
+};
+
+const InfoSection: React.FC<InfoSectionProps> = ({
+  title,
+  content
+}) => {
   return (
     <>
       <Collapsible>

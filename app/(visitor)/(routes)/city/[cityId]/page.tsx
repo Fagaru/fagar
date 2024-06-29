@@ -15,7 +15,6 @@ const CityPage: React.FC<CityPageProps> = ({
 }) => {
     const [corporations, setCorporations] = useState<Corporation[]>([]);
     const [error, setError] = useState<string | null>(null);
-    console.log("PARAMS", params.cityId)
 
     useEffect(() => {
         const fetchCorporations = async () => {
@@ -30,7 +29,7 @@ const CityPage: React.FC<CityPageProps> = ({
         };
 
         fetchCorporations();
-    }, []);
+    }, [params.cityId]);
 
     return (
         <div>

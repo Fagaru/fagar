@@ -6,8 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 
-const ContactForm = ({
-  name_pro, mail_pro
+interface ContactProps {
+  name_pro: string;
+  mail_pro: string;
+};
+
+const ContactForm: React.FC<ContactProps> = ({
+  name_pro,
+  mail_pro
 }) => {
   const [name, setName] = useState('');
   const [mail, setMail] = useState('');

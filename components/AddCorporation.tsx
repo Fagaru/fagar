@@ -16,7 +16,6 @@ const AddCorporation = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    // Vous pouvez maintenant utiliser les valeurs query et address
     setOpen(false);
     storeModal.onOpen();
   };

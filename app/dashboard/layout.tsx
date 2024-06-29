@@ -1,8 +1,9 @@
 
 import { redirect } from "next/navigation";
 
-import Navbar from "@/components/navbar";
+
 import { SideBar } from "@/components/side-bar";
+import Header from "@/components/header";
 
 
 export default async function DashboardLayout({
@@ -21,7 +22,7 @@ export default async function DashboardLayout({
 
     return (
         <>
-            <Navbar />
+            <Header />
             <div className="flex flex-row">
                 <SideBar className=""/>
                 <div className="w-full bg-gray-50 dark:bg-slate-900">

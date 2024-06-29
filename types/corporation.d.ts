@@ -12,11 +12,11 @@ export interface Corporation {
     linkInstagram: string;
     linkLinkedIn: string;
     linkX: string;
-    starting_date: Date;
+    starting_date: string;
     numEmplyees: string;
     address: Address;
     categoryId: string;
-    tags: string[];
+    tags: [];
     images: Image[];
     schedules: Schedule[];
     reviews: Review[];

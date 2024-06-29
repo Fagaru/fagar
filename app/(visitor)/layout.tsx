@@ -22,7 +22,7 @@ export default async function DashboardLayout({
     return (
         <>
             <div className="bg-gray-50 dark:bg-slate-950">
-                <Header />
+                {/* <Header /> */}
                 <div className="w-full">
                     {children}
                 </div>

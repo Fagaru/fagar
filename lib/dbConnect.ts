@@ -1,4 +1,4 @@
-// lib/dbConnect.js
+// lib/dbConnect.ts
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.DATABASE_URL;
@@ -9,6 +9,17 @@ if (!MONGODB_URI) {
   );
 }
 
+interface MongooseCache {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+// Étendre l'interface Global pour inclure la propriété mongoose
+declare global {
+  var mongoose: MongooseCache;
+}
+
+// Initialisation du cache mongoose global
 let cached = global.mongoose;
 
 if (!cached) {
@@ -25,7 +36,7 @@ async function dbConnect() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGODB_URI as string, opts).then((mongoose) => {
       return mongoose;
     });
   }

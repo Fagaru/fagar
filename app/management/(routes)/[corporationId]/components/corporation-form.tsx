@@ -57,23 +57,23 @@ const scheduleSchema = z.object({
 });
 
 const addressSchema = z.object({
-    name: z.string().min(1),
-    lat: z.string(),
-    lng: z.string(),
-    placeId: z.string().min(1),
-    label: z.string().min(1),
+    label: z.string().min(0).optional(),
+    // lat: z.string(),
+    // lng: z.string(),
+    // placeId: z.string().min(1),
+    // label: z.string().min(1),
 });
 
 const tagSchema = z.object({
-    _id: z.string().min(1),
-    label: z.string().min(1)
+    _id: z.string().min(1).optional(),
+    label: z.string().min(1).optional()
 });
 
 const formSchema = z.object({
     name: z.string().min(1),
     userId: z.string().min(1).optional(),
     images: z.object({ url: z.string() }).array(),
-    address: z.string().min(1).optional(),
+    address: addressSchema.optional(),
     tags: tagSchema.array().optional(),
     categoryId: z.string().min(1),
     mail_pro: z.string().min(1),
@@ -108,14 +108,14 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+    const [availableTags, setAvailableTags] = useState<{ label: string, _id: string; }[]>([]);
 
     useEffect(() => {
         // Fetch available tags from the backend
         const fetchTags = async () => {
             try {
                 const fetchedData = await getTags();
-                setAvailableTags(fetchedData);
+                setAvailableTags(fetchedData.map(tag => ({label: tag.label, _id: tag._id})));
             } catch (error) {
                 console.error('Error fetching tags', error);
             }
@@ -147,6 +147,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
             images: [],
             categoryId: '',
             tags: [],
+            address: {},
             isActive: false,
             isSuspended: false,
             schedules: daysOfWeek.map((day, index) => ({
@@ -192,7 +193,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                 // Combine new IDs with existing tags
                 const allTags = existingTags?.concat(createdTags.filter(tag => tag !== null).map(tag => tag._id));
                 // Combine new IDs with existing tags and eliminate duplicates
-                const setTags = [...new Set(allTags)];
+                const setTags = Array.from(new Set(allTags));
                 data.tags = setTags;
             }
 
@@ -324,7 +325,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                         <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
-                            name="address"
+                            name="address.label"
                             render={({ field }) => (
                                <FormItem>
                                     <FormLabel>Adresse</FormLabel>
@@ -386,15 +387,13 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                 control={form.control}
                                                 name="tags"
                                                 render={({ field: { value, onChange } }) => {
-                                                     // Map selected tags to availableTags to get full objects with labels
                                                     const selectedTagObjects = value?.map(val => {
                                                         let foundTag;
                                                         if(val._id){
                                                             foundTag = availableTags.find(tag => tag._id === val._id);
                                                         } else {
-                                                            foundTag = availableTags.find(tag => tag._id === val);
+                                                            foundTag = availableTags.find(tag => tag._id === String(val));
                                                         }
-                                                        // console.log("foundTag", foundTag);
                                                         return {
                                                             value: foundTag?._id,
                                                             label: foundTag?.label,
@@ -426,7 +425,13 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                                 const isDuplicate = availableTags.some(tag => tag.label === newTagLabel);
                                                                 if (!isDuplicate) {
                                                                     setAvailableTags((prevTags) => [...prevTags, newTag]);
-                                                                    onChange([...new Set([...value, newTag])]);
+                                                                    // onChange(Array.from(new Set([...value, newTag])));
+                                                                    // Assurez-vous que `value` est bien un tableau avant de l'utiliser
+                                                                    if (Array.isArray(value)) {
+                                                                        onChange(Array.from(new Set([...value, newTag])));
+                                                                    } else {
+                                                                        onChange([newTag]);
+                                                                    }
 
                                                                     toast.success('Tag added');
                                                                 } else {
@@ -467,7 +472,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 name="schedules"
                                 render={({ field }) => (
                                     <FormItem>
-                                    <FormLabel>Horaires d'ouverture</FormLabel>
+                                    <FormLabel>{"Horaires d'ouverture"}</FormLabel>
                                     {daysOfWeek.map((day, index) => (
                                         <div key={index} className="flex flex-col mb-4">
                                             <FormLabel>{day}</FormLabel>
@@ -723,7 +728,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                             Suspendre
                                         </FormLabel>
                                         <FormDescription>
-                                            Le compte associé à cette entreprise n'aura plus les droits.
+                                            {"Le compte associé à cette entreprise n'aura plus les droits."}
                                         </FormDescription>
                                     </div>
                                </FormItem>

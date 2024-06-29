@@ -42,7 +42,7 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
         };
 
         fetchCorporation();
-    }, []);
+    }, [params.corporationId]);
 
     useEffect(() => {
         const fetchCategory = async () => {
@@ -165,7 +165,7 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         />
                                     </div>
-                                    <span className="font-medium pl-5">Engagé pour l'environnement</span>
+                                    <span className="font-medium pl-5">{"Engagé pour l'environnement"}</span>
                                 </div>
                                 <div className="">
                                     <ReviewSection stars={4} rating_mode="read-only" />
@@ -212,7 +212,7 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                             <InfoSection title="Description" content={corporation.description} />
                         </div>
                         <div className="p-5 col-span-2 rounded-[10px] border-solid border-y-[1px]">
-                            <span className='font-sans font-medium mb-5 text-lg'>Les valeurs de L'entreprise</span>
+                            <span className='font-sans font-medium mb-5 text-lg'>Les valeurs de L&apos;entreprise</span>
                             <InfoSection title="Valeur Sociale" content="Lorem ipsum dolor sit amet..." />
                             <InfoSection title="Valeur Environnementale" content="Lorem ipsum dolor sit amet..." />
                         </div>
