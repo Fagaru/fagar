@@ -5,7 +5,6 @@ import { ToasterProvider } from '@/providers/toast-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 
 import './globals.css';
-import Container from '@/components/ui/container';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,19 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-<<<<<<< HEAD
-      {/* <Container> */}
-=======
->>>>>>> 3eb3cf954ae8b3cd38d69deae07365a29f133ee1
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ToasterProvider />
           <ModalProvider />
           {children}
         </ThemeProvider>
-<<<<<<< HEAD
-        {/* </Container> */}
-=======
->>>>>>> 3eb3cf954ae8b3cd38d69deae07365a29f133ee1
       </body>
     </html>
   )

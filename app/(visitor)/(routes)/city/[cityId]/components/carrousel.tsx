@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import { images } from "./constants";
 import { City as cityType } from '@/types/city';
 import React from "react"
 
@@ -17,7 +16,7 @@ const Slider:React.FC <SliderProps> = ({
   data
 }) => {
   const [activeImage, setActiveImage] = useState(0);
-  // const images=data.images;
+  const images=data.images;
   const clickNext = () => {
     activeImage === images.length - 1
       ? setActiveImage(0)
@@ -37,7 +36,6 @@ const Slider:React.FC <SliderProps> = ({
       clearTimeout(timer);
     };
   }, [activeImage]);
-  // console.log("Imagesssssssssssssssssssssssssssssssss",images[1])
   return (
     <main className="grid place-items-center md:grid-cols-1  ">
       <div
@@ -53,7 +51,7 @@ const Slider:React.FC <SliderProps> = ({
             }`}
           >
             <Image
-              src={elem.src}
+              src={elem.url}
               alt=""
               width={400}
               height={400}
