@@ -15,7 +15,6 @@ const Schedulas:React.FC < scheduleProps> = ({Corpo})=> {
     const hour = new Date().getHours();
     const now= new Date()
     const timeString = now.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false });
-    console.log("hbjvjlziuflzfzefz",timeString)
     const schedulesToday = Corpo?.schedules.filter(schedule => schedule.dayWeek == today);
 
  
@@ -46,7 +45,6 @@ const Schedulas:React.FC < scheduleProps> = ({Corpo})=> {
                     {/* <div className="fon,-semibold text-gray-800">{Corpo.name}</div> */}
     // Comparer les dates
     if ((schedulesToday?.[0]?.available !== "closed") && ((begin_am < time_date && time_date < end_am) || (begin_pm < time_date && time_date < end_pm))) {
-    console.log(`OUVERTTTTTTTTTTTTTTTTTTTTTTTTUREEEEEEEEEEEEEEEEEEE`);
     } else  {
     console.log(`Available`,schedulesToday?.[0]?.available,"\nOuverture",begin_am,);
   }

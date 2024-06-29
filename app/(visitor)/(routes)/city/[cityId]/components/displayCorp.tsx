@@ -26,8 +26,7 @@ interface DisplayProps{
         Corpo: CorporationType[]
       };
 const CarouselSpacing: React.FC <DisplayProps> = ({Corpo})=> {
-    const taille = Corpo.length
-    console.log("dkbfekfbekfjbek",taille)
+    const taille = Corpo.length;
 const router = useRouter();
 const handleClick = (corporationId:string) => {
         // router.push(`/category/${category.id}/product/${product.id}`, `/product/${product.id}`)}>
