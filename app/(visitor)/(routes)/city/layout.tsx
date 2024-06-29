@@ -1,16 +1,9 @@
 
 import { redirect } from "next/navigation";
 
-// import { MongoClient } from 'mongodb';
-import Footer from '@/components/footer'
-
-// import dbConnect from '../../lib/dbConnect';
-import Corporation from '@/models/corporation.model';
-
 import { SideBar } from "@/components/side-bar";
-import Container from "@/components/ui/container";
-
 import Header from "@/components/header";
+import Container from "@/components/ui/container";
 
 
 export default async function DashboardLayout({
@@ -29,19 +22,16 @@ export default async function DashboardLayout({
 
     return (
         <>
-            {/* <Navbar /> */}
+        <div className="bg-gray-50 dark:bg-slate-950">
+            <Header />
             <Container>
-            <div className="flex flex-row">
-                <div className="w-full bg-gray-50 dark:bg-slate-900">
-                    {children}
+                <div className="flex flex-row">
+                    <div className="w-full">
+                        {children}
+                    </div>
                 </div>
-
-            </div>
             </Container>
-         
+        </div>
         </>
     );
 }
-
-
-

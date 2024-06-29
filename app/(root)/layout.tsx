@@ -35,12 +35,6 @@ export default async function SetupLayout({
     //     redirect('/sign-in');
     // }
 
-    // const corporation = await axios.get('https://fagaru.onrender.com/api/products/getById/64cea0808c2d65cf2d28cc73');
-
-    const label = 'Default Label'
-    const description = 'Default Description'
-    const price = '0.00'
-
     if (user.isAuthenticated) { 
         // Rediriger l'utilisateur visiteur vers la page d'accueil
         if (user.isVisitor) {
