@@ -22,13 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <Container>
+      {/* <Container> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ToasterProvider />
           <ModalProvider />
           {children}
         </ThemeProvider>
-        </Container>
+        {/* </Container> */}
       </body>
     </html>
   )
