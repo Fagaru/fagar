@@ -1,11 +1,8 @@
 
 "use client";
-import { useEffect, useState } from 'react';
 import * as React from "react"
 import {Corporation as CorporationType} from "@/types/corporation";
-import getCorporations from '@/services/getCorporations';
-import getCategory from '@/services/getCategory';
-import { Category } from '@/types/category';
+
 
 const daysOfWeek = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 

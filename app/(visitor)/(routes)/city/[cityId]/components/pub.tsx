@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import { images } from "./pub_constants";
 import PubDescription from "./Pub_description";
 import {Corporation as CorporationType} from "@/types/corporation";
 
@@ -14,13 +13,13 @@ const PubSlider:React.FC <PubSliderProps> = ({corporations}) => {
   const [activeImage, setActiveImage] = useState(0);
 
   const clickNext = () => {
-    activeImage === images.length - 1
+    activeImage === corporations.images.length - 1
       ? setActiveImage(0)
       : setActiveImage(activeImage + 1);
   };
   const clickPrev = () => {
     activeImage === 0
-      ? setActiveImage(images.length - 1)
+      ? setActiveImage(corporations.images.length - 1)
       : setActiveImage(activeImage - 1);
   };
 

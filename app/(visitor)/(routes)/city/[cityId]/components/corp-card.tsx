@@ -1,12 +1,10 @@
 "use client";
 // import getStore from "@/actions/get-store";
 import Image from "next/image";
-import React, { MouseEventHandler } from "react";
+import React from "react";
 import {Corporation as CorporationType} from "@/types/corporation";
-import IconButton from "@/components/ui/icon-button";
-import {  Expand, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Currency from "@/components/ui/currency";
+
 
 
 interface ProductCard{

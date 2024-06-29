@@ -1,28 +1,12 @@
-import Container from '@/components/ui/container';
-import { format } from "date-fns";
 import getCity from '@/services/getCity';
-// import { CityClient } from ".@/components/client";
-import { City } from '@/types/city';
-import getCities from "@/services/getCities";
-import Slider from "./components/carrousel";
-import Image from "next/image";
-import {Corporation as CorporationType} from "@/types/corporation";
 
-import restaurant from "@/public/restaurant.svg"
-import location from "@/public/location.svg"
-import medical from "@/public/medical.svg"
-import boulangerie from "@/public/boulangerie.svg"
-import divertissement from "@/public/divertissement.svg"
-import  taxi from "@/public/taxi.svg"
-import bar from "@/public/bar.svg"
-import garage from "@/public/garage.svg"
-import agriculteur from"@/public/agricultur.svg"
-import essence from "@/public/essence.svg"
+
+import Slider from "./components/carrousel";
+
+
 import PubSlider from "./components/pub"
 import getCorporations from '@/services/getCorporations';
 import CarouselSpacing from "./components/displayCorp";
-import Schedulas from './components/schedule';
-// import CategoryCard from './components/categories'
 import getCategories from "@/services/getCategories"
 import Filter from "./components/categoryFilter";
 
@@ -50,7 +34,7 @@ const CityPage:React.FC<CityPageProps> = async ({
     // console.log(Corporations)
     
 
-const categories= await getCategories ({})
+const categories= await getCategories ()
 
     return (
       

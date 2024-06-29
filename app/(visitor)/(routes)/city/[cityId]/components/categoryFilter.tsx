@@ -4,7 +4,6 @@ import qs from "query-string";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import {Category } from "@/types/category";
-import {Button} from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter} from "@/components/ui/card"
 import {

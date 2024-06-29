@@ -1,6 +1,5 @@
 
 import React from "react";
-import { images } from "./constants";
 import left from "@/public/left.svg";
 import right from "@/public/right.svg";
 import { motion } from "framer-motion";

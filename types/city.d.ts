@@ -4,4 +4,12 @@ export interface City {
     imageUrl: string;
     createdAt: Date;
     updatedAt: Date;
+    images: Image[];
+}
+
+interface Image {
+    _id: string;
+    url: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
