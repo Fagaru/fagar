@@ -24,13 +24,13 @@ export default async function DashboardLayout({
         <>
         <div className="bg-gray-50 dark:bg-slate-950">
             <Header />
-            <Container>
+            {/* <Container> */}
                 <div className="flex flex-row">
                     <div className="w-full">
                         {children}
                     </div>
                 </div>
-            </Container>
+            {/* </Container> */}
         </div>
         </>
     );

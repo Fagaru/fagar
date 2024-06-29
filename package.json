@@ -46,6 +46,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "embla-carousel-react": "^8.1.5",
     "eslint": "8.53.0",
     "eslint-config-next": "14.0.2",
     "formidable": "^3.5.1",
@@ -86,5 +87,6 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.7"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
