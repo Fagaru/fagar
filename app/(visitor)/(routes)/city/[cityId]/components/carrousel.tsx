@@ -16,7 +16,8 @@ const Slider:React.FC <SliderProps> = ({
   data
 }) => {
   const [activeImage, setActiveImage] = useState(0);
-  const images=data.images;
+  // const images = data?.images || [];
+  const images = data?.images?.length > 0 ? data.images : [{ url: "/default_city.jpg" }];
   const clickNext = () => {
     activeImage === images.length - 1
       ? setActiveImage(0)
@@ -69,7 +70,7 @@ const Slider:React.FC <SliderProps> = ({
 
           <div className="absolute md:bottom-1 bottom-10 right-10 md:right-0 w-full flex justify-center items-center">
                     <div className="absolute  bottom-60 left-100 font-bold text-3xl sm:text-5xl lg:text-6xl sm:max-w-xl max-w-xs text-white text-center">
-                        Bienvenue à {data.label}
+                        Bienvenue à {data?.label}
                     </div>
             <div
               className="absolute bottom-60 left-5 cursor-pointer"

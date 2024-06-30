@@ -14,7 +14,7 @@ const PubDescription = ({ activeImage, clickNext, clickPrev,data}: Props) => {
   const images=[data];
   return (
     <div className="">
-      {data.description}
+      {data?.description}
     </div>
   );
 };

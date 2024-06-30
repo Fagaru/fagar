@@ -24,12 +24,6 @@ const Schedulas:React.FC < scheduleProps> = ({Corpo})=> {
     const begin_pm = new Date(`01/01/2000 ${schedulesToday?.[0]?.begin_pm}`);
     const end_pm= new Date(`01/01/2000 ${schedulesToday?.[0]?.end_pm}`);
     const time_date= new Date(`01/01/2000 ${timeString}`);
-        
-    // Comparer les dates
-    if ((schedulesToday?.[0]?.available !== "closed") && ((begin_am < time_date && time_date < end_am) || (begin_pm < time_date && time_date < end_pm))) {
-    } else  {
-    console.log(`Available`,schedulesToday?.[0]?.available,"\nOuverture",begin_am,);
-  }
                  
     return (
                             <div  className={`p-2 ${isToday ? "bg-rose-100 rounded-[10px] shadow-md" : ""} flex flex-col space-y-2`}>

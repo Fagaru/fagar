@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Copy, Edit, MoreHorizontal, Navigation, Trash } from "lucide-react";
 import axios from "axios";
 
 import { 
@@ -71,6 +71,10 @@ export const CellAction: React.FC<CellActionProps>= ({
                     <DropdownMenuLabel>
                         Actions
                     </DropdownMenuLabel>
+                    <DropdownMenuItem onClick={() => router.push(`/pros/${data._id}`)}>
+                        <Navigation className="mr-2 h-4 w-4" />
+                        Consulter
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => onCopy(data._id)}>
                         <Copy className="mr-2 h-4 w-4" />
                         Copy Id

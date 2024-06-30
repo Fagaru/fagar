@@ -38,7 +38,7 @@ export default async function SetupLayout({
     if (user.isAuthenticated) { 
         // Rediriger l'utilisateur visiteur vers la page d'accueil
         if (user.isVisitor) {
-            redirect(`/`);
+            redirect(`/dashboard`);
         }
 
         // Rediriger l'utilisateur admin vers la page de son entreprise
@@ -48,7 +48,7 @@ export default async function SetupLayout({
     } else {
         // Rediriger l'utilisateur anonyme vers l'accueil
     // Lecture
-        redirect(`/`);
+        redirect(`/dashboard`);
     }
 
     return (
