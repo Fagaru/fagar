@@ -28,7 +28,6 @@ const Filter: React.FC<FilterProps> = ({
     const router = useRouter();
 
     const selectedValue = searchParams.get(valueKey);
-    // console.log("selectttttttttttttttttttttttttttttttttttttt",selectedValue)
 
     const onClick = (id: string) => {
         const current = qs.parse(searchParams.toString());
@@ -58,13 +57,9 @@ const Filter: React.FC<FilterProps> = ({
             <Carousel className="w-full max-w-xxl">
                 
             <CarouselContent className="-ml-1">
-           
-            {/* <hr className="my-4" /> */}
-            {/* <div className="flex flex-wrap gap-1"> */}
                 {data.map((filter) => (
 
                     <CarouselItem  key={filter._id}   className="pl-1   md:basis-1/2 lg:basis-1/10">
-                    {/* <div key={filter._id} className="flex items-center"> */}
                     <Card className={cn(
                                 "rounded-md text-xl text-center text-gray-800 p-2 h-10 bg-white border border-gray-300 group cursor-pointer",
                                 selectedValue === filter._id && "bg-black text-white"

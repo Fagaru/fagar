@@ -51,8 +51,8 @@ const Slider:React.FC <SliderProps> = ({
             }`}
           >
             <Image
-              src={elem.url}
-              alt=""
+              src={elem.url|| "/default_image.jpg"}
+              alt="city picture"
               width={400}
               height={400}
               className="w-full h-full object-cover "

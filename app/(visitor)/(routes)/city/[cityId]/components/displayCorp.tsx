@@ -1,9 +1,5 @@
 "use client";
 
-
-
-
-
 import * as React from "react"
 import Image from "next/image";
 import {Corporation as CorporationType} from "@/types/corporation";
@@ -59,7 +55,7 @@ const handleClick = (corporationId:string) => {
                 
 
                 <Image 
-                src={corporation?.images?.[0]?.url} 
+                src={corporation?.images?.[0]?.url|| "/default_image.jpg"} 
                 width={400}
                 height={400} 
                 alt="Image" 
