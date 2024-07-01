@@ -2,9 +2,18 @@ FROM node:18-alpine
 WORKDIR /app
 #COPY package.json ./
 COPY . .
-RUN npm install
+RUN npm ci
 EXPOSE  3000
 CMD npm run dev
+
+FROM nginx:latest as prod
+
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80/tcp
+
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 
 ## Install dependencies only when needed
 #FROM base AS deps
