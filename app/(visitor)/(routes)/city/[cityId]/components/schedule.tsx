@@ -26,7 +26,7 @@ const Schedulas:React.FC < scheduleProps> = ({Corpo})=> {
     const time_date= new Date(`01/01/2000 ${timeString}`);
                  
     return (
-                            <div  className={`p-2 ${isToday ? "bg-rose-100 rounded-[10px] shadow-md" : ""} flex flex-col space-y-2`}>
+                            <div  className={`p-2 ${isToday ? "" : ""} flex flex-col space-y-2`}>
                                 <div>
                                     {(schedulesToday?.[0]?.available != "closed") && (begin_am < time_date && time_date < end_am) || (begin_pm < time_date && time_date < end_pm)? (
                                         <div className="text-green-600">ouvert</div>
