@@ -4,7 +4,6 @@ import * as React from "react"
 import Image from "next/image";
 import {Corporation as CorporationType} from "@/types/corporation";
 import { useRouter } from "next/navigation";
-import { Badge } from "@/components/ui/badge"
 import Schedulas from './schedule';
 
 import { Card, CardContent, CardHeader, CardTitle, CardFooter} from "@/components/ui/card"
@@ -47,7 +46,7 @@ const handleClick = (corporationId:string) => {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>{corporation.name}</CardTitle>
-                <Badge> <Schedulas Corpo={corporation}/></Badge>
+               <Schedulas Corpo={corporation}/>
               </div>
             </CardHeader>
                 

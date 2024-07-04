@@ -2,7 +2,7 @@
 "use client";
 import * as React from "react"
 import {Corporation as CorporationType} from "@/types/corporation";
-
+import { Badge } from "@/components/ui/badge"
 
 const daysOfWeek = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
@@ -29,9 +29,9 @@ const Schedulas:React.FC < scheduleProps> = ({Corpo})=> {
                             <div  className={`p-2 ${isToday ? "" : ""} flex flex-col space-y-2`}>
                                 <div>
                                     {(schedulesToday?.[0]?.available != "closed") && (begin_am < time_date && time_date < end_am) || (begin_pm < time_date && time_date < end_pm)? (
-                                        <div className="text-green-600">ouvert</div>
+                                        <Badge etat="ouvert"> <div className="">ouvert</div></Badge>
                                     ) : (
-                                        <div className="text-red-600">fermé</div>
+                                        <Badge etat="ferme"> <div className="">fermé</div></Badge>
                                             
                                     )}
                                 </div>

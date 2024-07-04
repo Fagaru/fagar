@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import {Category } from "@/types/category";
 import { cn } from "@/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter} from "@/components/ui/card"
+import { Dumbbell } from 'lucide-react';
+import { FerrisWheel } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -51,27 +52,46 @@ const Filter: React.FC<FilterProps> = ({
 
     return (
         <div className="mb-8">
-            <h3 className="text-lg font-semibold">
+            {/* <h3 className="text-lg font-semibold">
               {name}  
-            </h3>
+            </h3> */}
             <Carousel className="w-full max-w-xxl">
                 
             <CarouselContent className="-ml-1">
                 {data.map((filter) => (
 
                     <CarouselItem  key={filter._id}   className="pl-1   md:basis-1/2 lg:basis-1/10">
-                    <Card className={cn(
-                                "rounded-md text-xl text-center text-gray-800 p-2 h-10 bg-white border border-gray-300 group cursor-pointer",
-                                selectedValue === filter._id && "bg-black text-white"
-                            )}
-                            onClick={() => onClick(filter._id)}  >
-                                <CardContent>
-                      
-                            {filter.label}
-                            </CardContent>
-            
-                        </Card>
-                    {/* </div> */}
+                    {(() => {
+                                let icon;
+
+                                switch (filter.label) {
+                                case "Sport":
+                                icon = <Dumbbell className={cn(
+                                    "cursor-pointer","h-14",
+                                    selectedValue === filter._id && "bg-gray-300 text-white"
+                                )}
+                                onClick={() => onClick(filter._id)} />;
+                                break;
+                                case "Loisirs":
+                                icon = <FerrisWheel  className={cn(
+                                    "cursor-pointer","h-14",
+                                    selectedValue === filter._id && "bg-gray-300 text-white"
+                                )}
+                                onClick={() => onClick(filter._id)}/>;
+                                break;
+                                default:
+                                icon = null;
+                         }
+
+                  return (
+                    <>
+                      {icon}
+                      {/* <CardContent> */}
+                        {filter.label}
+                      {/* </CardContent> */}
+                    </>
+                  );
+                })()}
                     </CarouselItem>
                 ))}
             {/* </div> */}
