@@ -22,11 +22,11 @@ RUN npm install
 # Print the contents of package.json (debugging step)
 #RUN cat package.json
 
-# Build the application
-RUN npm run build
-
 # Expose port 3000
 EXPOSE 3000
+
+# Build the application
+RUN npm run build
 
 # Start the application
 CMD ["npm", "run", "start"]
