@@ -16,6 +16,12 @@ COPY . .
 # Install the dependencies
 RUN npm install
 
+# Print the current directory and list files (debugging step)
+RUN pwd && ls -la
+
+# Print the contents of package.json (debugging step)
+RUN cat package.json
+
 # Build the application
 RUN npm run build
 
