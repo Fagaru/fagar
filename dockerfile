@@ -26,10 +26,10 @@ RUN npm install
 EXPOSE 3000
 
 # Build the application
-CMD ["npm", "run", "build"]
+#CMD ["npm", "run", "build"]
 
 # Start the application
-CMD ["npm", "run", "start"]
+#CMD ["npm", "run", "start"]
 
 
 
