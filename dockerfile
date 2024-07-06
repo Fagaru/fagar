@@ -5,7 +5,7 @@
 #EXPOSE  3000
 #CMD npm run dev
 
-FROM node:19-alpine
+FROM node:latest
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -17,10 +17,10 @@ COPY . .
 RUN npm install
 
 # Print the current directory and list files (debugging step)
-RUN pwd && ls -la
+#RUN pwd && ls -la
 
 # Print the contents of package.json (debugging step)
-RUN cat package.json
+#RUN cat package.json
 
 # Build the application
 RUN npm run build
