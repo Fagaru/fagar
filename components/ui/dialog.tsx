@@ -10,13 +10,28 @@ const Dialog = DialogPrimitive.Root
 
 const DialogTrigger = DialogPrimitive.Trigger
 
-const DialogPortal = ({
+// const DialogPortal = ({
+//   className,
+//   ...props
+// }: DialogPrimitive.DialogPortalProps) => (
+//   <DialogPrimitive.Portal className={cn(className)} {...props} />
+// )
+// DialogPortal.displayName = DialogPrimitive.Portal.displayName
+
+interface DialogPortalPropsWithClassName extends DialogPrimitive.DialogPortalProps {
+  className?: string;
+}
+
+const DialogPortal: React.FC<DialogPortalPropsWithClassName> = ({
   className,
   ...props
-}: DialogPrimitive.DialogPortalProps) => (
-  <DialogPrimitive.Portal className={cn(className)} {...props} />
-)
-DialogPortal.displayName = DialogPrimitive.Portal.displayName
+}) => (
+  <DialogPrimitive.Portal {...props}>
+    {props.children}
+  </DialogPrimitive.Portal>
+);
+
+DialogPortal.displayName = DialogPrimitive.Portal.displayName;
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,

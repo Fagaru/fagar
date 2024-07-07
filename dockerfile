@@ -1,9 +1,33 @@
-FROM node:18-alpine
+#FROM node:18-alpine
+#WORKDIR /app
+#COPY . .
+#RUN npm install
+#EXPOSE  3000
+#CMD npm run dev
+
+FROM node:latest
+
+# Set the working directory inside the container
 WORKDIR /app
+
+# Copy the entire application code into the working directory
 COPY . .
+
+# Install the dependencies
 RUN npm install
-EXPOSE  3000
-CMD npm run dev
+
+# Print the current directory and list files (debugging step)
+#RUN pwd && ls -la
+
+# Print the contents of package.json (debugging step)
+#RUN cat package.json
+
+CMD ["npm", "run", "build", "&&", "npm", "run", "start"]
+
+# Expose port 3000
+EXPOSE 3000
+
+
 
 
 ## Install dependencies only when needed
