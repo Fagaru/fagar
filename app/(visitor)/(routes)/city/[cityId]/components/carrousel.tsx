@@ -51,7 +51,7 @@ const Slider:React.FC <SliderProps> = ({
                 : "hidden"
             }`}
           >
-            <Image
+            <Image_666666
               src={elem.url|| "/default_image.jpg"}
               alt="city picture"
               width={400}
