@@ -42,13 +42,13 @@ const handleClick = (corporationId:string) => {
             
             <div className="p-1">
             
-            <Card  onClick={() => handleClick(corporation._id)} className="group cursor-pointer  h-40"  >
-            {/* <CardHeader>
+            <Card  onClick={() => handleClick(corporation._id)} className="group cursor-pointer "  >
+            <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>{corporation.name}</CardTitle>
                <Schedulas Corpo={corporation}/>
               </div>
-            </CardHeader> */}
+            </CardHeader>
                 
                 <CardContent>
                 
@@ -58,7 +58,7 @@ const handleClick = (corporationId:string) => {
                 width={400}
                 height={100} 
                 alt="Image" 
-                className="w-full h-full object-cover" />
+                className="w-full h-64 object-cover" />
              
                 
                       
