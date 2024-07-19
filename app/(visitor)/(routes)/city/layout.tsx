@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { SideBar } from "@/components/side-bar";
 import Header from "@/components/header";
 import Container from "@/components/ui/container";
+import Footer from  "@/components/footer"
 
 
 export default async function DashboardLayout({
@@ -31,6 +32,7 @@ export default async function DashboardLayout({
                     </div>
                 </div>
             {/* </Container> */}
+            <Footer/>
         </div>
         </>
     );

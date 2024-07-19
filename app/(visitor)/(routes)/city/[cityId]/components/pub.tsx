@@ -35,7 +35,6 @@ const PubSlider:React.FC <PubSliderProps> = ({corporations}) => {
   }, [activeImage]);
   return (
     <main className="grid place-items-center md:grid-cols-2 grid-cols-1 w-full mx-auto max-w-5xl shadow-2xl rounded-2xl relative">
-      <div><h3 className="font-bold text-3xl">La star du jour </h3></div>
       <div
         className={`w-full flex justify-center items-center gap-4 transition-transform ease-in-out duration-500 md:rounded-2xl p-6 md:p-0`}
       >

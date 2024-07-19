@@ -35,30 +35,32 @@ const CityPage:React.FC<CityPageProps> = async ({
     const categories= await getCategories ()
 
     return (
-        <div className='m-6'>
-            <div className=" relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 gap-8 px-12 auto-rows-[minmax(50px,auto)]">
-                <div className=" relative row-span-2 col-span-12 rounded-[10px] border-solid border-[1px]">
+        <div className='xl'>
+            <div className="grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 gap-5 auto-rows-[minmax(50px,auto)]">
+                <div className=" relative row-span-1 col-span-12  rounded-[10px] border-solid border-[1px] shadow-md">
                     <Slider 
                     data={city}
                     />
                 </div>
-                <div className="relative  hidden lg:block col-span-12 row-span-1 col-start-2 col-end-5 h-20 rounded-[10px] border-solid border-[1px] shadow-md">
+                <div className="relative  row-span-1 col-span-12  md:h-20 rounded-[10px] border-solid border-[1px] shadow-md">
                     <Filter 
                         valueKey="categoryId"
                         name="Categories"
                         data={categories}
                     />
                 </div>
-                <div className="relative col-span-3  row-span-2 col-start-2 shadow-md"> 
+                <div className="relative col-span-12  row-span-2 "> 
                     <CarouselSpacing Corpo={Corporations}/>
                 </div>
-                <div className="relative col-span-3 row-span-2 col-start-2 shadow-md ">
+                <div className="relative col-span-12 row-span-2  ">
+                <h3 className="font-bold text-3xl text-center">La star du jour </h3>
                     <PubSlider corporations={Corporations[0]}/>
                 </div>
-                <div className="relative col-span-3  row-span-2 col-start-2 shadow-md"> 
+                <div className="relative col-span-12 row-span-2"> 
                     <CarouselSpacing Corpo={Corporations}/>
                 </div>
-                <div className="relative col-span-3  row-span-2 col-start-2 shadow-md"> 
+                {/* <div className="relative col-span-3  row-span-2 col-start-2 shadow-md"></div> */}
+                <div className="relative col-span-12  row-span-2 "> 
                     <CarouselSpacing Corpo={Corporations}/>
                 </div>
             </div>
