@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { SideBar } from "@/components/side-bar";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 
 export default async function DashboardLayout({
@@ -26,6 +27,7 @@ export default async function DashboardLayout({
                 <div className="w-full">
                     {children}
                 </div>
+                <Footer />
             </div> 
         </>
     );

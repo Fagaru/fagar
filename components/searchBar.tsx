@@ -60,7 +60,7 @@ const SearchBar = () => {
           </button>
         )}
       </div>
-      <button className="rounded-r-full border-gray-300 px-4 py-2" onClick={handleSearch}>
+      <button className="rounded-r-full border-gray-300 px-4 py-2 max-w-2" onClick={handleSearch}>
         <Search />
       </button>
     </div>
