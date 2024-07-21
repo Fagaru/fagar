@@ -32,7 +32,6 @@ export default async function DashboardLayout({
                     </div>
                 </div>
             {/* </Container> */}
-            <Footer/>
         </div>
         </>
     );

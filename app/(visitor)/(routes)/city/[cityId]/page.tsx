@@ -36,13 +36,13 @@ const CityPage:React.FC<CityPageProps> = async ({
 
     return (
         <div className='xl'>
-            <div className="grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 gap-5 auto-rows-[minmax(50px,auto)]">
+            <div className="grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 gap-2 auto-rows-[minmax(50px,auto)]">
                 <div className=" relative row-span-1 col-span-12  rounded-[10px] border-solid border-[1px] shadow-md">
                     <Slider 
                     data={city}
                     />
                 </div>
-                <div className="relative  row-span-1 col-span-12  md:h-20 rounded-[10px] border-solid border-[1px] shadow-md">
+                <div className="relative  row-span-2 col-span-12   md:h-20 rounded-[10px] border-solid border-[1px] md:mx-12 shadow-md">
                     <Filter 
                         valueKey="categoryId"
                         name="Categories"
