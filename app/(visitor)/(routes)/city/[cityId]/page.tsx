@@ -6,7 +6,7 @@ import Slider from "./components/carrousel";
 
 import PubSlider from "./components/pub"
 import getCorporations from '@/services/getCorporations';
-import CarouselSpacing from "./components/displayCorp";
+import CarouselSpacing from "@/components/displayCorp";
 import getCategories from "@/services/getCategories"
 import Filter from "./components/categoryFilter";
 
@@ -29,10 +29,10 @@ const CityPage:React.FC<CityPageProps> = async ({
         categoryId: searchParams.categoryId
     })
    
-    // console.log(Corporations)
     
 
     const categories= await getCategories ()
+    console.log("CATEEEEEEEEEEEEEEEEEEE",categories)
 
     return (
         <div className='xl'>

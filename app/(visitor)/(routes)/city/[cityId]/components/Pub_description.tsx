@@ -13,6 +13,9 @@ type Props = {
 };
 
 const PubDescription = ({ activeImage, clickNext, clickPrev,data}: Props) => {
+  if (!data) {
+    return <p>Data is not available</p>; // Vous pouvez personnaliser ce message
+  }
   const images=[data];
   const href=`/pros/${data._id}`
   return (
