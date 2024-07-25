@@ -2,21 +2,34 @@ import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
 import Category from "@/models/category.model";
+import { NextApiRequest, NextApiResponse } from "next";
+import { authenticateToken, authorize } from "@/lib/auth";
+
+// Types d'utilisateurs autorisés
+const allowedRolesForPOST = ['admin'];
+const allowedRolesForGET = ['admin', 'professional', 'visitor', 'anonymous'];
+
+interface ExtendedNextApiRequest extends NextApiRequest {
+    user?: {
+      id: string;
+      role: string;
+    };
+  }
 
 export async function POST(
-    req: Request
+    req: ExtendedNextApiRequest
 ) {
     try {
         // const { userId } = auth();
 
         const userId = "1234";
-        const body = await req.json();
+        const body = await req.body;
 
         const { label, imageUrl } = body;
 
-        if (!userId) {
-            return new NextResponse("Unauthenticated", { status: 401 });
-        }
+        // if (!userId) {
+        //     return new NextResponse("Unauthenticated", { status: 401 });
+        // }
 
         if (!label) {
             return new NextResponse("Label is required", {  status: 400});
@@ -52,7 +65,7 @@ export async function POST(
 }
 
 export async function GET(
-    req: Request,
+    req: ExtendedNextApiRequest,
 ) {
     try {
         await dbConnect();
@@ -64,3 +77,15 @@ export async function GET(
         return new NextResponse("Internal error", { status: 500 });
     }
 }
+
+// // Utilisez authenticateToken et authorize comme middleware pour protéger les routes
+// export default (req: ExtendedNextApiRequest, res: NextApiResponse) => {
+//     if (req.method === 'POST') {
+//       return authenticateToken(authorize(allowedRolesForPOST, POST))(req, res);
+//     } else if (req.method === 'GET') {
+//       return authenticateToken(authorize(allowedRolesForGET, GET))(req, res);
+//     } else {
+//       res.setHeader('Allow', ['POST', 'GET']);
+//       res.status(405).end(`Method ${req.method} Not Allowed`);
+//     }
+// };

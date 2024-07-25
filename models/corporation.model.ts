@@ -56,6 +56,12 @@ interface IReview {
   updatedAt?: Date;
 }
 
+export interface ITag extends Document {
+  label: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Interface for Corporation Document
 export interface ICorporation extends Document {
   name: string;
@@ -74,11 +80,12 @@ export interface ICorporation extends Document {
   numEmplyees: string;
   address: IAddress;
   categoryId: mongoose.Types.ObjectId;
-  tags: mongoose.Types.ObjectId[];
+  tags: ITag[];
   images: IImage[];
   schedules: ISchedule[];
   reviews: IReview[];
   subscription: ISubscription;
+  isVerified: boolean;
   isActive: boolean;
   isSuspended: boolean;
   createdAt?: Date;
@@ -136,6 +143,12 @@ const reviewSchema: Schema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 }, { _id: false });
 
+const tagSchema: Schema = new Schema({
+  label: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+}, { _id: false });
+
 const corporationSchema: Schema = new Schema({
   name: { type: String, required: true },
   userId: { type: String },
@@ -153,11 +166,12 @@ const corporationSchema: Schema = new Schema({
   numEmplyees: { type: String },
   address: addressSchema,
   categoryId: { type: Schema.Types.ObjectId, ref: 'Category' },
-  tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
+  tags: [tagSchema],
   images: [imageSchema],
   schedules: [scheduleSchema],
   reviews: [reviewSchema],
   subscription: subscriptionSchema,
+  isVerified: { type: Boolean, default: false },
   isActive: { type: Boolean, default: false },
   isSuspended: { type: Boolean, default: false },
 }, {

@@ -65,7 +65,7 @@ const addressSchema = z.object({
 });
 
 const tagSchema = z.object({
-    _id: z.string().min(1).optional(),
+    // _id: z.string().min(1).optional(),
     label: z.string().min(1).optional()
 });
 
@@ -108,14 +108,16 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [availableTags, setAvailableTags] = useState<{ label: string, _id: string; }[]>([]);
+    const [availableTags, setAvailableTags] = useState<any>([]);
 
     useEffect(() => {
         // Fetch available tags from the backend
         const fetchTags = async () => {
             try {
-                const fetchedData = await getTags();
-                setAvailableTags(fetchedData.map(tag => ({label: tag.label, _id: tag._id})));
+                // const fetchedData = await getTags();
+                // setAvailableTags(fetchedData.map(tag => ({label: tag.label})));
+                const current_tags = initialData?.tags;
+                setAvailableTags(current_tags);
             } catch (error) {
                 console.error('Error fetching tags', error);
             }
@@ -172,34 +174,6 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     const onSubmit = async (data: CorporationFormValues) => {
         try {
             setLoading(true);
-            // Separate new tags and existing tags
-            
-            const newTags = data.tags?.filter(tag => tag._id === 'new');
-            if (newTags) {
-                const existingTags = data.tags?.filter(tag => tag._id !== 'new');
-
-                // Create new tags and get their new IDs
-                const createdTags = await Promise.all(newTags.map(async (tag) => {
-                    try {
-                        const response = await axios.post('/api/tags', { label: tag.label });
-                        toast.success('Tags added');
-                        return response.data; // Assuming the response data contains the new tag with its new ID
-                    } catch (error) {
-                        toast.error('Error creating tag');
-                        return null;
-                    }
-                }));
-
-                // Combine new IDs with existing tags
-                const allTags = existingTags?.concat(createdTags.filter(tag => tag !== null).map(tag => tag._id));
-                // Combine new IDs with existing tags and eliminate duplicates
-                const setTags = Array.from(new Set(allTags));
-                data.tags = setTags;
-            }
-
-            // Now, you can submit `allTags` as part of your form data
-
-            console.log("Tags submit ", data.tags);
             if (initialData){
                 await axios.patch(`/api/corporations/${params.corporationId}`, data);
             } else {
@@ -217,7 +191,6 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
 
     const onDelete = async () => {
         try {
-            console.log("Submit done !")
             setLoading(true);
             await axios.delete(`/api/corporations/${params.corporationId}`);
             router.refresh();
@@ -389,29 +362,35 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                 render={({ field: { value, onChange } }) => {
                                                     const selectedTagObjects = value?.map(val => {
                                                         let foundTag;
-                                                        if(val._id){
-                                                            foundTag = availableTags.find(tag => tag._id === val._id);
-                                                        } else {
-                                                            foundTag = availableTags.find(tag => tag._id === String(val));
+                                                        if (val !== undefined && val.label !== undefined) {
+                                                            if(val){
+                                                                foundTag = availableTags.find((tag: any) => tag.label === val.label);
+                                                            } else {
+                                                                foundTag = availableTags.find((tag: any) => tag === String(val));
+                                                            }
+                                                            return {
+                                                                value: foundTag?.label,
+                                                                label: foundTag?.label,
+                                                            };
                                                         }
-                                                        return {
-                                                            value: foundTag?._id,
-                                                            label: foundTag?.label,
-                                                        };
+                                                        // return {
+                                                        //     value: foundTag?.label,
+                                                        //     label: foundTag?.label,
+                                                        // };
                                                     });
+
+                                                    console.log("SELECTEDOPT", selectedTagObjects);
 
                                                     return (
                                                         <CreatableSelect
                                                             isMulti
-                                                            options={availableTags.map(tag => ({
-                                                                value: tag._id,
-                                                                label: tag.label,
+                                                            options={availableTags.map((tag: any) => ({
+                                                                value: tag.label
                                                             }))}
                                                             value={selectedTagObjects}
                                                             onChange={(selectedOptions) => {
                                                                 const selectedTagsOpt = selectedOptions.map(option => ({
-                                                                    _id: option.value,
-                                                                    label: option.label,
+                                                                    label: option.value,
                                                                 }));
                                                                 onChange(selectedTagsOpt);
                                                             }}
@@ -419,14 +398,12 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                             isDisabled={loading}
                                                             onCreateOption={async (inputValue) => {
                                                                 const newTagLabel = inputValue.trim();
-                                                                const newTag = { label: newTagLabel, _id: 'new' };
+                                                                const newTag = { label: newTagLabel };
 
                                                                 // Check for duplicates before adding
-                                                                const isDuplicate = availableTags.some(tag => tag.label === newTagLabel);
+                                                                const isDuplicate = availableTags.some((tag: any) => tag.label === newTagLabel);
                                                                 if (!isDuplicate) {
-                                                                    setAvailableTags((prevTags) => [...prevTags, newTag]);
-                                                                    // onChange(Array.from(new Set([...value, newTag])));
-                                                                    // Assurez-vous que `value` est bien un tableau avant de l'utiliser
+                                                                    setAvailableTags((prevTags: any) => [...prevTags, newTag]);
                                                                     if (Array.isArray(value)) {
                                                                         onChange(Array.from(new Set([...value, newTag])));
                                                                     } else {
