@@ -2,11 +2,20 @@
 
 import qs from "query-string";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Key } from 'lucide-react';
 
 import {Category } from "@/types/category";
 import { cn } from "@/lib/utils";
 import { Dumbbell } from 'lucide-react';
 import { FerrisWheel } from 'lucide-react';
+import { HousePlus } from 'lucide-react';
+import { HandPlatter } from 'lucide-react';
+import { CarTaxiFront } from 'lucide-react';
+import { Wrench } from 'lucide-react';
+import { Beer } from 'lucide-react';
+import { Vegan } from 'lucide-react';
+
+
 import {
   Carousel,
   CarouselContent,
@@ -60,7 +69,7 @@ const Filter: React.FC<FilterProps> = ({
             <CarouselContent className="-ml-1">
                 {data.map((filter) => (
 
-                    <CarouselItem  key={filter._id}   className="pl-1   md:basis-1/2 lg:basis-1/10">
+                    <CarouselItem  key={filter._id}   className="pl-1   md:basis-1/6 lg:basis-1/10">
                     {(() => {
                                 let icon;
 
@@ -79,17 +88,65 @@ const Filter: React.FC<FilterProps> = ({
                                 )}
                                 onClick={() => onClick(filter._id)}/>;
                                 break;
+                                case "Médical":
+                                icon= <HousePlus className={cn(
+                                    "cursor-pointer","h-14",
+                                    selectedValue === filter._id && "bg-gray-300 text-white"
+                                )}
+                                onClick={() => onClick(filter._id)}/>;
+                                break;
+                                case "Restauration":
+                                icon=<HandPlatter className={cn(
+                                    "cursor-pointer","h-14",
+                                    selectedValue === filter._id && "bg-gray-300 text-white"
+                                )}
+                                onClick={() => onClick(filter._id)}/>;
+                                break;
+                                case "Location":
+                                icon=<Key className={cn(
+                                    "cursor-pointer","h-14",
+                                    selectedValue === filter._id && "bg-gray-300 text-white"
+                                )}
+                                onClick={() => onClick(filter._id)}/>;
+                                break;
+                                case "Taxi":
+                                icon=<CarTaxiFront className={cn(
+                                    "cursor-pointer","h-14",
+                                    selectedValue === filter._id && "bg-gray-300 text-white"
+                                )}
+                                onClick={() => onClick(filter._id)}/>;
+                                break;
+                                case "Garage":
+                                icon=<Wrench className={cn(
+                                    "cursor-pointer","h-14",
+                                    selectedValue === filter._id && "bg-gray-300 text-white"
+                                )}
+                                onClick={() => onClick(filter._id)}/>;
+                                break;
+                                case "Bar":
+                                icon=<Beer className={cn(
+                                    "cursor-pointer","h-14",
+                                    selectedValue === filter._id && "bg-gray-300 text-white"
+                                )}
+                                onClick={() => onClick(filter._id)}/>;
+                                break;
+                                case "Fruits&Légumes":
+                                icon=<Vegan className={cn(
+                                    "cursor-pointer","h-14",
+                                    selectedValue === filter._id && "bg-gray-300 text-white"
+                                )}
+                                onClick={() => onClick(filter._id)}/>;
+                                break;
                                 default:
                                 icon = null;
                          }
 
+
                   return (
-                    <>
-                      {icon}
-                      {/* <CardContent> */}
-                        {filter.label}
-                      {/* </CardContent> */}
-                    </>
+                    <div className="flex flex-col items-center justify-center">
+                    <div className="mb-0">{icon}</div>
+                    <div className="text-center">{filter.label}</div>
+                  </div>
                   );
                 })()}
                     </CarouselItem>
