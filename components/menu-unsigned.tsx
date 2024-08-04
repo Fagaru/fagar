@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import AddCorporation from "@/components/AddCorporation";
 import LogoutButton from "@/components/logoutButton";
+import { useUser } from "@/context/userContext";
 
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
@@ -36,6 +37,7 @@ interface MenuProps extends PopoverTriggerProps {
 export default function MenuUnsignedUser({
 
 }: MenuProps) {
+    const { user, logout, isAuthenticated } = useUser();
     // const storeModal = useStoreModal();
     // const params = useParams();
     // const router = useRouter();
@@ -52,38 +54,48 @@ export default function MenuUnsignedUser({
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                        <LogoutButton content="" />
-                    </DropdownMenuItem>
                     <DropdownMenuItem disabled>
                         <LifeBuoy className="mr-2 h-4 w-4" />
                         <span>Support</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem >
-                        <Link  
-                            key='/login'
-                            href='/login'
-                            className="flex align-items"
-                            >
-                            <LogIn className="mr-2 h-4 w-4" />
-                            <span>Connexion</span>
-                        </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Link  
-                            key='/register'
-                            href='/register'
-                            className="flex align-items"
-                            >
-                            <Paperclip className="mr-2 h-4 w-4" />
-                            <span>Inscription</span>
-                        </Link>
-                    </DropdownMenuItem>
+                    { isAuthenticated ?
+                        <DropdownMenuItem>
+                        <LogoutButton content="" />
+                        </DropdownMenuItem>
+                        :
+                        <>
+                            <DropdownMenuItem >
+                                <Link  
+                                    key='/login'
+                                    href='/login'
+                                    className="flex align-items"
+                                    >
+                                    <LogIn className="mr-2 h-4 w-4" />
+                                    <span>Connexion</span>
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Link  
+                                    key='/register'
+                                    href='/register'
+                                    className="flex align-items"
+                                    >
+                                    <Paperclip className="mr-2 h-4 w-4" />
+                                    <span>Inscription</span>
+                                </Link>
+                            </DropdownMenuItem>
+                        </>
+                    }
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        <AddCorporation />
-                    </DropdownMenuItem>
+                    { (isAuthenticated && user.role === "admin") ?
+                        <></>
+                    :
+                        <DropdownMenuItem>
+                            <AddCorporation />
+                        </DropdownMenuItem>
+                    }
+                    
                 </DropdownMenuContent>
             </DropdownMenu>
         </>

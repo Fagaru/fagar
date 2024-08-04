@@ -7,6 +7,8 @@ import { toast } from 'react-hot-toast';
 
 interface UserContextProps {
   user: any;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
   setUser: (user: any) => void;
   logout: () => void;
 }
@@ -15,6 +17,7 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any>();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,6 +25,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const storedUser: any = localStorage.getItem('user');
     const userInfo =  JSON.parse(storedUser);
     if (userInfo) {
+      setIsAuthenticated(true);
       setUser(userInfo);
     }
   }, []);
@@ -34,6 +38,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.removeItem('token'); // Remove user data from cookies
       localStorage.removeItem('user'); // Remove user data from cookies
       setUser(null);
+      setIsAuthenticated(false);
     } catch (e) {
       toast.error('Error logging out');
       console.log("ERROR", e);
@@ -41,7 +46,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
+    <UserContext.Provider value={{ user, setUser,isAuthenticated, setIsAuthenticated, logout }}>
       {children}
     </UserContext.Provider>
   );
