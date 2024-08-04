@@ -3,36 +3,56 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '@/models/user.model';
+import dbConnect from '@/lib/dbConnect';
+import { NextResponse } from 'next/server';
 
-const PEPPER = process.env.PEPPER || 'pepper par défaut';
+const PEPPER = process.env.PEPPER || 'your-secret-pepper';
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { email, password } = req.body;
-
+export async function POST(
+  req: Request
+) {
     try {
-      await mongoose.connect(process.env.MONGO_URI!);
+      const { email, password } = await req.json();
+
+      await dbConnect();
 
       const user = await User.findOne({ email });
       if (!user) {
-        return res.status(400).json({ message: 'Identifiants invalides' });
+        return new NextResponse("Identifiants invalides", { status: 401 });
       }
 
       const isMatch = await bcrypt.compare(password + PEPPER, user.password);
+
       if (!isMatch) {
-        return res.status(400).json({ message: 'Identifiants invalides' });
+        return new NextResponse("Identifiants invalides", { status: 401 });
       }
 
       const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
-      res.json({ token });
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
-    } finally {
-      mongoose.connection.close();
+
+      const filter = {_id: user._id};
+      const infoSession = await User.updateOne(
+          filter, 
+          {
+            _id: user._id, 
+            lastLogin: Date.now(),
+            updatedAt: Date.now()
+          }
+      );
+
+      let userInfo: any = {
+        id: user._id,
+        email: user.email,
+        lastLogin: user.lastLogin,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        role: user.role,
+        isVerified: user.isVerified,
+        isSuspended: user.isSuspended
+      }
+
+      return NextResponse.json({userInfo, token});
+    } catch (error) {
+      return new NextResponse("Internal error", { status: 500 });
     }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
 }

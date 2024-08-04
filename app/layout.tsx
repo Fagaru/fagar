@@ -5,7 +5,7 @@ import { ToasterProvider } from '@/providers/toast-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 
 import './globals.css';
-import Container from '@/components/ui/container';
+import { UserProvider } from '../context/userContext';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,7 +25,9 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ToasterProvider />
           <ModalProvider />
-          {children}
+          <UserProvider>
+            {children}
+          </UserProvider>
         </ThemeProvider>
       </body>
     </html>

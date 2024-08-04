@@ -26,6 +26,8 @@ export interface IUser extends Document {
   isVerified: boolean;
   isSuspended: boolean;
   isActive: boolean;
+  lastLogin: Date;
+  lastLogout: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -43,7 +45,9 @@ const UserSchema: Schema = new Schema({
     isVerified: { type: Boolean, default: false },
     isSuspended: { type: Boolean, default: false },
     isActive: { type: Boolean, default: false },
-    role: { type: String, enum: Object.values(ROLES), default: ROLES.VISITOR }
+    role: { type: String, enum: Object.values(ROLES), default: ROLES.VISITOR },
+    lastLogin: { type: Date },
+    lastLogout: { type: Date },
   }, {
     timestamps: true,
 });

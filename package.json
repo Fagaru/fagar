@@ -52,6 +52,7 @@
     "formidable": "^3.5.1",
     "framer-motion": "^10.16.4",
     "fs": "^0.0.1-security",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.399.0",
     "moment": "^2.30.1",
