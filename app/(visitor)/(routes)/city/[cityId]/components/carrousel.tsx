@@ -40,7 +40,7 @@ const Slider:React.FC <SliderProps> = ({
   return (
     <main className="grid place-items-center  md:grid-cols-1  ">
       <div
-        className="relative w-full flex justify-center items-center transition-transform ease-in-out duration-500"
+        className="w-full flex justify-center items-center transition-transform ease-in-out duration-500"
       >
         {images.map((elem, idx) => (
           <div
@@ -56,20 +56,20 @@ const Slider:React.FC <SliderProps> = ({
               alt="city picture"
               width={400}
               height={400}
-              className="w-full h-full object-cover "
+              className="relative w-full h-full object-cover "
             />
             {images.map((elem, idx) => (
         <div
           key={idx}
           className={`${
             idx === activeImage
-              ? "relative block w-full h-full md:h-[50vh] py-20 md:px-20 px-10 text-left"
+              ? "block w-full h-full md:h-[50vh] py-20 md:px-20 px-10 text-left"
               : "hidden"
           }`}
         >
 
-          <div className="relative  w-full flex justify-center items-center">
-                    <div className="relative bottom-60 left-100 font-bold text-3xl sm:text-5xl lg:text-6xl sm:max-w-xl max-w-xs text-white text-center">
+          <div className="relative w-full flex justify-center items-center">
+                    <div className="absolute bottom-60 left-100 font-bold text-3xl sm:text-5xl lg:text-6xl sm:max-w-xl max-w-xs text-white text-center">
                         Bienvenue à {data?.label}
                     </div>
             {/* <div

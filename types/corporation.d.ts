@@ -13,10 +13,9 @@ export interface Corporation {
     linkLinkedIn: string;
     linkX: string;
     starting_date: string;
-    numEmplyees: string;
     address: Address;
     categoryId: string;
-    tags: [];
+    tags: Tag[];
     images: Image[];
     schedules: Schedule[];
     reviews: Review[];
@@ -81,4 +80,11 @@ interface Review {
     stars: number;
     createdAt: Date;
     updatedAt: Date;
-}  
+} 
+
+interface Tag {
+    _id: string;
+    label: string;
+    createdAt: Date;
+    updatedAt: Date;
+}

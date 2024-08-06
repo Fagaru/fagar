@@ -56,6 +56,13 @@ interface IReview {
   updatedAt?: Date;
 }
 
+// Interface for Tag Subschema
+interface ITag {
+  label: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Interface for Corporation Document
 export interface ICorporation extends Document {
   name: string;
@@ -74,7 +81,7 @@ export interface ICorporation extends Document {
   numEmplyees: string;
   address: IAddress;
   categoryId: mongoose.Types.ObjectId;
-  tags: mongoose.Types.ObjectId[];
+  tags: ITag[];
   images: IImage[];
   schedules: ISchedule[];
   reviews: IReview[];
@@ -136,6 +143,12 @@ const reviewSchema: Schema = new Schema({
   updatedAt: { type: Date, default: Date.now }
 }, { _id: false });
 
+const tagSchema: Schema = new Schema({
+  label: { type: String, required: true },
+}, {
+  timestamps: true,
+});
+
 const corporationSchema: Schema = new Schema({
   name: { type: String, required: true },
   userId: { type: String },
@@ -153,7 +166,7 @@ const corporationSchema: Schema = new Schema({
   numEmplyees: { type: String },
   address: addressSchema,
   categoryId: { type: Schema.Types.ObjectId, ref: 'Category' },
-  tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
+  tags: [tagSchema],
   images: [imageSchema],
   schedules: [scheduleSchema],
   reviews: [reviewSchema],

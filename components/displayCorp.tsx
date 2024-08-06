@@ -17,8 +17,9 @@ import { ReviewSection } from '@/components/reviewSection';
 
 interface DisplayProps{
   Corpo: CorporationType[]
+  Category: string
 };
-const CarouselSpacing: React.FC <DisplayProps> = ({Corpo})=> {
+const CarouselSpacing: React.FC <DisplayProps> = ({Corpo,Category})=> {
 
   const router = useRouter();
   const [activeCorpo, setActiveCorpo] = useState(0);
@@ -43,7 +44,7 @@ const CarouselSpacing: React.FC <DisplayProps> = ({Corpo})=> {
     <section className="w-full py-12">
       <div className="container px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold gap-30 tracking-tight">Featured Products</h1>
+          <h1 className="text-2xl font-bold gap-30 tracking-tight">{Category}</h1>
           <div className="flex space-x-4">
           </div>
         </div>
@@ -59,11 +60,11 @@ const CarouselSpacing: React.FC <DisplayProps> = ({Corpo})=> {
           backgroundImage: `url(${corporation?.images?.[0]?.url || "/default_image.jpg"})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-        }} className="pl-1 h-40 group cursor-pointer"  >
+        }} className="relative pl-1 h-40 group cursor-pointer"  >
             <CardHeader>
-            <div className="relative bottom-5 left-60">
-            <Schedulas Corpo={corporation} />
-    </div>
+            <div className="absolute top-0 right-0 p-0">
+                      <Schedulas Corpo={corporation} />
+                    </div>
             </CardHeader>
            
           </Card>

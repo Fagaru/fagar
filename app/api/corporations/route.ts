@@ -45,7 +45,7 @@ export async function POST(
             numEmplyees,
             address, // Embedded address
             categoryId,
-            tags,
+            tags, // Embedded address
             images, // Embedded images
             schedules // Embedded schedules
         });

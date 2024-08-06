@@ -19,7 +19,7 @@ const PubDescription = ({ activeImage, clickNext, clickPrev,data}: Props) => {
   const images=[data];
   const href=`/pros/${data._id}`
   return (
-    <div className="xl">
+    <div className=" relative xl">
 
       <Link href={href} className="ml-4 flex lg:ml-0 gap-x-2">
           <MoveLeft />
