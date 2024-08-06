@@ -9,19 +9,11 @@ import Header from "@/components/header";
 import Container from "@/components/ui/container";
 
 
-export default async function DashboardLayout({
+export default async function PROSLayout({
    children
 } : {
     children: React.ReactNode;
 }) {
-
-    const userId = "1234";
-
-    // if (!userId) {
-    //     redirect('/sign-in');
-    // }
-
-    // redirect('/');
 
     return (
         <>

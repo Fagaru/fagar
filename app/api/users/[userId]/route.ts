@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
-import Category from '@/models/category.model';
 import mongoose from "mongoose";
+import User from "@/models/user.model";
 
 export async function PATCH (
     req: Request,
-    { params }: { params: {categoryId: string}}
+    { params }: { params: {userId: string}}
 ) {
     try {
         // const userId = "1234";
@@ -16,40 +16,40 @@ export async function PATCH (
 
         // if (!userId) {
         //     return new NextResponse("Unauthorized", { status: 401 });
-        if (!mongoose.Types.ObjectId.isValid(params.categoryId)) {
-            return new NextResponse('Invalid category ID', { status: 400 });
+        if (!mongoose.Types.ObjectId.isValid(params.userId)) {
+            return new NextResponse('Invalid user ID', { status: 400 });
           }
         
         await dbConnect();
-        // Récupérer la CATEGORY actuelle
-        const currentCategory = await Category.findById(params.categoryId);
+        // Récupérer la User actuelle
+        const currentUser = await User.findById(params.userId);
     
-        if (!currentCategory) {
-            return new NextResponse('Category not found', { status: 404 });
+        if (!currentUser) {
+            return new NextResponse('User not found', { status: 404 });
         }
     
-        // Mettre à jour la CATEGORY
-        const filter = {_id: params.categoryId};
-        const updatedCategory = await Category.updateOne(
+        // Mettre à jour du USER
+        const filter = {_id: params.userId};
+        const updatedUser = await User.updateOne(
             filter, 
             { ...body, 
-                _id: params.categoryId, 
+                _id: params.userId, 
                 updateAt: Date.now()
             }
         );
 
-        console.log('Updated CATEGORY:', updatedCategory);
+        console.log('Updated USER:', updatedUser);
 
-        return NextResponse.json(updatedCategory);
+        return NextResponse.json(updatedUser);
     } catch (error) {
-        console.log('[CATEGORY_PATCH] ', error);
+        console.log('[USER_PATCH] ', error);
         return new NextResponse("Internal error", { status: 500 });
     }
 };
 
 export async function DELETE (
     req: Request,
-    { params }: { params: {categoryId: string}}
+    { params }: { params: {userId: string}}
 ) {
     try {
         // const userId = "1234";
@@ -58,34 +58,34 @@ export async function DELETE (
         //     return new NextResponse("Unauthorized", { status: 401 });
         // }
         await dbConnect();
-        const filter = {_id: params.categoryId};
+        const filter = {_id: params.userId};
 
-        const currentCategory = await Category.findById(params.categoryId);
-        if (!currentCategory) {
-            throw new Error('CATEGORY not found');
+        const currentUser = await User.findById(params.userId);
+        if (!currentUser) {
+            throw new Error('USER not found');
         }
         
-        const deleteCategory = await Category.deleteOne(filter);
+        const deleteUser = await User.deleteOne(filter);
         
-        return NextResponse.json(deleteCategory);
+        return NextResponse.json(deleteUser);
     } catch (error) {
-        console.log('[CATEGORY_DELETE] ', error);
+        console.log('[USER_DELETE] ', error);
         return new NextResponse("Internal error", { status: 500 });
     }
 };
 
 export async function GET(
     req: Request,
-    { params }: { params: {categoryId: string}}
+    { params }: { params: {userId: string}}
 ) {
     try {
         await dbConnect();
-        const filter = {_id: params.categoryId};
-        const category = await Category.findOne(filter);
+        const filter = {_id: params.userId};
+        const user = await User.findOne(filter).select(['-password']);
 
-        return NextResponse.json(category);
+        return NextResponse.json(user);
     } catch (error) {
-        console.log('[CATEGORY_GET] ', error);
+        console.log('[USER_GET] ', error);
         return new NextResponse("Internal error", { status: 500 });
     }
 }

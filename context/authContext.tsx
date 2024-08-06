@@ -5,30 +5,42 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
-interface UserContextProps {
+interface AuthContextProps {
   user: any;
   isAuthenticated: boolean;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   setUser: (user: any) => void;
+  checkAuthStatus: () => void;
   logout: () => void;
 }
 
-const UserContext = createContext<UserContextProps | undefined>(undefined);
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any>();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<any>();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     // Check for user data in cookies
-    const storedUser: any = localStorage.getItem('user');
-    const userInfo =  JSON.parse(storedUser);
-    if (userInfo) {
-      setIsAuthenticated(true);
+    const checkAuthStatus = async () => {
+      const storedUser: any = localStorage.getItem('user');
+      const storedToken: any = localStorage.getItem('token');
+      const userInfo =  JSON.parse(storedUser);
+      setIsAuthenticated(!!storedToken);
       setUser(userInfo);
     }
+    checkAuthStatus();
   }, []);
+
+  const checkAuthStatus = async () => {
+    const storedUser: any = localStorage.getItem('user');
+    const storedToken: any = localStorage.getItem('token');
+    const userInfo =  JSON.parse(storedUser);
+    setIsAuthenticated(!!storedToken);
+    setUser(userInfo);
+  }
 
   const logout = async () => {
     try {
@@ -46,14 +58,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser,isAuthenticated, setIsAuthenticated, logout }}>
+    <AuthContext.Provider value={{ user, setUser,isAuthenticated, setIsAuthenticated, checkAuthStatus, logout }}>
       {children}
-    </UserContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
-export const useUser = (): UserContextProps => {
-  const context = useContext(UserContext);
+export const useAuth = (): AuthContextProps => {
+  const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useUser must be used within a UserProvider');
   }

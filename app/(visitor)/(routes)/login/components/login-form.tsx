@@ -20,6 +20,7 @@ import {
     FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/authContext";
 
 // Define the schema for the login form using zod
 const formSchema = z.object({
@@ -32,6 +33,7 @@ type LoginFormType = z.infer<typeof formSchema>;
 
 export const LoginForm: React.FC = () => {
     const router = useRouter();
+    const { user, setUser, isAuthenticated, setIsAuthenticated, checkAuthStatus } = useAuth();
     const [loading, setLoading] = useState(false);
 
     const form = useForm<LoginFormType>({
@@ -41,21 +43,30 @@ export const LoginForm: React.FC = () => {
             password: '',
         }
     });
+    console.log(" Before LOGIN USER: ", user);
+    console.log(" Before LOGIN Authenticated: ", isAuthenticated);
 
     const onSubmit = async (data: LoginFormType) => {
         try {
             setLoading(true);
             console.log(data);
             await axios.post(`/api/auth/login`, data).then((data) => {
-                localStorage.setItem("token", data.data.token);
+                const token = data.data.token;
                 const userInfo = data.data.userInfo;
-                console.log("userInfo", userInfo);
+                localStorage.setItem("token", data.data.token);
                 localStorage.setItem("user", JSON.stringify(userInfo));
+                console.log("userInfo", userInfo);
+                // setUser(userInfo);
+                console.log("LOGIN USER: ", user);
+                // setIsAuthenticated(!!token);
+                checkAuthStatus();
+                
+                router.push(`/dashboard`);
+                toast.success("Logged in successfully");
             }).catch((e) => {
-                console.log(e);
+                toast.error(e.response.data);
+                console.log(e.response);
             });
-            router.push(`/dashboard`);
-            toast.success("Logged in successfully");
         } catch (error) {
             toast.error("Invalid email or password");
         } finally {

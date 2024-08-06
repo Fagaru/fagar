@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from '@/context/userContext';
+import { useAuth } from '@/context/authContext';
 
 
 const HomePage = ({
@@ -8,7 +8,7 @@ const HomePage = ({
 }: {
     params: { storeId: string }
 }) => {
-    const { user, isAuthenticated, logout } = useUser();
+    const { user, isAuthenticated, logout } = useAuth();
     console.log("Authenticated", isAuthenticated);
 
   if (!user) {
@@ -17,8 +17,8 @@ const HomePage = ({
     
   return (
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(180px,auto)]">
-          <h2>Welcome, {user.email}</h2>
-        <p>Role: {user.role}</p>
+          <h2>Welcome, {user?.email}</h2>
+        <p>Role: {user?.role}</p>
         <p>Authentifié: {isAuthenticated}</p>
         <button onClick={logout}>Logout</button>
       </div>

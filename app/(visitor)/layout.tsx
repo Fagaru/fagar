@@ -6,24 +6,15 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 
 
-export default async function DashboardLayout({
+export default async function VisitorLayout({
    children
 } : {
     children: React.ReactNode;
 }) {
-    // const { userId } = auth();
-    const userId = "1234";
-
-    // if (!userId) {
-    //     redirect('/sign-in');
-    // }
-
-    // redirect('/');
 
     return (
         <>
             <div className="bg-gray-50 dark:bg-slate-950">
-                {/* <Header /> */}
                 <div className="w-full">
                     {children}
                 </div>

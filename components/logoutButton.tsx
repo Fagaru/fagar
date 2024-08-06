@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { Button } from "@/components/ui/button";
-import { useUser } from '@/context/userContext';
+import { useAuth } from '@/context/authContext';
 
 interface LogoutProps {
   content: React.ReactNode; // <-- Accept React elements
@@ -13,14 +13,12 @@ interface LogoutProps {
 const LogoutButton: React.FC<LogoutProps> = (
   content
 ) => {
-  const { user, logout } = useUser();
+  const { user, logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      
-      const id = user.id;
-      console.log("ID LOGOUT", id);
+      const id = user?.id;
       await axios.post(`/api/auth/logout`, {"id": id});
       logout();
       toast.success('Successfully logged out');

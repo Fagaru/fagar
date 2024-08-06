@@ -9,7 +9,8 @@ import {
     LifeBuoy, 
     LogIn, 
     Menu,
-    Paperclip
+    Paperclip,
+    UserRound
 } from "lucide-react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -25,7 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import AddCorporation from "@/components/AddCorporation";
 import LogoutButton from "@/components/logoutButton";
-import { useUser } from "@/context/userContext";
+import { useAuth } from "@/context/authContext";
 
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
@@ -37,7 +38,7 @@ interface MenuProps extends PopoverTriggerProps {
 export default function MenuUnsignedUser({
 
 }: MenuProps) {
-    const { user, logout, isAuthenticated } = useUser();
+    const { user, logout, isAuthenticated } = useAuth();
     // const storeModal = useStoreModal();
     // const params = useParams();
     // const router = useRouter();
@@ -60,9 +61,21 @@ export default function MenuUnsignedUser({
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     { isAuthenticated ?
-                        <DropdownMenuItem>
-                        <LogoutButton content="" />
-                        </DropdownMenuItem>
+                        <>
+                            <DropdownMenuItem>
+                                <Link  
+                                    key='/account/profile'
+                                    href='/account/profile'
+                                    className="flex align-items"
+                                    >
+                                    <UserRound className="mr-2 h-4 w-4" />
+                                    <span>Mon compte</span>
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <LogoutButton content="" />
+                            </DropdownMenuItem>
+                        </>
                         :
                         <>
                             <DropdownMenuItem >
@@ -88,7 +101,7 @@ export default function MenuUnsignedUser({
                         </>
                     }
                     <DropdownMenuSeparator />
-                    { (isAuthenticated && user.role === "admin") ?
+                    { (isAuthenticated && user?.role === "admin") ?
                         <></>
                     :
                         <DropdownMenuItem>

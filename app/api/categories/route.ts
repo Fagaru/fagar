@@ -17,15 +17,16 @@ interface ExtendedNextApiRequest extends NextApiRequest {
   }
 
 export async function POST(
-    req: ExtendedNextApiRequest
+    req: Request
 ) {
     try {
         // const { userId } = auth();
 
-        const userId = "1234";
-        const body = await req.body;
+        const body = await req.json();
 
         const { label, imageUrl } = body;
+
+        console.log("POST CATEGORY", body)
 
         // if (!userId) {
         //     return new NextResponse("Unauthenticated", { status: 401 });
@@ -65,7 +66,7 @@ export async function POST(
 }
 
 export async function GET(
-    req: ExtendedNextApiRequest,
+    req: Request,
 ) {
     try {
         await dbConnect();
