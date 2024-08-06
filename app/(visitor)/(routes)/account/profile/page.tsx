@@ -67,7 +67,7 @@ const ProfilePage = () => {
         <div className="mt-6">
           <h2 className="text-xl font-semibold">Informations personnelles</h2>
           <div className="mt-4">
-            <p><span className="font-semibold">Date de naissance: </span>{format(new Date(currentUser.birthday), 'dd MMM yyyy')}</p>
+            <p><span className="font-semibold">Date de naissance: </span>{format(new Date(currentUser.birthday || null), 'dd MMM yyyy')}</p>
             <p><span className="font-semibold">Genre: </span>{currentUser.gender}</p>
             <p><span className="font-semibold">Ville préférée: </span>{currentUser.lovely_town}</p>
           </div>
@@ -79,7 +79,7 @@ const ProfilePage = () => {
             <p><span className="font-semibold">Compte actif: </span>{currentUser.isActive ? 'Oui' : 'Non'}</p>
             <p><span className="font-semibold">Compte suspendu: </span>{currentUser.isSuspended ? 'Oui' : 'Non'}</p>
             <p><span className="font-semibold">Dernière connexion: </span>{format(new Date(currentUser.lastLogin), 'dd MMM yyyy HH:mm')}</p>
-            <p><span className="font-semibold">Dernière déconnexion: </span>{format(new Date(currentUser.lastLogout), 'dd MMM yyyy HH:mm')}</p>
+            <p><span className="font-semibold">Dernière déconnexion: </span>{format(new Date(currentUser?.lastLogout || null), 'dd MMM yyyy HH:mm') || null}</p>
             <p><span className="font-semibold">Membre depuis: </span>{format(new Date(currentUser.createdAt), 'dd MMM yyyy')}</p>
           </div>
         </div>
