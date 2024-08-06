@@ -2,12 +2,15 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
+
 import {  
     AlignRight,
     LifeBuoy, 
     LogIn, 
     Menu,
-    Paperclip
+    Paperclip,
+    UserRound
 } from "lucide-react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -21,7 +24,9 @@ import {
     DropdownMenuItem,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import AddCorporation from "./AddCorporation";
+import AddCorporation from "@/components/AddCorporation";
+import LogoutButton from "@/components/logoutButton";
+import { useAuth } from "@/context/authContext";
 
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
@@ -33,11 +38,12 @@ interface MenuProps extends PopoverTriggerProps {
 export default function MenuUnsignedUser({
 
 }: MenuProps) {
-    const storeModal = useStoreModal();
-    const params = useParams();
-    const router = useRouter();
+    const { user, logout, isAuthenticated } = useAuth();
+    // const storeModal = useStoreModal();
+    // const params = useParams();
+    // const router = useRouter();
 
-    const [open, setOpen] = useState(false);
+    // const [open, setOpen] = useState(false);
 
     return (
         <>
@@ -54,18 +60,55 @@ export default function MenuUnsignedUser({
                         <span>Support</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem disabled>
-                        <LogIn className="mr-2 h-4 w-4" />
-                        <span>Connexion</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem disabled>
-                        <Paperclip className="mr-2 h-4 w-4" />
-                        <span>Inscription</span>
-                    </DropdownMenuItem>
+                    { isAuthenticated ?
+                        <>
+                            <DropdownMenuItem>
+                                <Link  
+                                    key='/account/profile'
+                                    href='/account/profile'
+                                    className="flex align-items"
+                                    >
+                                    <UserRound className="mr-2 h-4 w-4" />
+                                    <span>Mon compte</span>
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <LogoutButton content="" />
+                            </DropdownMenuItem>
+                        </>
+                        :
+                        <>
+                            <DropdownMenuItem >
+                                <Link  
+                                    key='/login'
+                                    href='/login'
+                                    className="flex align-items"
+                                    >
+                                    <LogIn className="mr-2 h-4 w-4" />
+                                    <span>Connexion</span>
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Link  
+                                    key='/register'
+                                    href='/register'
+                                    className="flex align-items"
+                                    >
+                                    <Paperclip className="mr-2 h-4 w-4" />
+                                    <span>Inscription</span>
+                                </Link>
+                            </DropdownMenuItem>
+                        </>
+                    }
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        <AddCorporation />
-                    </DropdownMenuItem>
+                    { (isAuthenticated && user?.role === "admin") ?
+                        <></>
+                    :
+                        <DropdownMenuItem>
+                            <AddCorporation />
+                        </DropdownMenuItem>
+                    }
+                    
                 </DropdownMenuContent>
             </DropdownMenu>
         </>

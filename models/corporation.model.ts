@@ -56,8 +56,12 @@ interface IReview {
   updatedAt?: Date;
 }
 
+<<<<<<< HEAD
 // Interface for Tag Subschema
 interface ITag {
+=======
+export interface ITag extends Document {
+>>>>>>> e2529533052ae829ddd7bdbdd29f6f0e03fffee3
   label: string;
   createdAt: Date;
   updatedAt: Date;
@@ -86,6 +90,7 @@ export interface ICorporation extends Document {
   schedules: ISchedule[];
   reviews: IReview[];
   subscription: ISubscription;
+  isVerified: boolean;
   isActive: boolean;
   isSuspended: boolean;
   createdAt?: Date;
@@ -145,9 +150,15 @@ const reviewSchema: Schema = new Schema({
 
 const tagSchema: Schema = new Schema({
   label: { type: String, required: true },
+<<<<<<< HEAD
 }, {
   timestamps: true,
 });
+=======
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+}, { _id: false });
+>>>>>>> e2529533052ae829ddd7bdbdd29f6f0e03fffee3
 
 const corporationSchema: Schema = new Schema({
   name: { type: String, required: true },
@@ -171,6 +182,7 @@ const corporationSchema: Schema = new Schema({
   schedules: [scheduleSchema],
   reviews: [reviewSchema],
   subscription: subscriptionSchema,
+  isVerified: { type: Boolean, default: false },
   isActive: { type: Boolean, default: false },
   isSuspended: { type: Boolean, default: false },
 }, {

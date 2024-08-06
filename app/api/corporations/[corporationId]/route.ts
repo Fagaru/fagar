@@ -29,11 +29,11 @@ export async function PATCH (
             starting_date, numEmplyees, address, categoryId, tags, images, schedules
         } = body;
 
-        // if (!userId) {
-        //     return new NextResponse("Unauthorized", { status: 401 });
+        console.log("This Step REQ_BODY", tags);
         
         // Récupérer la corporation actuelle
         const currentCorporation = await Corporation.findById(params.corporationId);
+        console.log("This Step FIND_BY_ID", currentCorporation);
     
         if (!currentCorporation) {
           throw new Error('Corporation not found');
@@ -55,7 +55,7 @@ export async function PATCH (
         // let dateAndTime = moment(schedule.begin_am, [moment.ISO_8601, 'HH:mm']);
 
         // Ensure schedules are correctly formatted
-        const updatedSchedules = schedules.map((schedule: ISchedule) => ({
+        const updatedSchedules = body.schedules.map((schedule: ISchedule) => ({
             ...schedule,
             begin_am: schedule.begin_am,
             end_am: schedule.end_am,
@@ -89,12 +89,6 @@ export async function DELETE (
     { params }: { params: {corporationId: string}}
 ) {
     try {
-        // const userId = "1234";
-
-        // if (!userId) {
-        //     return new NextResponse("Unauthorized", { status: 401 });
-        // }
-
         await dbConnect();
         const filter = {_id: params.corporationId};
 

@@ -4,12 +4,15 @@ import { NextResponse } from "next/server";
 import dbConnect from '@/lib/dbConnect';
 import Corporation from '@/models/corporation.model';
 
+// Types d'utilisateurs autorisés
+const allowedRolesForPOST = ['admin', 'professional'];
+const allowedRolesForGET = ['admin', 'professional', 'visitor', 'anonymous'];
+
 export async function POST(
     req: Request,
 ) {
     try {
         // const { userId } = auth();
-        // const userId = "1234";
         const body = await req.json();
 
         const {
@@ -18,10 +21,6 @@ export async function POST(
         } = body;
 
         console.log("[USERID] ", userId);
-
-        // if (!userId) {
-        //     return new NextResponse("Unauthenticated", { status: 401 });
-        // }
 
         if (!name) {
             return new NextResponse("Name is required", {  status: 400});
@@ -45,7 +44,11 @@ export async function POST(
             numEmplyees,
             address, // Embedded address
             categoryId,
+<<<<<<< HEAD
             tags, // Embedded address
+=======
+            tags,   // Embedded tags
+>>>>>>> e2529533052ae829ddd7bdbdd29f6f0e03fffee3
             images, // Embedded images
             schedules // Embedded schedules
         });

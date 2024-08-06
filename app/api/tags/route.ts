@@ -3,6 +3,10 @@ import { NextResponse } from "next/server";
 import dbConnect from '@/lib/dbConnect';
 import Tag from "@/models/tag.model";
 
+// Types d'utilisateurs autorisés
+const allowedRolesForPOST = ['admin', 'professional'];
+const allowedRolesForGET = ['admin', 'professional', 'visitor', 'anonymous'];
+
 export async function POST(
     req: Request
 ) {
