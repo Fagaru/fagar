@@ -7,6 +7,7 @@ import Header from "@/components/header";
 import ProtectedRoute from "@/providers/protectedRoutes";
 import { useAuth } from "@/context/authContext";
 import toast from "react-hot-toast";
+import Loader from "@/components/loader";
 // import Loader from "@/components/loader"; // Assurez-vous d'avoir un composant Loader
 
 export default function DashboardLayout({
@@ -14,7 +15,7 @@ export default function DashboardLayout({
 } : {
   children: React.ReactNode
 }) {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -29,7 +30,7 @@ export default function DashboardLayout({
   }, [isAuthenticated, router]);
 
   if (loading) {
-    return null; // Affiche un loader pendant la vérification de l'authentification
+    return <Loader />; // Affiche un loader pendant la vérification de l'authentification
   }
 
   return (

@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { City } from "@/types/city";
+import { useAuth } from "@/context/authContext";
 
 const formSchema = z.object({
     label: z.string().min(1),
@@ -41,6 +42,7 @@ export const CityForm: React.FC<CityFormValues> = ({
 }) => {
     const params = useParams();
     const router = useRouter();
+    const { token } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -62,13 +64,38 @@ export const CityForm: React.FC<CityFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/cities/${params.cityId}`, data);
+                await axios.patch(`/api/cities/${params.cityId}`,
+                    data,
+                    {
+                        headers: {
+                        Authorization: `Bearer ${token}`,
+                        }
+                    }
+                ).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/dashboard/cities`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             } else {
-                await axios.post(`/api/cities`, data);
+                await axios.post(`/api/cities`,
+                    data,
+                    {
+                        headers: {
+                        Authorization: `Bearer ${token}`,
+                        }
+                    }
+                ).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/dashboard/cities`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             }
-            router.refresh();
-            router.push(`/dashboard/cities`);
-            toast.success(toastMessage);
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -79,10 +106,19 @@ export const CityForm: React.FC<CityFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/cities/${params.cityId}`);
-            router.refresh();
-            router.push(`/dashboard/cities`);
-            toast.success("City deleted.");
+            await axios.delete(`/api/cities/${params.cityId}`,
+                {
+                    headers: {
+                    Authorization: `Bearer ${token}`,
+                    }
+                }
+            ).then(() => {
+                toast.success("City deleted.");
+                router.refresh();
+                router.push(`/dashboard/cities`);
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Make sure you removed all corporations using this city first.");
         } finally {

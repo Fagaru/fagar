@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { Category } from "@/types/category";
+import { useAuth } from "@/context/authContext";
 
 const formSchema = z.object({
     label: z.string().min(1),
@@ -41,6 +42,7 @@ export const CategoryForm: React.FC<CategoryFormValues> = ({
 }) => {
     const params = useParams();
     const router = useRouter();
+    const { token } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -62,13 +64,38 @@ export const CategoryForm: React.FC<CategoryFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/categories/${params.categoryId}`, data);
+                await axios.patch(`/api/categories/${params.categoryId}`,
+                    data,
+                    {
+                        headers: {
+                        Authorization: `Bearer ${token}`,
+                        }
+                    }
+                ).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/dashboard/categories`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             } else {
-                await axios.post(`/api/categories`, data);
+                await axios.post(`/api/categories`,
+                    data,
+                    {
+                        headers: {
+                        Authorization: `Bearer ${token}`,
+                        }
+                    }
+                ).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/dashboard/categories`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             }
-            router.refresh();
-            router.push(`/dashboard/categories`);
-            toast.success(toastMessage);
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -79,10 +106,19 @@ export const CategoryForm: React.FC<CategoryFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/categories/${params.categoryId}`);
-            router.refresh();
-            router.push(`/dashboard/categories`);
-            toast.success("Category deleted.");
+            await axios.delete(`/api/categories/${params.categoryId}`,
+                {
+                    headers: {
+                    Authorization: `Bearer ${token}`,
+                    }
+                }
+            ).then(() => {
+                router.refresh();
+                router.push(`/dashboard/categories`);
+                toast.success("Category deleted.");
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Make sure you removed all corporations using this category first.");
         } finally {

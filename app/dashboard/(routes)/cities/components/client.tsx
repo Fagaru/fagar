@@ -14,7 +14,7 @@ import { columns } from "./columns";
 import { City } from '@/types/city';
 
 interface CityClientProps {
-    data: City[]
+    data: any
 }
 
 export const CityClient: React.FC<CityClientProps> = ({
@@ -39,7 +39,7 @@ export const CityClient: React.FC<CityClientProps> = ({
             <DataTable searchKey="label" columns={columns} data={data} />
             <Heading title="API" description="API calls for Cities" />
             <Separator />
-            <ApiList entityName="billboards" entityIdName="billboardId"/>
+            <ApiList entityName="cities" entityIdName="cityId"/>
         </>
     );
 }

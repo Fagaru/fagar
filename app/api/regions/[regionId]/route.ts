@@ -2,21 +2,27 @@ import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
 import Region from '@/models/region.model';
+import User, { ROLES } from "@/models/user.model";
+import { withAuth } from "@/lib/auth";
+
+interface AuthenticatedRequest extends Request {
+    user?: any;
+}
 
 export async function PATCH (
-    req: Request,
+    req: AuthenticatedRequest,
     { params }: { params: {regionId: string}}
 ) {
     try {
-        // const userId = "1234";
+        const authResponse = await withAuth(['admin'], req);
+        if (authResponse) return authResponse;
+
         const body = await req.json();
 
         const { label, imageUrl } = body;
 
-        // if (!userId) {
-        //     return new NextResponse("Unauthorized", { status: 401 });
-        
         await dbConnect();
+    
         // Récupérer la REGION actuelle
         const currentRegion = await Region.findById(params.regionId);
     
@@ -44,16 +50,25 @@ export async function PATCH (
 };
 
 export async function DELETE (
-    req: Request,
+    req: AuthenticatedRequest,
     { params }: { params: {regionId: string}}
 ) {
     try {
-        // const userId = "1234";
+        const authResponse = await withAuth(['admin'], req);
+        if (authResponse) return authResponse;
 
-        // if (!userId) {
-        //     return new NextResponse("Unauthorized", { status: 401 });
-        // }
         await dbConnect();
+        // const userId = "669f5ecded8652bac156c065";
+
+        // const currentUser = await User.findById(userId);
+    
+        // if (!currentUser) {
+        //     return new NextResponse('User not found', { status: 404 });
+        // }
+
+        // if (currentUser.role !== ROLES.ADMIN) {
+        //     return new NextResponse('Unauthorized', { status: 401 });
+        // }
         const filter = {_id: params.regionId};
 
         const currentRegion = await Region.findById(params.regionId);
@@ -76,24 +91,8 @@ export async function GET(
 ) {
     try {
         await dbConnect();
-
-        const { searchParams } = new URL(req.url);
-        const label = searchParams.get("regionLabel") || undefined;
-        const regionId = searchParams.get("regionId") || undefined;
-        // Construire la requête de recherche
-        const query: any = {};
-
-        // Filtrer par nom de région (ID de la catégorie)
-        if (label) {
-            query.label = label;
-        }
-    
-        // Filtrer par regionId
-        if (regionId) {
-            query['_id'] = regionId;
-        }
-
-        const region = await Region.findOne(query);
+        const filter = {_id: params.regionId};
+        const region = await Region.findOne(filter);
 
         return NextResponse.json(region);
     } catch (error) {

@@ -41,6 +41,7 @@ import { Tag } from "@/types/tag";
 
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
+import { useAuth } from "@/context/authContext";
 
 // import Tag as TagType from "@/types/tag";
 
@@ -105,6 +106,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
 }) => {
     const params = useParams();
     const router = useRouter();
+    const { user, token } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -145,7 +147,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
             }))
         } : {
             name: '',
-            userId: '',
+            userId: user.id,
             images: [],
             categoryId: '',
             tags: [],
@@ -174,14 +176,43 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     const onSubmit = async (data: CorporationFormValues) => {
         try {
             setLoading(true);
-            if (initialData){
-                await axios.patch(`/api/corporations/${params.corporationId}`, data);
-            } else {
-                await axios.post(`/api/corporations`, data);
+            if (!data.userId) {
+                data.userId = user.id;
             }
-            router.refresh();
-            router.push(`/pros/${params.corporationId}`);
-            toast.success(toastMessage);
+            if (initialData){
+                await axios.patch(`/api/corporations/${params.corporationId}`,
+                    data,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        }
+                    }
+                ).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/pros/${params.corporationId}`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
+            } else {
+                data.userId = user.id;
+                await axios.post(`/api/corporations`,
+                    data,
+                    {
+                        headers: {
+                        Authorization: `Bearer ${token}`,
+                        }
+                    }
+                ).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/pros/${params.corporationId}`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
+            }
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -192,10 +223,19 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/corporations/${params.corporationId}`);
-            router.refresh();
-            router.push(`/management`);
-            toast.success("Corporation deleted.");
+            await axios.delete(`/api/corporations/${params.corporationId}`,
+                {
+                    headers: {
+                    Authorization: `Bearer ${token}`,
+                    }
+                }
+            ).then(() => {
+                toast.success("Corporation deleted.");
+                router.refresh();
+                router.push(`/management`);
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -373,13 +413,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                                 label: foundTag?.label,
                                                             };
                                                         }
-                                                        // return {
-                                                        //     value: foundTag?.label,
-                                                        //     label: foundTag?.label,
-                                                        // };
                                                     });
-
-                                                    console.log("SELECTEDOPT", selectedTagObjects);
 
                                                     return (
                                                         <CreatableSelect
@@ -390,7 +424,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                             value={selectedTagObjects}
                                                             onChange={(selectedOptions) => {
                                                                 const selectedTagsOpt = selectedOptions.map(option => ({
-                                                                    label: option.value,
+                                                                    label: option?.value,
                                                                 }));
                                                                 onChange(selectedTagsOpt);
                                                             }}

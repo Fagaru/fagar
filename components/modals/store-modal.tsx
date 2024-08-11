@@ -22,9 +22,18 @@ import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
     name: z.string().min(1),
+    userId: z.string().min(1),
 });
 
-export const StoreModal = () => {
+interface StoreModalProps {
+    userId: string;
+    token: string
+}
+  
+export const StoreModal: React.FC<StoreModalProps> = ({ 
+    userId,
+    token
+ }) => {
     const storeModal = useStoreModal();
 
     const [loading, setLoading] = useState(false);
@@ -33,18 +42,32 @@ export const StoreModal = () => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
+            userId: userId,
         },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             setLoading(true);
-
-            const response = await axios.post('/api/corporations', values);
+            const response = await axios.post('/api/corporations',
+                values,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                }
+            );
+            // Traiter le succès
             toast.success("Première étape réussie.");
             window.location.assign(`/management/${response.data._id}`);
-        } catch (error) {
-            toast.error("Something went wrong.");
+    
+        } catch (error: any) {
+            // Gérer les erreurs
+            if (error.response && error.response.data) {
+                toast.error(error.response.data);
+            } else {
+                toast.error("Something went wrong.");
+            }
         } finally {
             setLoading(false);
         }

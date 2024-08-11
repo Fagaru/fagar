@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { Region } from "@/types/region";
+import { useAuth } from "@/context/authContext";
 
 const formSchema = z.object({
     label: z.string().min(1),
@@ -41,6 +42,7 @@ export const RegionForm: React.FC<RegionFormValues> = ({
 }) => {
     const params = useParams();
     const router = useRouter();
+    const { token } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -62,13 +64,38 @@ export const RegionForm: React.FC<RegionFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/regions/${params.regionId}`, data);
+                await axios.patch(`/api/regions/${params.regionId}`,
+                    data,
+                    {
+                        headers: {
+                        Authorization: `Bearer ${token}`,
+                        }
+                    }
+                ).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/dashboard/regions`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             } else {
-                await axios.post(`/api/regions`, data);
+                await axios.post(`/api/regions`,
+                    data,
+                    {
+                        headers: {
+                        Authorization: `Bearer ${token}`,
+                        }
+                    }
+                ).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/dashboard/regions`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             }
-            router.refresh();
-            router.push(`/dashboard/regions`);
-            toast.success(toastMessage);
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -79,10 +106,19 @@ export const RegionForm: React.FC<RegionFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/regions/${params.regionId}`);
-            router.refresh();
-            router.push(`/dashboard/regions`);
-            toast.success("Region deleted.");
+            await axios.delete(`/api/regions/${params.regionId}`,
+                {
+                    headers: {
+                    Authorization: `Bearer ${token}`,
+                    }
+                }
+            ).then(() => {
+                toast.success("Region deleted.");
+                router.refresh();
+                router.push(`/dashboard/regions`);
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Make sure you removed all corporations using this region first.");
         } finally {

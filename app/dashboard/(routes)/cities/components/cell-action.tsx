@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal";
 
 import { City } from '@/types/city';
+import { useAuth } from "@/context/authContext";
 
 interface CellActionProps {
     data: City;
@@ -27,6 +28,7 @@ export const CellAction: React.FC<CellActionProps>= ({
 }) => {
     const router = useRouter();
     const params = useParams();
+    const { token } = useAuth();
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -39,9 +41,18 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/cities/${data._id}`);
-            router.refresh();
-            toast.success("Cities deleted.");
+            await axios.delete(`/api/cities/${data._id}`,
+                {
+                    headers: {
+                    Authorization: `Bearer ${token}`,
+                    }
+                }
+            ).then(() => {
+                router.refresh();
+                toast.success("Cities deleted.");
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Make sure you removed all corporations using this cities first.");
         } finally {

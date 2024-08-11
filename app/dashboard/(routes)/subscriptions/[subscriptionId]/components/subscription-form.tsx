@@ -25,11 +25,12 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { Subscription } from "@/types/subscription";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/context/authContext";
 
 const formSchema = z.object({
     label: z.string().min(1),
     description: z.string().min(10),
-    price: z.number(),
+    price: z.string().min(1),
 });
 
 type SubscriptionType = z.infer<typeof formSchema>;
@@ -43,6 +44,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
 }) => {
     const params = useParams();
     const router = useRouter();
+    const { token } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -57,21 +59,47 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
         defaultValues: initialData || {
             label: '',
             description: '',
-            price: 0,
+            price: '0',
         }
     });
 
     const onSubmit = async (data: SubscriptionType) => {
         try {
             setLoading(true);
+            // data.price = Number(data.price)
             if (initialData) {
-                await axios.patch(`/api/subscriptions/${params.subscriptionId}`, data);
+                await axios.patch(`/api/subscriptions/${params.subscriptionId}`,
+                    data,
+                    {
+                        headers: {
+                        Authorization: `Bearer ${token}`,
+                        }
+                    }
+                ).then(() => {
+                    router.refresh();
+                    toast.success(toastMessage);
+                    router.push('/dashboard/subscriptions'); 
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             } else {
-                await axios.post('/api/subscriptions', data);
+                await axios.post('/api/subscriptions',
+                    data,
+                    {
+                        headers: {
+                        Authorization: `Bearer ${token}`,
+                        }
+                  }
+                ).then(() => {
+                    router.refresh();
+                    toast.success(toastMessage);
+                    router.push('/dashboard/subscriptions'); 
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             }
-            router.refresh();
-            router.push('/dashboard/subscriptions');
-            toast.success(toastMessage);
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -82,10 +110,15 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/subscriptions/${params.subscriptionId}`);
-            router.refresh();
-            router.push(`/dashboard/subscriptions`);
-            toast.success("Subscription deleted.");
+            await axios.delete(`/api/subscriptions/${params.subscriptionId}`).catch((e) => {
+                toast.error(e.response.data);
+            }).then(() => {
+                router.refresh();
+                router.push(`/dashboard/subscriptions`);
+                toast.success("Subscription deleted.");
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Make sure you removed all corporations using this subscription first.");
         } finally {
@@ -155,7 +188,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
                                <FormItem>
                                     <FormLabel>{"Prix de l'abonnement mensuel"}</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Prix" {...field} />
+                                        <Input type="number" disabled={loading} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                </FormItem>

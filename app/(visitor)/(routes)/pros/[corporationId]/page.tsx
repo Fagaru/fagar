@@ -54,7 +54,6 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                     const cat = await getCategory({ categoryId: categoryId });
                     setCategory(cat);
                 }
-                console.log("CATEGORY: ", categoryId);
             } catch (err) {
                 setError("Failed to fetch category");
             }

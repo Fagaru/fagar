@@ -10,6 +10,8 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   setUser: (user: any) => void;
+  token: string;
+  setToken: (token: any) => void;
   checkAuthStatus: () => void;
   logout: () => void;
 }
@@ -19,6 +21,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any>();
   const [isAuthenticated, setIsAuthenticated] = useState<any>();
+  const [token, setToken] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -30,6 +33,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const userInfo =  JSON.parse(storedUser);
       setIsAuthenticated(!!storedToken);
       setUser(userInfo);
+      setToken(storedToken);
     }
     checkAuthStatus();
   }, []);
@@ -40,6 +44,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const userInfo =  JSON.parse(storedUser);
     setIsAuthenticated(!!storedToken);
     setUser(userInfo);
+    setToken(storedToken);
   }
 
   const logout = async () => {
@@ -51,6 +56,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.removeItem('user'); // Remove user data from cookies
       setUser(null);
       setIsAuthenticated(false);
+      setToken(null);
     } catch (e) {
       toast.error('Error logging out');
       console.log("ERROR", e);
@@ -58,7 +64,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser,isAuthenticated, setIsAuthenticated, checkAuthStatus, logout }}>
+    <AuthContext.Provider value={{ user, setUser,isAuthenticated, setIsAuthenticated, token, setToken, checkAuthStatus, logout }}>
       {children}
     </AuthContext.Provider>
   );

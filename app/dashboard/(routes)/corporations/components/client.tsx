@@ -14,7 +14,7 @@ import { Corporation } from '@/types/corporation';
 import AddCorporation from "@/components/AddCorporation";
 
 interface CorporationClientProps {
-    data: Corporation[]
+    data: any
 }
 
 export const CorporationsClient: React.FC<CorporationClientProps> = ({
@@ -34,9 +34,9 @@ export const CorporationsClient: React.FC<CorporationClientProps> = ({
             </div>
             <Separator />
             <DataTable searchKey="name" columns={columns} data={data} />
-            <Heading title="API" description="API calls for Products" />
+            <Heading title="API" description="API calls for Corporations" />
             <Separator />
-            <ApiList entityName="products" entityIdName="productId"/>
+            <ApiList entityName="corporations" entityIdName="corporationId"/>
         </>
     );
 }

@@ -14,7 +14,7 @@ import { columns } from "./columns";
 import { Region } from '@/types/region';
 
 interface RegionClientProps {
-    data: Region[]
+    data: any
 }
 
 export const RegionClient: React.FC<RegionClientProps> = ({
@@ -39,7 +39,7 @@ export const RegionClient: React.FC<RegionClientProps> = ({
             <DataTable searchKey="label" columns={columns} data={data} />
             <Heading title="API" description="API calls for Regions" />
             <Separator />
-            <ApiList entityName="billboards" entityIdName="billboardId"/>
+            <ApiList entityName="regions" entityIdName="regionId"/>
         </>
     );
 }

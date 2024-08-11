@@ -10,14 +10,6 @@ export default async function RegisterLayout({
     children: React.ReactNode;
 }) {
 
-    const userId = "1234";
-
-    // if (!userId) {
-    //     redirect('/sign-in');
-    // }
-
-    // redirect('/');
-
     return (
         <>
         <div className="bg-gray-50 dark:bg-slate-950">

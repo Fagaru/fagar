@@ -2,42 +2,34 @@ import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
 import Region from "@/models/region.model";
+import User, { ROLES } from "@/models/user.model";
+import { withAuth } from "@/lib/auth";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin'];
 const allowedRolesForGET = ['admin', 'professional', 'visitor', 'anonymous'];
 
+interface AuthenticatedRequest extends Request {
+    user?: any;
+}
+
 export async function POST(
-    req: Request
+    req: AuthenticatedRequest
 ) {
     try {
-        // const { userId } = auth();
+        const authResponse = await withAuth(['admin'], req);
+        if (authResponse) return authResponse;
 
-        const userId = "1234";
         const body = await req.json();
 
         const { label, imageUrl } = body;
 
-        if (!userId) {
-            return new NextResponse("Unauthenticated", { status: 401 });
-        }
+        await dbConnect();
 
         if (!label) {
             return new NextResponse("Label is required", {  status: 400});
         }
 
-        // const storeByUserId = await prismadb.store.findFirst({
-        //     where: {
-        //         id: params.storeId,
-        //         userId
-        //     }
-        // });
-
-        // if (!storeByUserId) {
-        //     return new NextResponse("Unauthorized", {  status: 403});
-        // }
-
-        await dbConnect();
         const region = new Region({
             label,
             imageUrl

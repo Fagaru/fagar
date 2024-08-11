@@ -33,7 +33,7 @@ type LoginFormType = z.infer<typeof formSchema>;
 
 export const LoginForm: React.FC = () => {
     const router = useRouter();
-    const { user, setUser, isAuthenticated, setIsAuthenticated, checkAuthStatus } = useAuth();
+    const { checkAuthStatus } = useAuth();
     const [loading, setLoading] = useState(false);
 
     const form = useForm<LoginFormType>({
@@ -43,8 +43,6 @@ export const LoginForm: React.FC = () => {
             password: '',
         }
     });
-    console.log(" Before LOGIN USER: ", user);
-    console.log(" Before LOGIN Authenticated: ", isAuthenticated);
 
     const onSubmit = async (data: LoginFormType) => {
         try {
@@ -55,17 +53,12 @@ export const LoginForm: React.FC = () => {
                 const userInfo = data.data.userInfo;
                 localStorage.setItem("token", data.data.token);
                 localStorage.setItem("user", JSON.stringify(userInfo));
-                console.log("userInfo", userInfo);
-                // setUser(userInfo);
-                console.log("LOGIN USER: ", user);
-                // setIsAuthenticated(!!token);
                 checkAuthStatus();
                 
                 router.push(`/dashboard`);
                 toast.success("Logged in successfully");
             }).catch((e) => {
                 toast.error(e.response.data);
-                console.log(e.response);
             });
         } catch (error) {
             toast.error("Invalid email or password");

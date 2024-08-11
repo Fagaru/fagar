@@ -18,6 +18,7 @@ import { AlertModal } from "@/components/modals/alert-modal";
 
 // import { ProductColumn } from "./columns";
 import { Corporation } from '@/types/corporation';
+import { useAuth } from "@/context/authContext";
 
 
 interface CellActionProps {
@@ -29,6 +30,7 @@ export const CellAction: React.FC<CellActionProps>= ({
 }) => {
     const router = useRouter();
     const params = useParams();
+    const { user, token } = useAuth();
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -41,9 +43,18 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/corporations/${params.corporationId}/${data._id}`);
-            router.refresh();
-            toast.success("Corporation deleted.");
+            await axios.delete(`/api/corporations/${data._id}`,
+                {
+                    headers: {
+                    Authorization: `Bearer ${token}`,
+                    }
+                }
+            ).then(() => {
+                toast.success("Corporation deleted.");
+                router.refresh();
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {

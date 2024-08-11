@@ -14,7 +14,7 @@ import { columns } from "./columns";
 import { Subscription } from '@/types/subscription';
 
 interface SubscriptionClientProps {
-    data: Subscription[]
+    data: any
 }
 
 export const SubscriptionClient: React.FC<SubscriptionClientProps> = ({
@@ -39,7 +39,7 @@ export const SubscriptionClient: React.FC<SubscriptionClientProps> = ({
             <DataTable searchKey="label" columns={columns} data={data} />
             <Heading title="API" description="API calls for subscription" />
             <Separator />
-            <ApiList entityName="billboards" entityIdName="billboardId"/>
+            <ApiList entityName="subscriptions" entityIdName="subscriptionId"/>
         </>
     );
 }

@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import SkeletonDemo from '@/components/skeletonDemo';
 
 const ProfilePage = () => {
   const { user, isAuthenticated } = useAuth();
@@ -33,7 +34,7 @@ const ProfilePage = () => {
   if (!isAuthenticated) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <p>Loading...</p>
+        <SkeletonDemo />
       </div>
     );
   }
@@ -42,6 +43,7 @@ const ProfilePage = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <p>Loading user data...</p>
+        <SkeletonDemo />
       </div>
     );
   }

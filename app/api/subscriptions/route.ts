@@ -2,52 +2,49 @@ import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
 import Subscription from "@/models/subscription.model";
+import User, { ROLES } from "@/models/user.model";
+import { withAuth } from "@/lib/auth";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin'];
 const allowedRolesForGET = ['admin', 'professional', 'visitor', 'anonymous'];
 
+interface AuthenticatedRequest extends Request {
+    user?: any;
+}
+
 export async function POST(
-    req: Request
+    req: AuthenticatedRequest
 ) {
     try {
-        // const { userId } = auth();
+        // Vérifiez l'authentification et les rôles
+        const authResponse = await withAuth(['admin'], req);
+        if (authResponse) return authResponse;
 
-        const userId = "1234";
+        console.log("New req :", req.user);
+
         const body = await req.json();
-
         const { label, description, price } = body;
 
-        if (!userId) {
-            return new NextResponse("Unauthenticated", { status: 401 });
-        }
-
         if (!label) {
-            return new NextResponse("Label is required", {  status: 400});
+        return new NextResponse("Label is required", { status: 400 });
         }
 
-        // const storeByUserId = await prismadb.store.findFirst({
-        //     where: {
-        //         id: params.storeId,
-        //         userId
-        //     }
-        // });
-
-        // if (!storeByUserId) {
-        //     return new NextResponse("Unauthorized", {  status: 403});
-        // }
-
+        // Connectez-vous à la base de données
         await dbConnect();
+
+        // Créez la nouvelle souscription
         const subscription = new Subscription({
-            label,
-            description,
-            price
+        label,
+        description,
+        price
         });
 
         await subscription.save();
+
         return NextResponse.json(subscription);
     } catch (error) {
-        console.log('[Subscription_POST] ', error);
+        console.error('[Subscription_POST]', error);
         return new NextResponse("Internal error", { status: 500 });
     }
 }

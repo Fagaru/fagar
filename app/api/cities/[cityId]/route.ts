@@ -3,25 +3,30 @@ import { NextResponse } from "next/server";
 import dbConnect from '@/lib/dbConnect';
 import City from '@/models/city.model';
 import mongoose from "mongoose";
+import User, { ROLES } from "@/models/user.model";
+import { withAuth } from "@/lib/auth";
+
+interface AuthenticatedRequest extends Request {
+    user?: any;
+}
 
 export async function PATCH (
-    req: Request,
+    req: AuthenticatedRequest,
     { params }: { params: {cityId: string}}
 ) {
     try {
-        // const userId = "1234";
+
+        const authResponse = await withAuth(['admin'], req);
+        if (authResponse) return authResponse;
+        
         const body = await req.json();
 
-        const { label, imageUrl } = body;
-
-        // if (!userId) {
-        //     return new NextResponse("Unauthorized", { status: 401 });
+        await dbConnect();
 
         if (!mongoose.Types.ObjectId.isValid(params.cityId)) {
             return new NextResponse('Invalid city ID', { status: 400 });
         }
-        
-        await dbConnect();
+
         // Récupérer la CITY actuelle
         const currentCity = await City.findById(params.cityId);
     
@@ -49,16 +54,15 @@ export async function PATCH (
 };
 
 export async function DELETE (
-    req: Request,
+    req: AuthenticatedRequest,
     { params }: { params: {cityId: string}}
 ) {
     try {
-        // const userId = "1234";
+        const authResponse = await withAuth(['admin'], req);
+        if (authResponse) return authResponse;
 
-        // if (!userId) {
-        //     return new NextResponse("Unauthorized", { status: 401 });
-        // }
         await dbConnect();
+        
         const filter = {_id: params.cityId};
 
         const currentCity = await City.findById(params.cityId);

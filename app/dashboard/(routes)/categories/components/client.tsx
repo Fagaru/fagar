@@ -14,7 +14,7 @@ import { columns } from "./columns";
 import { Category } from '@/types/category';
 
 interface CategoryClientProps {
-    data: Category[]
+    data: any
 }
 
 export const CategoryClient: React.FC<CategoryClientProps> = ({
@@ -39,7 +39,7 @@ export const CategoryClient: React.FC<CategoryClientProps> = ({
             <DataTable searchKey="label" columns={columns} data={data} />
             <Heading title="API" description="API calls for Categories" />
             <Separator />
-            <ApiList entityName="billboards" entityIdName="billboardId"/>
+            <ApiList entityName="categories" entityIdName="categoryId"/>
         </>
     );
 }

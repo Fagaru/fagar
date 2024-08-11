@@ -56,12 +56,7 @@ interface IReview {
   updatedAt?: Date;
 }
 
-<<<<<<< HEAD
-// Interface for Tag Subschema
-interface ITag {
-=======
-export interface ITag extends Document {
->>>>>>> e2529533052ae829ddd7bdbdd29f6f0e03fffee3
+export interface ITag {
   label: string;
   createdAt: Date;
   updatedAt: Date;
@@ -70,7 +65,7 @@ export interface ITag extends Document {
 // Interface for Corporation Document
 export interface ICorporation extends Document {
   name: string;
-  userId: string;
+  userId: mongoose.Types.ObjectId;
   phone: string;
   mail_pro: string;
   description: string;
@@ -150,19 +145,13 @@ const reviewSchema: Schema = new Schema({
 
 const tagSchema: Schema = new Schema({
   label: { type: String, required: true },
-<<<<<<< HEAD
-}, {
-  timestamps: true,
-});
-=======
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 }, { _id: false });
->>>>>>> e2529533052ae829ddd7bdbdd29f6f0e03fffee3
 
 const corporationSchema: Schema = new Schema({
   name: { type: String, required: true },
-  userId: { type: String },
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
   phone: { type: String },
   mail_pro: { type: String },
   description: { type: String },

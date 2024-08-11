@@ -11,9 +11,7 @@ interface Query {
 const getRegion = async (query: Query): Promise<Region> => {
   try {
     const url = URL+query.regionId;
-    console.log("URL Service ", url);
     const res = await fetch(url);
-    
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
