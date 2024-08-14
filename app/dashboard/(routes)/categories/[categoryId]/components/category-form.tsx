@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
 import { Heading } from "@/components/ui/heading";
@@ -25,6 +24,7 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { Category } from "@/types/category";
 import { useAuth } from "@/context/authContext";
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 const formSchema = z.object({
     label: z.string().min(1),
@@ -40,9 +40,9 @@ interface CategoryFormValues {
 export const CategoryForm: React.FC<CategoryFormValues> = ({
     initialData
 }) => {
+    const axios = useAxiosWithAuth();
     const params = useParams();
     const router = useRouter();
-    const { token } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -64,14 +64,7 @@ export const CategoryForm: React.FC<CategoryFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/categories/${params.categoryId}`,
-                    data,
-                    {
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                        }
-                    }
-                ).then(() => {
+                await axios.patch(`/api/categories/${params.categoryId}`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/categories`);
@@ -80,14 +73,7 @@ export const CategoryForm: React.FC<CategoryFormValues> = ({
                     toast.error(e.response.data);
                 });
             } else {
-                await axios.post(`/api/categories`,
-                    data,
-                    {
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                        }
-                    }
-                ).then(() => {
+                await axios.post(`/api/categories`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/categories`);
@@ -106,13 +92,7 @@ export const CategoryForm: React.FC<CategoryFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/categories/${params.categoryId}`,
-                {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    }
-                }
-            ).then(() => {
+            await axios.delete(`/api/categories/${params.categoryId}`).then(() => {
                 router.refresh();
                 router.push(`/dashboard/categories`);
                 toast.success("Category deleted.");

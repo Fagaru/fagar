@@ -21,7 +21,6 @@ export const RegionClient: React.FC<RegionClientProps> = ({
     data
 }) => {
     const router = useRouter();
-    const params = useParams();
 
     return (
         <>

@@ -18,7 +18,6 @@ export default async function VisitorLayout({
                 <div className="w-full">
                     {children}
                 </div>
-                <Footer />
             </div> 
         </>
     );

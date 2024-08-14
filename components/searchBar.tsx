@@ -57,6 +57,7 @@ const SearchBar = () => {
           className="rounded-l-full border-gray-300"
           placeholder="De quoi avez-vous besoin ?"
           defaultValue={searchParams.get('query')?.toString()}
+          size={50}
           // value={query}
           onChange={(e)=>{
             handleQueryChange(e.target.value);
@@ -73,6 +74,7 @@ const SearchBar = () => {
           type="text"
           className="rounded-none border-gray-300"
           placeholder="Votre adresse"
+          size={50}
           value={address}
           onChange={(e)=>{
             handleAddressChange(e.target.value);
@@ -84,7 +86,7 @@ const SearchBar = () => {
           </button>
         )}
       </div>
-      <button className="rounded-r-full border-gray-300 px-4 py-2 max-w-2" onClick={handleSearch}>
+      <button className="rounded-r-full border-gray-300 px-4 py-2 max-w-3" onClick={handleSearch}>
         <Search />
       </button>
     </div>

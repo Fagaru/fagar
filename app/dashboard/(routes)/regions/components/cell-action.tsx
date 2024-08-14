@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
-import axios from "axios";
 
 import { 
     DropdownMenu,
@@ -18,6 +17,7 @@ import { AlertModal } from "@/components/modals/alert-modal";
 
 import { Region } from '@/types/region';
 import { useAuth } from "@/context/authContext";
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 interface CellActionProps {
     data: Region;
@@ -26,9 +26,8 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps>= ({
     data
 }) => {
+    const axios = useAxiosWithAuth();
     const router = useRouter();
-    const params = useParams();
-    const { token } = useAuth();
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -41,13 +40,7 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/regions/${data._id}`,
-                {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    }
-                }
-            ).then(() => {
+            await axios.delete(`/api/regions/${data._id}`).then(() => {
                 router.refresh();
                 toast.success("Region deleted.");
             }).catch((e) => {

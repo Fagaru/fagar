@@ -5,13 +5,9 @@ import axios from "axios";
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/users/`;
 
-interface Query {
-  userId: string
-}
-
-const getUser = async (query: Query, token: string): Promise<User> => {
+const getUsers = async (token: string): Promise<User> => {
   try {
-    const url = `${URL}${query.userId}`;
+    const url = `${URL}`;
     console.log("URL Service", url);
 
     // Configurer les headers avec le token
@@ -29,4 +25,4 @@ const getUser = async (query: Query, token: string): Promise<User> => {
   }
 };
 
-export default getUser;
+export default getUsers;

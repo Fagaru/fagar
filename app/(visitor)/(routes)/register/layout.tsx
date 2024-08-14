@@ -1,6 +1,3 @@
-
-import { redirect } from "next/navigation";
-
 import Container from "@/components/ui/container";
 
 

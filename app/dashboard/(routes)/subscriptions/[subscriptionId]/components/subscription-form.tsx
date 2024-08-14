@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
 import { Heading } from "@/components/ui/heading";
@@ -25,7 +24,7 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { Subscription } from "@/types/subscription";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/context/authContext";
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 const formSchema = z.object({
     label: z.string().min(1),
@@ -42,9 +41,9 @@ interface SubscriptionFormValues {
 export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
     initialData
 }) => {
+    const axios = useAxiosWithAuth();
     const params = useParams();
     const router = useRouter();
-    const { token } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -68,14 +67,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
             setLoading(true);
             // data.price = Number(data.price)
             if (initialData) {
-                await axios.patch(`/api/subscriptions/${params.subscriptionId}`,
-                    data,
-                    {
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                        }
-                    }
-                ).then(() => {
+                await axios.patch(`/api/subscriptions/${params.subscriptionId}`, data).then(() => {
                     router.refresh();
                     toast.success(toastMessage);
                     router.push('/dashboard/subscriptions'); 
@@ -84,14 +76,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
                     toast.error(e.response.data);
                 });
             } else {
-                await axios.post('/api/subscriptions',
-                    data,
-                    {
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                        }
-                  }
-                ).then(() => {
+                await axios.post('/api/subscriptions', data).then(() => {
                     router.refresh();
                     toast.success(toastMessage);
                     router.push('/dashboard/subscriptions'); 
@@ -110,9 +95,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/subscriptions/${params.subscriptionId}`).catch((e) => {
-                toast.error(e.response.data);
-            }).then(() => {
+            await axios.delete(`/api/subscriptions/${params.subscriptionId}`).then(() => {
                 router.refresh();
                 router.push(`/dashboard/subscriptions`);
                 toast.success("Subscription deleted.");

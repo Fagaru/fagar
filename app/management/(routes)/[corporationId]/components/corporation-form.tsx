@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { CalendarCheck, Facebook, Instagram, Linkedin, Trash, X } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
 import { Heading } from "@/components/ui/heading";
@@ -36,12 +35,11 @@ import { Corporation } from "@/types/corporation";
 import { Category } from "@/types/category";
 import { Textarea } from "@/components/ui/textarea";
 import { Controller } from "react-hook-form";
-import getTags from "@/services/getTags";
-import { Tag } from "@/types/tag";
 
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { useAuth } from "@/context/authContext";
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 // import Tag as TagType from "@/types/tag";
 
@@ -104,9 +102,11 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     initialData,
     categories
 }) => {
+    const axios = useAxiosWithAuth();
+    
     const params = useParams();
     const router = useRouter();
-    const { user, token } = useAuth();
+    const { user } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -116,8 +116,6 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
         // Fetch available tags from the backend
         const fetchTags = async () => {
             try {
-                // const fetchedData = await getTags();
-                // setAvailableTags(fetchedData.map(tag => ({label: tag.label})));
                 const current_tags = initialData?.tags;
                 setAvailableTags(current_tags);
             } catch (error) {
@@ -180,14 +178,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                 data.userId = user.id;
             }
             if (initialData){
-                await axios.patch(`/api/corporations/${params.corporationId}`,
-                    data,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        }
-                    }
-                ).then(() => {
+                await axios.patch(`/api/corporations/${params.corporationId}`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/pros/${params.corporationId}`);
@@ -197,19 +188,11 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                 });
             } else {
                 data.userId = user.id;
-                await axios.post(`/api/corporations`,
-                    data,
-                    {
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                        }
-                    }
-                ).then(() => {
+                await axios.post(`/api/corporations`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/pros/${params.corporationId}`);
-                })
-                .catch((e) => {
+                }).catch((e) => {
                     toast.error(e.response.data);
                 });
             }
@@ -223,13 +206,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/corporations/${params.corporationId}`,
-                {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    }
-                }
-            ).then(() => {
+            await axios.delete(`/api/corporations/${params.corporationId}`).then(() => {
                 toast.success("Corporation deleted.");
                 router.refresh();
                 router.push(`/management`);
@@ -290,7 +267,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                         )}
                     />
                     <div className="relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 xs:grid-cols-1 gap-5 p-2 auto-rows-[minmax(50px,auto)]">
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2  xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="name"
@@ -305,7 +282,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2  xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="phone"
@@ -320,7 +297,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
                             name="mail_pro"
@@ -335,7 +312,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             )}
                         />
                         </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
                             name="address.label"
@@ -350,7 +327,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             )}
                         />
                         </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                         <FormField 
                             control={form.control}
                             name="categoryId"
@@ -387,7 +364,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             )}
                         />
                         </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             {/* Add Tags */}
                             <FormField
                                 control={form.control}
@@ -400,31 +377,43 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                 control={form.control}
                                                 name="tags"
                                                 render={({ field: { value, onChange } }) => {
+                                                    // const selectedTagObjects = value?.map(val => {
+                                                    //     let foundTag;
+                                                    //     if (val !== undefined && val.label !== undefined) {
+                                                    //         if(val){
+                                                    //             foundTag = availableTags.find((tag: any) => tag.label === val.label);
+                                                    //         } else {
+                                                    //             foundTag = availableTags.find((tag: any) => tag === String(val));
+                                                    //         }
+                                                    //         return {
+                                                    //             value: foundTag?.label,
+                                                    //             label: foundTag?.label,
+                                                    //         };
+                                                    //     }
+                                                    // });
+                                                    // Map the value to selected tag objects, ensuring unique keys
                                                     const selectedTagObjects = value?.map(val => {
-                                                        let foundTag;
-                                                        if (val !== undefined && val.label !== undefined) {
-                                                            if(val){
-                                                                foundTag = availableTags.find((tag: any) => tag.label === val.label);
-                                                            } else {
-                                                                foundTag = availableTags.find((tag: any) => tag === String(val));
-                                                            }
+                                                        if (val && val.label) {
+                                                            const foundTag = availableTags.find((tag: any) => tag.label === val.label);
                                                             return {
                                                                 value: foundTag?.label,
                                                                 label: foundTag?.label,
                                                             };
                                                         }
-                                                    });
+                                                        return null; // Return null for undefined values
+                                                    }).filter(Boolean); // Remove any null values
 
                                                     return (
                                                         <CreatableSelect
                                                             isMulti
                                                             options={availableTags.map((tag: any) => ({
-                                                                value: tag.label
+                                                                value: tag.label,
+                                                                label: tag.label
                                                             }))}
                                                             value={selectedTagObjects}
                                                             onChange={(selectedOptions) => {
                                                                 const selectedTagsOpt = selectedOptions.map(option => ({
-                                                                    label: option?.value,
+                                                                    label: option?.label,
                                                                 }));
                                                                 onChange(selectedTagsOpt);
                                                             }}
@@ -460,7 +449,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             />
                         </div>
                         
-                        <div className="relative row-span-2 col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-auto xl:col-span-2 lg:col-span-4 md:xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="description"
@@ -477,7 +466,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                         </div>
 
 
-                        <div className="relative xl:lg:col-span-2 md:col-span-2 xs:col-span-3 row-span-4 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-2 md:col-span-2 xs:col-span-4 row-span-4 p-1 rounded-[10px] border-solid border-[1px] gap-4">
                             <FormField 
                                 control={form.control}
                                 name="schedules"
@@ -485,9 +474,9 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                     <FormItem>
                                     <FormLabel>{"Horaires d'ouverture"}</FormLabel>
                                     {daysOfWeek.map((day, index) => (
-                                        <div key={index} className="flex flex-col mb-4">
+                                        <div key={index} className="flex flex-col">
                                             <FormLabel>{day}</FormLabel>
-                                            <div className="flex space-x-4">
+                                            <div className="flex space-x-1">
                                                 <Controller
                                                     name={`schedules.${index}.begin_am`}
                                                     control={form.control}
@@ -573,7 +562,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2  xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkFacebook"
@@ -588,7 +577,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                             </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkInstagram"
@@ -603,7 +592,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                          </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkLinkedIn"
@@ -618,7 +607,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkX"
@@ -633,7 +622,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="starting_date"
@@ -654,7 +643,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="siret_num"
@@ -669,7 +658,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="siren_num"
@@ -684,7 +673,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-5 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="code_naf"
@@ -699,52 +688,56 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <FormField 
-                            control={form.control}
-                            name="isActive"
-                            render={({ field }) => (
-                               <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                                    <FormControl >
-                                        <Checkbox 
-                                            checked={field.value}
-                                            // @ts-ignore
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <div className="space-y-1 leading-none">
-                                        <FormLabel>
-                                            Actif
-                                        </FormLabel>
-                                        <FormDescription>
-                                            Cette entreprise sera affichée dans les recherches.
-                                        </FormDescription>
-                                    </div>
-                               </FormItem>
-                            )}
-                        />
-                        <FormField 
-                            control={form.control}
-                            name="isSuspended"
-                            render={({ field }) => (
-                               <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                                    <FormControl >
-                                        <Checkbox 
-                                            checked={field.value}
-                                            // @ts-ignore
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <div className="space-y-1 leading-none">
-                                        <FormLabel>
-                                            Suspendre
-                                        </FormLabel>
-                                        <FormDescription>
-                                            {"Le compte associé à cette entreprise n'aura plus les droits."}
-                                        </FormDescription>
-                                    </div>
-                               </FormItem>
-                            )}
-                        />
+                        <div className="relative xl:lg:col-span-2 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="isActive"
+                                render={({ field }) => (
+                                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                        <FormControl >
+                                            <Checkbox 
+                                                checked={field.value}
+                                                // @ts-ignore
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <div className="space-y-1 leading-none">
+                                            <FormLabel>
+                                                Actif
+                                            </FormLabel>
+                                            <FormDescription>
+                                                Cette entreprise sera affichée dans les recherches.
+                                            </FormDescription>
+                                        </div>
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="relative xl:lg:col-span-2 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="isSuspended"
+                                render={({ field }) => (
+                                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                        <FormControl >
+                                            <Checkbox 
+                                                checked={field.value}
+                                                // @ts-ignore
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <div className="space-y-1 leading-none">
+                                            <FormLabel>
+                                                Suspendre
+                                            </FormLabel>
+                                            <FormDescription>
+                                                {"Le compte associé à cette entreprise n'aura plus les droits."}
+                                            </FormDescription>
+                                        </div>
+                                </FormItem>
+                                )}
+                            />
+                        </div>
                     </div>
                     <Button disabled={loading} className="ml-auto" type="submit">
                         {action}

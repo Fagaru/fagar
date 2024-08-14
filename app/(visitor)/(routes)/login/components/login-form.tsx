@@ -47,12 +47,10 @@ export const LoginForm: React.FC = () => {
     const onSubmit = async (data: LoginFormType) => {
         try {
             setLoading(true);
-            console.log(data);
             await axios.post(`/api/auth/login`, data).then((data) => {
-                const token = data.data.token;
                 const userInfo = data.data.userInfo;
-                localStorage.setItem("token", data.data.token);
-                localStorage.setItem("user", JSON.stringify(userInfo));
+                sessionStorage.setItem("token", data.data.token);
+                sessionStorage.setItem("user", JSON.stringify(userInfo));
                 checkAuthStatus();
                 
                 router.push(`/dashboard`);

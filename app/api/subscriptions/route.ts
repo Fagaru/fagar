@@ -21,8 +21,6 @@ export async function POST(
         const authResponse = await withAuth(['admin'], req);
         if (authResponse) return authResponse;
 
-        console.log("New req :", req.user);
-
         const body = await req.json();
         const { label, description, price } = body;
 

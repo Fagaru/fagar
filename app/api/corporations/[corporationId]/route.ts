@@ -45,16 +45,6 @@ export async function PATCH (
           throw new Error('Corporation not found');
         }
 
-        // const currentUser = await User.findById(userId);
-    
-        // if (!currentUser) {
-        //     return new NextResponse('User not found', { status: 404 });
-        // }
-
-        // if (currentUser.role !== ROLES.PROFESSIONAL && currentUser.role !== ROLES.ADMIN) {
-        //     return new NextResponse('Unauthorized', { status: 401 });
-        // }
-
         if (req.user.role === ROLES.PROFESSIONAL && req.user._id !== currentCorporation.userId) {
             return new NextResponse('Unauthorized', { status: 401 });
         }
@@ -94,8 +84,6 @@ export async function PATCH (
                 updateAt: Date.now()
             }
         );
-
-        console.log('Updated Corporation:', updatedCorporation);
 
         return NextResponse.json(updatedCorporation);
     } catch (error) {

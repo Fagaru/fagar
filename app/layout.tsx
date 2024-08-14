@@ -5,7 +5,11 @@ import { ToasterProvider } from '@/providers/toast-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 
 import './globals.css';
+
 import { AuthProvider } from '../context/authContext';
+import Snowfall from '@/components/snowfall';
+import VineAnimation from '@/components/vineAnimation';
+import Footer from '@/components/footer';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,9 +28,17 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ToasterProvider />
+          {/* <VineAnimation /> */}
+          <Snowfall 
+            snowflakeCount={400} 
+            color="lightblue" 
+            sizeRange={[5, 15]} 
+            speedRange={[5, 15]} 
+          />
           <AuthProvider>
             <ModalProvider />
             {children}
+            <Footer />
           </AuthProvider>
         </ThemeProvider>
       </body>

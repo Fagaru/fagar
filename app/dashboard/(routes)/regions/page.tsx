@@ -9,10 +9,6 @@ import { Region } from "@/types/region";
 import toast from "react-hot-toast";
 
 const RegionsPage = () => {
-    // const regions = await getRegions({});
-
-    // const formattedRegions = regions
-
     const [regions, setRegions] = useState<Region[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [isMounted, setIsMounted] = useState(false);
@@ -53,7 +49,7 @@ const RegionsPage = () => {
 
     return (
         <div className="flex-col">
-            <div className="flex-1 space-y-4 p-8 pt-6">
+            <div className="flex-1 space-y-4 p-10 pt-8">
                 <RegionClient data={formattedRegions}/>
             </div>
         </div>

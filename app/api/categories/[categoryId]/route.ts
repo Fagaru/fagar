@@ -45,8 +45,6 @@ export async function PATCH (
             }
         );
 
-        console.log('Updated CATEGORY:', updatedCategory);
-
         return NextResponse.json(updatedCategory);
     } catch (error) {
         console.log('[CATEGORY_PATCH] ', error);

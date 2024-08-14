@@ -4,7 +4,7 @@ import getCorporation from "@/services/getCorporation";
 import getCategories from "@/services/getCategories";
 import { useAuth } from "@/context/authContext";
 import toast from "react-hot-toast";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Loader from "@/components/loader";
 import { useEffect, useState } from "react";
 

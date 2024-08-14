@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
 import { Heading } from "@/components/ui/heading";
@@ -24,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { City } from "@/types/city";
-import { useAuth } from "@/context/authContext";
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 const formSchema = z.object({
     label: z.string().min(1),
@@ -40,9 +39,9 @@ interface CityFormValues {
 export const CityForm: React.FC<CityFormValues> = ({
     initialData
 }) => {
+    const axios = useAxiosWithAuth();
     const params = useParams();
     const router = useRouter();
-    const { token } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -64,14 +63,7 @@ export const CityForm: React.FC<CityFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/cities/${params.cityId}`,
-                    data,
-                    {
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                        }
-                    }
-                ).then(() => {
+                await axios.patch(`/api/cities/${params.cityId}`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/cities`);
@@ -80,14 +72,7 @@ export const CityForm: React.FC<CityFormValues> = ({
                     toast.error(e.response.data);
                 });
             } else {
-                await axios.post(`/api/cities`,
-                    data,
-                    {
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                        }
-                    }
-                ).then(() => {
+                await axios.post(`/api/cities`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/cities`);
@@ -106,13 +91,7 @@ export const CityForm: React.FC<CityFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/cities/${params.cityId}`,
-                {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    }
-                }
-            ).then(() => {
+            await axios.delete(`/api/cities/${params.cityId}`).then(() => {
                 toast.success("City deleted.");
                 router.refresh();
                 router.push(`/dashboard/cities`);

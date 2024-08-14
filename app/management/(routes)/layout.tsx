@@ -16,7 +16,7 @@ export default function ManagementLayout({
 } : {
     children: React.ReactNode;
 }) {
-    const { user, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 

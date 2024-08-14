@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import User, { IUser, ROLES } from '@/models/user.model';
 import dbConnect from '@/lib/dbConnect';
@@ -13,9 +12,7 @@ export async function POST(
   try {
     const body = await req.json();
     const { first_name, last_name, email, password, role, phone, birthday } = body;
-
-  
-    // await mongoose.connect(process.env.MONGO_URI!);
+    
     await dbConnect();
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password + PEPPER, salt);

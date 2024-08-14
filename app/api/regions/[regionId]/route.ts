@@ -58,17 +58,6 @@ export async function DELETE (
         if (authResponse) return authResponse;
 
         await dbConnect();
-        // const userId = "669f5ecded8652bac156c065";
-
-        // const currentUser = await User.findById(userId);
-    
-        // if (!currentUser) {
-        //     return new NextResponse('User not found', { status: 404 });
-        // }
-
-        // if (currentUser.role !== ROLES.ADMIN) {
-        //     return new NextResponse('Unauthorized', { status: 401 });
-        // }
         const filter = {_id: params.regionId};
 
         const currentRegion = await Region.findById(params.regionId);

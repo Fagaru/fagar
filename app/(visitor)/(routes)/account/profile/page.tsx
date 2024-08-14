@@ -9,9 +9,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import SkeletonDemo from '@/components/skeletonDemo';
+import Loader from '@/components/loader';
 
 const ProfilePage = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, token } = useAuth();
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
@@ -19,9 +20,8 @@ const ProfilePage = () => {
       if (isAuthenticated && user) {
         try {
           const userId = user.id;
-          const fetchedUser = await getUser({ userId });
+          const fetchedUser = await getUser({ userId }, token);
           setCurrentUser(fetchedUser);
-          console.log("PROFILE USER ID", userId);
         } catch (err) {
           console.log("Failed to fetch user data", err);
         }
@@ -34,7 +34,7 @@ const ProfilePage = () => {
   if (!isAuthenticated) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <SkeletonDemo />
+        <Loader />
       </div>
     );
   }
@@ -43,7 +43,7 @@ const ProfilePage = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <p>Loading user data...</p>
-        <SkeletonDemo />
+        <Loader />
       </div>
     );
   }

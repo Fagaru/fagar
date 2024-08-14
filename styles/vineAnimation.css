@@ -1,0 +1,48 @@
+.vine-container {
+  position: fixed; /* Fixer le conteneur à la fenêtre d'affichage */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Ignorer les événements de souris pour ne pas interférer avec les éléments de la page */
+  z-index: 9998; /* Positionner au-dessus des autres éléments */
+  overflow: hidden; /* Éviter que les éléments de vigne dépassent du conteneur */
+}
+
+.vine {
+  position: absolute; /* Positionner chaque vigne de manière absolue */
+  width: 10px; /* Largeur de l'élément vigne */
+  height: 10px; /* Hauteur de l'élément vigne */
+  background-color: #2e8b57; /* Couleur de la vigne (vert) */
+  border-radius: 50%; /* Arrondir les coins pour former un cercle */
+  opacity: 0.8; /* Légèrement transparent pour un effet plus subtil */
+  animation: grow 30s linear infinite; /* Animation de croissance continue */
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(0); /* Commencer avec une échelle de 0 (invisible) */
+    top: 0;
+    left: 0;
+  }
+  25% {
+    transform: scale(1); /* Agrandir à l'échelle normale */
+    top: 0;
+    left: 100%; /* Déplacer à droite */
+  }
+  50% {
+    transform: scale(1); /* Maintenir l'échelle normale */
+    top: 100%; /* Déplacer vers le bas */
+    left: 100%;
+  }
+  75% {
+    transform: scale(1); /* Maintenir l'échelle normale */
+    top: 100%;
+    left: 0; /* Déplacer vers la gauche */
+  }
+  100% {
+    transform: scale(1); /* Maintenir l'échelle normale */
+    top: 0; /* Retourner en haut */
+    left: 0; /* Retourner à gauche */
+  }
+}

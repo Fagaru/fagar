@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Copy, Edit, MoreHorizontal, Navigation, Trash } from "lucide-react";
-import axios from "axios";
 
 import { 
     DropdownMenu,
@@ -17,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal";
 
 import { City } from '@/types/city';
-import { useAuth } from "@/context/authContext";
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 interface CellActionProps {
     data: City;
@@ -26,9 +25,8 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps>= ({
     data
 }) => {
+    const axios = useAxiosWithAuth();
     const router = useRouter();
-    const params = useParams();
-    const { token } = useAuth();
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -41,13 +39,7 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/cities/${data._id}`,
-                {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    }
-                }
-            ).then(() => {
+            await axios.delete(`/api/cities/${data._id}`).then(() => {
                 router.refresh();
                 toast.success("Cities deleted.");
             }).catch((e) => {

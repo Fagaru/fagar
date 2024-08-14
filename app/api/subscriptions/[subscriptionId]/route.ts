@@ -43,8 +43,6 @@ export async function PATCH (
             }
         );
 
-        console.log('Updated Subscription:', updatedSubscription);
-
         return NextResponse.json(updatedSubscription);
     } catch (error) {
         console.log('[Subscription_PATCH] ', error);

@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { jwtDecode } from 'jwt-decode';
 
 interface AuthContextProps {
   user: any;
@@ -13,6 +14,7 @@ interface AuthContextProps {
   token: string;
   setToken: (token: any) => void;
   checkAuthStatus: () => void;
+  checkTokenExp: () => void;
   logout: () => void;
 }
 
@@ -28,8 +30,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     // Check for user data in cookies
     const checkAuthStatus = async () => {
-      const storedUser: any = localStorage.getItem('user');
-      const storedToken: any = localStorage.getItem('token');
+      const storedUser: any = sessionStorage.getItem('user');
+      const storedToken: any = sessionStorage.getItem('token');
       const userInfo =  JSON.parse(storedUser);
       setIsAuthenticated(!!storedToken);
       setUser(userInfo);
@@ -39,21 +41,50 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const checkAuthStatus = async () => {
-    const storedUser: any = localStorage.getItem('user');
-    const storedToken: any = localStorage.getItem('token');
+    const storedUser: any = sessionStorage.getItem('user');
+    const storedToken: any = sessionStorage.getItem('token');
     const userInfo =  JSON.parse(storedUser);
     setIsAuthenticated(!!storedToken);
     setUser(userInfo);
     setToken(storedToken);
   }
 
+  // Check if token is valid
+  const checkTokenExp = () => {
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      console.log("REST TIME", decoded.exp - currentTime);
+
+      if (decoded.exp < currentTime) {
+        logout()
+        router.push('/login')
+      } else {
+        setIsAuthenticated(true);
+      }
+    // } else {
+    //   setIsAuthenticated(false);
+    }
+  };
+
+  useEffect(() => {
+    checkTokenExp();
+
+    // Set an interval to check the token status periodically
+    const intervalId = setInterval(() => {
+      checkTokenExp();
+    }, 5 * 60 * 1000); // every 5 minutes
+
+    return () => clearInterval(intervalId);
+  }, [token]);
+
   const logout = async () => {
     try {
       // const id = user.id;
       // console.log("ID LOGOUT", id);
       // await axios.post(`/api/auth/logout`, {"id": id});
-      localStorage.removeItem('token'); // Remove user data from cookies
-      localStorage.removeItem('user'); // Remove user data from cookies
+      sessionStorage.removeItem('token'); // Remove user data from cookies
+      sessionStorage.removeItem('user'); // Remove user data from cookies
       setUser(null);
       setIsAuthenticated(false);
       setToken(null);
@@ -64,7 +95,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser,isAuthenticated, setIsAuthenticated, token, setToken, checkAuthStatus, logout }}>
+    <AuthContext.Provider value={{ user, setUser,isAuthenticated, setIsAuthenticated, token, setToken, checkAuthStatus, checkTokenExp, logout }}>
       {children}
     </AuthContext.Provider>
   );

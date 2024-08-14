@@ -19,6 +19,7 @@ export const withAuth = async (roles: string | string[], req: AuthenticatedReque
   try {
     // Extraire le token du header Authorization
     const token = req.headers.get('authorization')?.split(' ')[1];
+
     if (!token) {
       return new NextResponse('Accès refusé. Aucun token fourni.', { status: 401 });
     }
@@ -31,7 +32,7 @@ export const withAuth = async (roles: string | string[], req: AuthenticatedReque
     await dbConnect();
 
     // Rechercher l'utilisateur dans la base de données par son ID
-    const user = await User.findById(decoded.userId);
+    const user = await User.findById(decoded.userId).select(['-password']);
     if (!user) {
       return new NextResponse('Utilisateur non trouvé.', { status: 404 });
     }

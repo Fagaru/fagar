@@ -30,16 +30,6 @@ export async function POST(
             starting_date, numEmplyees, address, categoryId, tags, images, schedules
         } = body;
 
-        // const currentUser = await User.findById(userId);
-    
-        // if (!currentUser) {
-        //     return new NextResponse('User not found', { status: 404 });
-        // }
-
-        // if (currentUser.role !== ROLES.PROFESSIONAL && currentUser.role !== ROLES.ADMIN) {
-        //     return new NextResponse('Unauthorized', { status: 401 });
-        // }
-
         if (!name) {
             return new NextResponse("Name is required", {  status: 400});
         }

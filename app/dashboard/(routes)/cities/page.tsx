@@ -47,7 +47,7 @@ const CitiesPage = () => {
 
   return (
     <div className="flex-col">
-      <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex-1 space-y-4 p-10 pt-8">
         <CityClient data={formattedCities} />
       </div>
     </div>

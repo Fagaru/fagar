@@ -44,28 +44,29 @@ import { Menu, X } from "lucide-react";
 import MenuUnsignedUser from "./menu-unsigned";
 
 const Header = () => {
-    const userId = { id: "1234", name: "Dev" };
 
     return (
         <div >
-            <div>
-              <div className="flex h-16 items-center px-4 border-b">
-                  <FagarLogo />
-                  <span className="text-lg font-medium text-baguet italic text-rose-600 ml-2">Fagar</span>
-                  <div className="flex-1 justify-center hidden md:flex">
-                      <SearchBar />
-                  </div>
-                  <div className="ml-auto flex items-center space-x-4">
-                      <div className="hidden md:flex items-center space-x-4">
-                          <AddCorporation />
-                          <ThemeToggle />
-                          <MenuUnsignedUser />
-                      </div>
-                      <div className="md:hidden space-x-4">
-                          <ThemeToggle />
-                          <MenuUnsignedUser />
-                      </div>
-                  </div>
+            <div className="">
+              <div className="flex h-16 items-center px-4 border-b gap-4">
+                    <div className="flex items-center px-4">
+                        <FagarLogo />
+                        <span className="text-lg font-medium text-baguet italic text-rose-600 ml-2">Fagar</span>
+                    </div>
+                    <div className="flex-1 justify-center hidden md:flex">
+                        <SearchBar />
+                    </div>
+                    <div className="ml-auto flex items-center space-x-4">
+                        <div className="hidden md:flex items-center space-x-4">
+                            <AddCorporation />
+                            <ThemeToggle />
+                            <MenuUnsignedUser />
+                        </div>
+                        <div className="md:hidden space-x-4">
+                            <ThemeToggle />
+                            <MenuUnsignedUser />
+                        </div>
+                    </div>
               </div>
               <div className="md:hidden m-5 flex justify-center">
                  <SearchBar  />

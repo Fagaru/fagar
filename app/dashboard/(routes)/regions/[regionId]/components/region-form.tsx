@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
 import { Heading } from "@/components/ui/heading";
@@ -24,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { Region } from "@/types/region";
-import { useAuth } from "@/context/authContext";
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 const formSchema = z.object({
     label: z.string().min(1),
@@ -40,9 +39,9 @@ interface RegionFormValues {
 export const RegionForm: React.FC<RegionFormValues> = ({
     initialData
 }) => {
+    const axios = useAxiosWithAuth();
     const params = useParams();
     const router = useRouter();
-    const { token } = useAuth();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -64,14 +63,7 @@ export const RegionForm: React.FC<RegionFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/regions/${params.regionId}`,
-                    data,
-                    {
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                        }
-                    }
-                ).then(() => {
+                await axios.patch(`/api/regions/${params.regionId}`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/regions`);
@@ -80,14 +72,7 @@ export const RegionForm: React.FC<RegionFormValues> = ({
                     toast.error(e.response.data);
                 });
             } else {
-                await axios.post(`/api/regions`,
-                    data,
-                    {
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                        }
-                    }
-                ).then(() => {
+                await axios.post(`/api/regions`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/regions`);
@@ -106,13 +91,7 @@ export const RegionForm: React.FC<RegionFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/regions/${params.regionId}`,
-                {
-                    headers: {
-                    Authorization: `Bearer ${token}`,
-                    }
-                }
-            ).then(() => {
+            await axios.delete(`/api/regions/${params.regionId}`).then(() => {
                 toast.success("Region deleted.");
                 router.refresh();
                 router.push(`/dashboard/regions`);

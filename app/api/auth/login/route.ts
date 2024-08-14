@@ -31,7 +31,7 @@ export async function POST(
       const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
 
       const filter = {_id: user._id};
-      const infoSession = await User.updateOne(
+      await User.updateOne(
           filter, 
           {
             _id: user._id, 
@@ -42,12 +42,10 @@ export async function POST(
 
       let userInfo: any = {
         id: user._id,
-        email: user.email,
         lastLogin: user.lastLogin,
-        firstName: user.first_name,
-        lastName: user.last_name,
         role: user.role,
         isVerified: user.isVerified,
+        isActive: user.isActive,
         isSuspended: user.isSuspended
       }
 

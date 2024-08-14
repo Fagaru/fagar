@@ -6,7 +6,6 @@ export async function POST(
 ) {
     try {
         const body = await req.json();
-        console.log("BODY LOGUT", body);
 
         const filter = {_id: body.id};
         const user = await User.findOne(filter);
