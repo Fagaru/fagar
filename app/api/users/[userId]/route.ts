@@ -24,7 +24,10 @@ export async function PATCH (
         //     return new NextResponse("Unauthorized", { status: 401 });
         if (!mongoose.Types.ObjectId.isValid(params.userId)) {
             return new NextResponse('Invalid user ID', { status: 400 });
-          }
+        }
+
+        body.image = Array.isArray(body.image) ? body.image[0] : body.image;
+        
         
         await dbConnect();
         // Récupérer la User actuelle
