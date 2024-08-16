@@ -2,7 +2,7 @@ export interface Subscription {
     _id: string;
     label: string;
     description: string;
-    price: number;
+    price: string;
     createdAt: Date;
     updatedAt: Date;
 }

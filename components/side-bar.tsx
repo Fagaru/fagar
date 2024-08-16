@@ -10,8 +10,8 @@ import { Button } from "./ui/button";
 
 export function SideBar({
     className,
-    ...props
-}: React.HTMLAttributes<HTMLElement>) {
+    setIsOpen
+}: any) {
     const pathname = usePathname();
     const params = useParams();
     const navRef = useRef<any>();
@@ -37,22 +37,29 @@ export function SideBar({
     }, []);
 
     const showSideBar = () => {
-        if (screenSize.width > 1023 && isHide.one === "hidden lg:flex") {
+        if (screenSize.width > 1500 && isHide.one === "hidden lg:flex") {
             setIsHide({ one: "hidden", two: "" });
-        } else if (screenSize.width < 1024 && isHide.one === "hidden lg:flex") {
+            setIsOpen(false);
+        } else if (screenSize.width < 1500 && screenSize.width >= 300 && isHide.one === "hidden lg:flex") {
             setIsHide({ one: "", two: "hidden" });
+            setIsOpen(true);
+        }else if (screenSize.width < 1024 && screenSize.width < 300 && isHide.one === "hidden lg:flex") {
+            setIsHide({ one: "", two: "hidden" });
+            setIsOpen(true);
         } else {
             if (isHide.one === "hidden" || isHide.two === "") {
                 setIsHide({ one: "", two: "hidden" });
+                setIsOpen(false);
             } else {
                 setIsHide({ one: "hidden", two: "" });
+                setIsOpen(false);
             }
         }
     };
 
     return (
         <>
-            <div className=" ">
+            <div className={cn(`w-[255px] ${isHide.one}`)}>
                 <nav
                     className={cn(`flex flex-col gap-3 w-[230px] border-solid border-r-[2px] p-1 ${isHide.one} `, className)}
                     ref={navRef}
@@ -197,10 +204,10 @@ export function SideBar({
                         </div>
                     </div>
                 </nav>
-                <Button variant="ghost" size="sm" onClick={showSideBar} className={`${isHide.two} m-1 transition-all duration-500`}>
-                    <Menu />
-                </Button>
             </div>
+            <Button variant="ghost" size="sm" onClick={showSideBar} className={cn(`${isHide.two} m-1 transition-all duration-500`, className)}>
+                    <Menu />
+            </Button>
         </>
     )
 };

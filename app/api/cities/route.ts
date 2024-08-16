@@ -2,31 +2,34 @@ import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
 import City from "@/models/city.model";
+import User, { ROLES } from "@/models/user.model";
+import { withAuth } from "@/lib/auth";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin'];
 const allowedRolesForGET = ['admin', 'professional', 'visitor', 'anonymous'];
 
+interface AuthenticatedRequest extends Request {
+    user?: any;
+}
+
 export async function POST(
-    req: Request
+    req: AuthenticatedRequest
 ) {
     try {
-        // const { userId } = auth();
-
-        const userId = "1234";
+        const authResponse = await withAuth(['admin'], req);
+        if (authResponse) return authResponse;
+        
         const body = await req.json();
 
         const { label, imageUrl } = body;
 
-        if (!userId) {
-            return new NextResponse("Unauthenticated", { status: 401 });
-        }
+        await dbConnect();
 
         if (!label) {
             return new NextResponse("Label is required", {  status: 400});
         }
 
-        await dbConnect();
         const city = new City({
             label,
             imageUrl

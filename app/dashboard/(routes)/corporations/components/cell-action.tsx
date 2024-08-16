@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Copy, Edit, MoreHorizontal, Navigation, Trash } from "lucide-react";
-import axios from "axios";
 
 import { 
     DropdownMenu,
@@ -18,6 +17,7 @@ import { AlertModal } from "@/components/modals/alert-modal";
 
 // import { ProductColumn } from "./columns";
 import { Corporation } from '@/types/corporation';
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 
 interface CellActionProps {
@@ -27,8 +27,8 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps>= ({
     data
 }) => {
+    const axios = useAxiosWithAuth();
     const router = useRouter();
-    const params = useParams();
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -41,9 +41,12 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/corporations/${params.corporationId}/${data._id}`);
-            router.refresh();
-            toast.success("Corporation deleted.");
+            await axios.delete(`/api/corporations/${data._id}`).then(() => {
+                toast.success("Corporation deleted.");
+                router.refresh();
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {

@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
-import axios from "axios";
 
 import { 
     DropdownMenu,
@@ -17,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { AlertModal } from "@/components/modals/alert-modal";
 
 import { Category } from '@/types/category';
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 interface CellActionProps {
     data: Category;
@@ -25,8 +25,8 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps>= ({
     data
 }) => {
+    const axios = useAxiosWithAuth();
     const router = useRouter();
-    const params = useParams();
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -39,9 +39,12 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/categories/${data._id}`);
-            router.refresh();
-            toast.success("Categories deleted.");
+            await axios.delete(`/api/categories/${data._id}`).then(() => {
+                router.refresh();
+                toast.success("Categories deleted.");
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Make sure you removed all corporations using this categories first.");
         } finally {

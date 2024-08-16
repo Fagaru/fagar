@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
 import { Heading } from "@/components/ui/heading";
@@ -25,11 +24,12 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { Subscription } from "@/types/subscription";
 import { Textarea } from "@/components/ui/textarea";
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 const formSchema = z.object({
     label: z.string().min(1),
     description: z.string().min(10),
-    price: z.number(),
+    price: z.string().min(1),
 });
 
 type SubscriptionType = z.infer<typeof formSchema>;
@@ -41,6 +41,7 @@ interface SubscriptionFormValues {
 export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
     initialData
 }) => {
+    const axios = useAxiosWithAuth();
     const params = useParams();
     const router = useRouter();
 
@@ -57,21 +58,33 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
         defaultValues: initialData || {
             label: '',
             description: '',
-            price: 0,
+            price: '0',
         }
     });
 
     const onSubmit = async (data: SubscriptionType) => {
         try {
             setLoading(true);
+            // data.price = Number(data.price)
             if (initialData) {
-                await axios.patch(`/api/subscriptions/${params.subscriptionId}`, data);
+                await axios.patch(`/api/subscriptions/${params.subscriptionId}`, data).then(() => {
+                    router.refresh();
+                    toast.success(toastMessage);
+                    router.push('/dashboard/subscriptions'); 
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             } else {
-                await axios.post('/api/subscriptions', data);
+                await axios.post('/api/subscriptions', data).then(() => {
+                    router.refresh();
+                    toast.success(toastMessage);
+                    router.push('/dashboard/subscriptions'); 
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             }
-            router.refresh();
-            router.push('/dashboard/subscriptions');
-            toast.success(toastMessage);
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -82,10 +95,13 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/subscriptions/${params.subscriptionId}`);
-            router.refresh();
-            router.push(`/dashboard/subscriptions`);
-            toast.success("Subscription deleted.");
+            await axios.delete(`/api/subscriptions/${params.subscriptionId}`).then(() => {
+                router.refresh();
+                router.push(`/dashboard/subscriptions`);
+                toast.success("Subscription deleted.");
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Make sure you removed all corporations using this subscription first.");
         } finally {
@@ -155,7 +171,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
                                <FormItem>
                                     <FormLabel>{"Prix de l'abonnement mensuel"}</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Prix" {...field} />
+                                        <Input type="number" disabled={loading} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                </FormItem>

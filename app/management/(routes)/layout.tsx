@@ -8,6 +8,7 @@ import { useAuth } from "@/context/authContext";
 import ProtectedRoute from "@/providers/protectedRoutes";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import Loader from "@/components/loader";
 
 
 export default function ManagementLayout({
@@ -15,7 +16,7 @@ export default function ManagementLayout({
 } : {
     children: React.ReactNode;
 }) {
-    const { user, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
@@ -30,7 +31,7 @@ export default function ManagementLayout({
     }, [isAuthenticated, router]);
 
     if (loading) {
-        return null; // Affiche un loader pendant la vérification de l'authentification
+        return <Loader />; // Affiche un loader pendant la vérification de l'authentification
     }
 
     return (

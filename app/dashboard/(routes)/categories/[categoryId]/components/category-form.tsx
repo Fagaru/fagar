@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
 import { Heading } from "@/components/ui/heading";
@@ -24,6 +23,8 @@ import { Input } from "@/components/ui/input";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 import { Category } from "@/types/category";
+import { useAuth } from "@/context/authContext";
+import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 
 const formSchema = z.object({
     label: z.string().min(1),
@@ -39,6 +40,7 @@ interface CategoryFormValues {
 export const CategoryForm: React.FC<CategoryFormValues> = ({
     initialData
 }) => {
+    const axios = useAxiosWithAuth();
     const params = useParams();
     const router = useRouter();
 
@@ -62,13 +64,24 @@ export const CategoryForm: React.FC<CategoryFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/categories/${params.categoryId}`, data);
+                await axios.patch(`/api/categories/${params.categoryId}`, data).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/dashboard/categories`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             } else {
-                await axios.post(`/api/categories`, data);
+                await axios.post(`/api/categories`, data).then(() => {
+                    toast.success(toastMessage);
+                    router.refresh();
+                    router.push(`/dashboard/categories`);
+                })
+                .catch((e) => {
+                    toast.error(e.response.data);
+                });
             }
-            router.refresh();
-            router.push(`/dashboard/categories`);
-            toast.success(toastMessage);
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -79,10 +92,13 @@ export const CategoryForm: React.FC<CategoryFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/categories/${params.categoryId}`);
-            router.refresh();
-            router.push(`/dashboard/categories`);
-            toast.success("Category deleted.");
+            await axios.delete(`/api/categories/${params.categoryId}`).then(() => {
+                router.refresh();
+                router.push(`/dashboard/categories`);
+                toast.success("Category deleted.");
+            }).catch((e) => {
+                toast.error(e.response.data);
+            });
         } catch (error) {
             toast.error("Make sure you removed all corporations using this category first.");
         } finally {

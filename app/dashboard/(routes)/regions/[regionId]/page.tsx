@@ -11,6 +11,7 @@ const RegionPage = async ({
         region = await getRegion({
             regionId: params.regionId
         });
+        console.log("initialData REGION :", region);
     }
 
     return (

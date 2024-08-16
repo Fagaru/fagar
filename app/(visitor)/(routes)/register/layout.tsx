@@ -1,6 +1,3 @@
-
-import { redirect } from "next/navigation";
-
 import Container from "@/components/ui/container";
 
 
@@ -9,14 +6,6 @@ export default async function RegisterLayout({
 } : {
     children: React.ReactNode;
 }) {
-
-    const userId = "1234";
-
-    // if (!userId) {
-    //     redirect('/sign-in');
-    // }
-
-    // redirect('/');
 
     return (
         <>

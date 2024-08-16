@@ -54,7 +54,6 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                     const cat = await getCategory({ categoryId: categoryId });
                     setCategory(cat);
                 }
-                console.log("CATEGORY: ", categoryId);
             } catch (err) {
                 setError("Failed to fetch category");
             }
@@ -91,7 +90,7 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
     
 
     return (
-        <div className='m-6'>
+        <div className='m-6 dark:bg-gray-950'>
             {error && <p>{error}</p>}
             {corporation && (
                 <>

@@ -3,24 +3,32 @@ import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
 import Corporation from '@/models/corporation.model';
+import User, { ROLES } from "@/models/user.model";
+import { withAuth } from "@/lib/auth";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin', 'professional'];
 const allowedRolesForGET = ['admin', 'professional', 'visitor', 'anonymous'];
 
+interface AuthenticatedRequest extends Request {
+    user?: any;
+}
+
 export async function POST(
     req: Request,
 ) {
     try {
-        // const { userId } = auth();
+
+        // Vérifiez l'authentification et les rôles
+        const authResponse = await withAuth(['admin', 'professional'], req);
+        if (authResponse) return authResponse;
+        
         const body = await req.json();
 
         const {
             name, userId, phone, mail_pro, description, siretNum, siren_num, codeNAF, linkFacebook, linkInstagram, linkLinkedIn, linkX,
             starting_date, numEmplyees, address, categoryId, tags, images, schedules
         } = body;
-
-        console.log("[USERID] ", userId);
 
         if (!name) {
             return new NextResponse("Name is required", {  status: 400});
@@ -52,7 +60,7 @@ export async function POST(
         await corporation.save();
         return NextResponse.json(corporation);
     } catch (error) {
-        console.log('[CORPORATIONS_POST] ', error);
+        console.log('[CORPORATION_POST] ', error);
         return new NextResponse("Internal error", { status: 500 });
     }
 }
@@ -61,7 +69,6 @@ export async function GET(
     req: Request,
 ) {
     try {
-        // const stores = await prismadb.store.findMany({});
         const { searchParams } = new URL(req.url);
         const categoryId = searchParams.get("categoryId") || undefined;
         const tags = searchParams.get("tags") || undefined;

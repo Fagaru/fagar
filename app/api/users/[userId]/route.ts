@@ -3,13 +3,19 @@ import { NextResponse } from "next/server";
 import dbConnect from '@/lib/dbConnect';
 import mongoose from "mongoose";
 import User from "@/models/user.model";
+import { withAuth } from "@/lib/auth";
+
+interface AuthenticatedRequest extends Request {
+    user?: any; // Vous pouvez remplacer 'any' par le type de votre utilisateur si nécessaire
+}
 
 export async function PATCH (
-    req: Request,
+    req: AuthenticatedRequest,
     { params }: { params: {userId: string}}
 ) {
     try {
-        // const userId = "1234";
+        const authResponse = await withAuth(['admin', 'professional', 'visitor'], req);
+        if (authResponse) return authResponse;
         const body = await req.json();
 
         const { label, imageUrl } = body;
@@ -18,7 +24,10 @@ export async function PATCH (
         //     return new NextResponse("Unauthorized", { status: 401 });
         if (!mongoose.Types.ObjectId.isValid(params.userId)) {
             return new NextResponse('Invalid user ID', { status: 400 });
-          }
+        }
+
+        body.image = Array.isArray(body.image) ? body.image[0] : body.image;
+        
         
         await dbConnect();
         // Récupérer la User actuelle
@@ -38,8 +47,6 @@ export async function PATCH (
             }
         );
 
-        console.log('Updated USER:', updatedUser);
-
         return NextResponse.json(updatedUser);
     } catch (error) {
         console.log('[USER_PATCH] ', error);
@@ -48,22 +55,15 @@ export async function PATCH (
 };
 
 export async function DELETE (
-    req: Request,
+    req: AuthenticatedRequest,
     { params }: { params: {userId: string}}
 ) {
     try {
-        // const userId = "1234";
+        const authResponse = await withAuth(['admin', 'professional', 'visitor'], req);
+        if (authResponse) return authResponse;
 
-        // if (!userId) {
-        //     return new NextResponse("Unauthorized", { status: 401 });
-        // }
         await dbConnect();
         const filter = {_id: params.userId};
-
-        const currentUser = await User.findById(params.userId);
-        if (!currentUser) {
-            throw new Error('USER not found');
-        }
         
         const deleteUser = await User.deleteOne(filter);
         
@@ -75,15 +75,13 @@ export async function DELETE (
 };
 
 export async function GET(
-    req: Request,
-    { params }: { params: {userId: string}}
+    req: AuthenticatedRequest,
 ) {
     try {
-        await dbConnect();
-        const filter = {_id: params.userId};
-        const user = await User.findOne(filter).select(['-password']);
+        const authResponse = await withAuth(['admin', 'professional', 'visitor'], req);
+        if (authResponse) return authResponse;
 
-        return NextResponse.json(user);
+        return NextResponse.json(req.user);
     } catch (error) {
         console.log('[USER_GET] ', error);
         return new NextResponse("Internal error", { status: 500 });

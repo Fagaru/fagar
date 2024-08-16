@@ -38,12 +38,7 @@ interface MenuProps extends PopoverTriggerProps {
 export default function MenuUnsignedUser({
 
 }: MenuProps) {
-    const { user, logout, isAuthenticated } = useAuth();
-    // const storeModal = useStoreModal();
-    // const params = useParams();
-    // const router = useRouter();
-
-    // const [open, setOpen] = useState(false);
+    const { user, isAuthenticated } = useAuth();
 
     return (
         <>
@@ -64,8 +59,8 @@ export default function MenuUnsignedUser({
                         <>
                             <DropdownMenuItem>
                                 <Link  
-                                    key='/account/profile'
-                                    href='/account/profile'
+                                    key='/account'
+                                    href='/account'
                                     className="flex align-items"
                                     >
                                     <UserRound className="mr-2 h-4 w-4" />

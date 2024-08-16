@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import dbConnect from '@/lib/dbConnect';
 import Corporation from '@/models/corporation.model';
 import moment from 'moment';
+import User, { ROLES } from "@/models/user.model";
+import { withAuth } from "@/lib/auth";
 
 // Interface for Schedule Subschema
 interface ISchedule {
@@ -16,12 +18,18 @@ interface ISchedule {
     updatedAt?: Date;
 }
 
+interface AuthenticatedRequest extends Request {
+    user?: any;
+}
+
 export async function PATCH (
-    req: Request,
+    req: AuthenticatedRequest,
     { params }: { params: {corporationId: string}}
 ) {
     try {
-        // const userId = "1234";
+        const authResponse = await withAuth(['admin', 'professional'], req);
+        if (authResponse) return authResponse;
+        
         const body = await req.json();
 
         const {
@@ -29,14 +37,16 @@ export async function PATCH (
             starting_date, numEmplyees, address, categoryId, tags, images, schedules
         } = body;
 
-        console.log("This Step REQ_BODY", tags);
         
         // Récupérer la corporation actuelle
         const currentCorporation = await Corporation.findById(params.corporationId);
-        console.log("This Step FIND_BY_ID", currentCorporation);
     
         if (!currentCorporation) {
           throw new Error('Corporation not found');
+        }
+
+        if (req.user.role === ROLES.PROFESSIONAL && req.user._id !== currentCorporation.userId) {
+            return new NextResponse('Unauthorized', { status: 401 });
         }
     
         // Maintenir les valeurs actuelles si les nouvelles sont vides
@@ -75,8 +85,6 @@ export async function PATCH (
             }
         );
 
-        console.log('Updated Corporation:', updatedCorporation);
-
         return NextResponse.json(updatedCorporation);
     } catch (error) {
         console.log('[CORPORATION_PATCH] ', error);
@@ -85,16 +93,23 @@ export async function PATCH (
 };
 
 export async function DELETE (
-    req: Request,
+    req: AuthenticatedRequest,
     { params }: { params: {corporationId: string}}
 ) {
     try {
+        const authResponse = await withAuth(['admin', 'professional'], req);
+        if (authResponse) return authResponse;
+
         await dbConnect();
         const filter = {_id: params.corporationId};
 
         const currentCorporation = await Corporation.findOne(filter);
         if (!currentCorporation) {
             throw new Error('Corporation not found');
+        }
+
+        if (req.user.role === ROLES.PROFESSIONAL && req.user._id !== currentCorporation.userId) {
+            return new NextResponse('Unauthorized', { status: 401 });
         }
         
         const deleteCorporation = await Corporation.deleteOne(filter);

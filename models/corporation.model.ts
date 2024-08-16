@@ -56,7 +56,7 @@ interface IReview {
   updatedAt?: Date;
 }
 
-export interface ITag extends Document {
+export interface ITag {
   label: string;
   createdAt: Date;
   updatedAt: Date;
@@ -65,7 +65,7 @@ export interface ITag extends Document {
 // Interface for Corporation Document
 export interface ICorporation extends Document {
   name: string;
-  userId: string;
+  userId: mongoose.Types.ObjectId;
   phone: string;
   mail_pro: string;
   description: string;
@@ -151,7 +151,7 @@ const tagSchema: Schema = new Schema({
 
 const corporationSchema: Schema = new Schema({
   name: { type: String, required: true },
-  userId: { type: String },
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
   phone: { type: String },
   mail_pro: { type: String },
   description: { type: String },
