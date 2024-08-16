@@ -1,8 +1,9 @@
 "use client"
 
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef ,ChangeEvent  } from "react";
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import { useLoadScript } from "@react-google-maps/api";
 
 import { cn } from "@/lib/utils";
 
@@ -36,11 +37,13 @@ export default function MapBox({className
         placeId:"",
         label:"",
     });
+    const libraries = ["places"];
     const [open, setOpen] = useState(false);
     const placeholder:string = "Entrer votre adresse de livraison";
     const [updateValue] = GoGetMyPosition();
     const address = useLocation();
-
+    const [input, setInput] = useState({});
+    const inputRef = useRef(null);
   
     useEffect(() => {
         if (address?.item[0]?.label === "" || address?.item[0]?.label === null || address?.item[0]?.label === undefined) {
@@ -56,8 +59,85 @@ export default function MapBox({className
             })
         }
     }, [newAddress]);
+
+
+
+    const { isLoaded, loadError } = useLoadScript({
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+        libraries,
+      });
+
+      useEffect(() => {
+        if (!isLoaded || loadError) return;
+    
+        const options = {
+          componentRestrictions: { country: "ng" },
+          fields: ["address_components", "geometry"],
+        };
+    
+        const autocomplete = new google.maps.places.Autocomplete(inputRef.current, options);
+        autocomplete.addListener("place_changed", () => handlePlaceChanged(autocomplete));
+    
+        // return () => autocomplete.removeListener("place_changed", handlePlaceChanged);
+      }, [isLoaded, loadError]);
+     
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = event.target;
+        setInput((values) => ({ ...values, [name]: value }));
+      };
+
+      const handlePlaceChanged = async(address) => {
+        if (!isLoaded) return;
+        const place = address.getPlace()
+    
+        if (!place || !place.geometry) {
+          setInput({});
+          return;
+        }
+        formData(place);
+      };
+
+    const formData = (data) => {
+        const addressComponents = data?.address_components;
+    
+        const componentMap = {
+          subPremise: "",
+          premise: "",
+          street_number: "",
+          route: "",
+          country: "",
+          postal_code: "",
+          administrative_area_level_2: "",
+          administrative_area_level_1: "",
+        };
+    
+        for (const component of addressComponents) {
+          const componentType = component.types[0];
+          if (componentMap.hasOwnProperty(componentType)) {
+            componentMap[componentType] = component.long_name;
+          }
+        }
+    
+        const formattedAddress =
+          `${componentMap.subPremise} ${componentMap.premise} ${componentMap.street_number} ${componentMap.route}`.trim();
+        const latitude = data?.geometry?.location?.lat();
+        const longitude = data?.geometry?.location?.lng();
+    
+        setInput((values) => ({
+          ...values,
+          streetAddress: formattedAddress,
+          country: componentMap.country,
+          zipCode: componentMap.postal_code,
+          city: componentMap.administrative_area_level_2,
+          state: componentMap.administrative_area_level_1,
+          latitude: latitude,
+          longitude: longitude,
+        }));
+      };
     
     return  (
+        isLoaded &&(
         // p-3 rounded-lg m-5 flex items-center gap-2 
         <div className="m-1 ">
             <Popover open={open} onOpenChange={setOpen}>
@@ -102,5 +182,5 @@ export default function MapBox({className
                 </PopoverContent>
             </Popover>
         </div>
-    )
+    ))
 };
