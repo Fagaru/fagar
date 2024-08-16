@@ -1,10 +1,3 @@
-
-import { redirect } from "next/navigation";
-
-import dbConnect from '@/lib/dbConnect';
-import Corporation from '@/models/corporation.model';
-
-import { SideBar } from "@/components/side-bar";
 import Header from "@/components/header";
 import Container from "@/components/ui/container";
 

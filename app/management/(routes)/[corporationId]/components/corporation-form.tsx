@@ -379,31 +379,18 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                 control={form.control}
                                                 name="tags"
                                                 render={({ field: { value, onChange } }) => {
-                                                    // const selectedTagObjects = value?.map(val => {
-                                                    //     let foundTag;
-                                                    //     if (val !== undefined && val.label !== undefined) {
-                                                    //         if(val){
-                                                    //             foundTag = availableTags.find((tag: any) => tag.label === val.label);
-                                                    //         } else {
-                                                    //             foundTag = availableTags.find((tag: any) => tag === String(val));
-                                                    //         }
-                                                    //         return {
-                                                    //             value: foundTag?.label,
-                                                    //             label: foundTag?.label,
-                                                    //         };
-                                                    //     }
-                                                    // });
-                                                    // Map the value to selected tag objects, ensuring unique keys
                                                     const selectedTagObjects = value?.map(val => {
                                                         if (val && val.label) {
                                                             const foundTag = availableTags.find((tag: any) => tag.label === val.label);
-                                                            return {
-                                                                value: foundTag?.label,
-                                                                label: foundTag?.label,
-                                                            };
+                                                            if (foundTag) {
+                                                                return {
+                                                                    value: foundTag.label,
+                                                                    label: foundTag.label,
+                                                                };
+                                                            }
                                                         }
-                                                        return null; // Return null for undefined values
-                                                    }).filter(Boolean); // Remove any null values
+                                                        return null; // Retourner null pour les valeurs non définies
+                                                    }).filter(Boolean); // Supprimer les valeurs nulles
 
                                                     return (
                                                         <CreatableSelect
@@ -415,9 +402,11 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                             }))}
                                                             value={selectedTagObjects}
                                                             onChange={(selectedOptions) => {
-                                                                const selectedTagsOpt = selectedOptions.map(option => ({
-                                                                    label: option?.label,
-                                                                }));
+                                                                const selectedTagsOpt = selectedOptions
+                                                                    .filter((option): option is { value: any; label: any } => option !== null)
+                                                                    .map(option => ({
+                                                                        label: option.label,
+                                                                    }));
                                                                 onChange(selectedTagsOpt);
                                                             }}
                                                             placeholder="Sélectionner ou ajouter des tags"

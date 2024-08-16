@@ -77,15 +77,15 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     return (
         <>
             <div className="relative grid grid-cols-6 p-6 bg-gray-50 dark:bg-gray-950 auto-rows-[minmax(50px,auto)] border-b w-full">
-                <div className="relative xl:lg:col-span-2 md:col-span-4 xs:col-span-6 p-2 gap-2 items-center">
+                <div className="relative col-span-6 xl:lg:col-span-2 p-2 gap-2 items-center">
                     <h2 className="text-lg font-semibold">Paramétres généraux</h2>
                     <p className="text-gray-600 text-sm">Modifier vos données personnelles</p>
                 </div>
-                <div className="relative xl:lg:col-span-4 md:col-span-6 xs:col-span-6 p-2 rounded-[10px] border-solid gap-2 w-full"> 
+                <div className="relative col-span-6 lg:xl:col-span-4 p-2 rounded-[10px] border-solid gap-2 w-full"> 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
                         <div className="grid grid-cols-6 gap-4">
-                            <div className="relative xl:lg:col-span-3 md:col-span-6 xs:col-span-6 ">
+                            <div className="relative xl:lg:col-span-3 md:col-span-3 col-span-6 ">
                             <FormField 
                                 control={form.control}
                                 name="last_name"
@@ -100,7 +100,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                                 )}
                             />
                             </div>
-                            <div className="relative xl:lg:col-span-3 md:col-span-6 xs:col-span-6 ">
+                            <div className="relative xl:lg:col-span-3 md:col-span-3 col-span-6 ">
                             <FormField 
                                 control={form.control}
                                 name="first_name"
@@ -115,7 +115,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                                 )}
                             />
                             </div>
-                            <div className="relative xl:lg:col-span-3 md:col-span-6 xs:col-span-6 ">
+                            <div className="relative xl:lg:col-span-3 md:col-span-3 col-span-6 ">
                             <FormField 
                                 control={form.control}
                                 name="birthday"
@@ -136,7 +136,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                                 )}
                             />
                             </div>
-                            <div className="relative xl:lg:col-span-3 md:col-span-6 xs:col-span-6">
+                            <div className="relative xl:lg:col-span-3 md:col-span-3 col-span-6">
                             <FormField 
                                 control={form.control}
                                 name="phone"
@@ -151,7 +151,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                                 )}
                             />
                             </div>
-                            <div className="relative xl:lg:col-span-3 md:col-span-6 xs:col-span-6">
+                            <div className="relative xl:lg:col-span-3 md:col-span-3 col-span-6">
                             <FormField 
                                 control={form.control}
                                 name="email"

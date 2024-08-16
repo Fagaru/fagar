@@ -67,15 +67,15 @@ const UpdatePasswordForm: React.FC<UpdatePasswordFormProps> = ({
     return (
         <>
             <div className="relative grid grid-cols-6 p-6 bg-gray-50 dark:bg-gray-950 auto-rows-[minmax(50px,auto)]">
-                <div className="relative xl:lg:col-span-2 md:col-span-4 xs:col-span-6 p-2 gap-2 items-center">
+                <div className="relative col-span-6 xl:lg:col-span-2 p-2 gap-2 items-center">
                     <h2 className="text-lg font-semibold">Sécurité</h2>
                     <p className="text-gray-600 text-sm">Modifier votre mot de passe</p>
                 </div>
-                <div className="relative xl:lg:col-span-4 md:col-span-6 xs:col-span-6 p-2 rounded-[10px] border-solid gap-2"> 
+                <div className="relative col-span-6 lg:xl:col-span-4 p-2 rounded-[10px] border-solid gap-2"> 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
                         <div className="grid grid-cols-6 gap-4">
-                        <div className="relative xl:lg:col-span-3 md:col-span-6 xs:col-span-6 ">
+                        <div className="relative xl:lg:col-span-2 md:col-span-3 col-span-6 ">
                             <FormField 
                                 control={form.control}
                                 name="oldPassword"
@@ -95,7 +95,7 @@ const UpdatePasswordForm: React.FC<UpdatePasswordFormProps> = ({
                                 )}
                             />
                             </div>
-                            <div className="relative xl:lg:col-span-3 md:col-span-6 xs:col-span-6 ">
+                            <div className="relative xl:lg:col-span-2 md:col-span-3 col-span-6 ">
                             <FormField 
                                 control={form.control}
                                 name="newPassword"
@@ -115,13 +115,13 @@ const UpdatePasswordForm: React.FC<UpdatePasswordFormProps> = ({
                                 )}
                             />
                             </div>
-                            <div className="relative xl:lg:col-span-3 md:col-span-6 xs:col-span-6 ">
+                            <div className="relative xl:lg:col-span-2 md:col-span-3 col-span-6">
                             <FormField 
                                 control={form.control}
                                 name="confirmPassword"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Confirmation du nouveau mot de passe</FormLabel>
+                                        <FormLabel>Confirmation mot de passe</FormLabel>
                                         <FormControl>
                                             <Input 
                                                 disabled={loading} 

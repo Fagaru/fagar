@@ -1,8 +1,6 @@
 import toast from "react-hot-toast";
 import { LoginForm } from "./components/login-form";
 
-import { useAuth } from "@/context/authContext";
-
 const LoginPage = () => {
     
     return (

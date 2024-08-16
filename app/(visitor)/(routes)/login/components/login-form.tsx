@@ -86,6 +86,7 @@ export const LoginForm: React.FC = () => {
                                             disabled={loading} 
                                             placeholder="Email" 
                                             {...field} 
+                                            size={50}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -103,7 +104,8 @@ export const LoginForm: React.FC = () => {
                                             type="password" 
                                             disabled={loading} 
                                             placeholder="Password" 
-                                            {...field} 
+                                            {...field}
+                                            size={50} 
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -111,7 +113,7 @@ export const LoginForm: React.FC = () => {
                             )}
                         />
                     </div>
-                    <Button disabled={loading} className="ml-auto" type="submit">
+                    <Button disabled={loading} className="w-full" size="lg" type="submit">
                         Login
                     </Button>
                 </form>

@@ -75,8 +75,8 @@ export default function MenuUnsignedUser({
                         <>
                             <DropdownMenuItem >
                                 <Link  
-                                    key='/login'
-                                    href='/login'
+                                    key='/auth?tab=login'
+                                    href='/auth?tab=login'
                                     className="flex align-items"
                                     >
                                     <LogIn className="mr-2 h-4 w-4" />
@@ -85,8 +85,8 @@ export default function MenuUnsignedUser({
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <Link  
-                                    key='/register'
-                                    href='/register'
+                                    key='/auth?tab=register'
+                                    href='/auth?tab=register'
                                     className="flex align-items"
                                     >
                                     <Paperclip className="mr-2 h-4 w-4" />

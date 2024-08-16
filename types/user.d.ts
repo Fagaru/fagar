@@ -1,3 +1,16 @@
+
+export enum ROLES {
+    VISITOR = 'visitor',
+    PROFESSIONAL = 'professional',
+    ADMIN = 'admin'
+};
+  
+export enum GENDERS {
+    MALE = 'male',
+    FEMALE = 'female',
+    OTHER = 'other'
+};
+
 export interface User {
     _id: string;
     first_name: string;

@@ -20,7 +20,7 @@ import {
     FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ROLES } from "@/models/user.model";
+import { ROLES } from "@/types/roles";
 
 // Définition du schéma de validation avec zod
 const formSchema = z.object({
@@ -30,17 +30,18 @@ const formSchema = z.object({
     birthday: z.date().optional(),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
     role: z.enum(['visitor', 'professional', 'admin']).optional()
 });
 
 type RegisterFormType = z.infer<typeof formSchema>;
 
 interface RegisterFormValues {
-    role: ROLES;   
+    role: any;   
 }
 
 export const RegisterForm: React.FC<RegisterFormValues> = ({
-    role
+    role= "visitor"
 }) => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -60,9 +61,13 @@ export const RegisterForm: React.FC<RegisterFormValues> = ({
         try {
             setLoading(true);
             data.role = role;
-            await axios.post(`/api/auth/register`, data);
-            router.push(`/login`);
-            toast.success("User registered successfully");
+            if (data.password !== data.confirmPassword) {
+                toast.error("Vos nouveaux mots de passe ne correspondent pas !");
+            } else {
+                await axios.post(`/api/auth/register`, data);
+                router.push(`/login`);
+                toast.success("User registered successfully");
+            }
         } catch (error) {
             toast.error("Something went wrong.");
         } finally {
@@ -80,8 +85,9 @@ export const RegisterForm: React.FC<RegisterFormValues> = ({
             </div>
             <Separator />
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-                    <div className="grid grid-cols-2 gap-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full pt-4">
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="xl:lg:col-span-1 col-span-2">
                         <FormField 
                             control={form.control}
                             name="last_name"
@@ -89,12 +95,14 @@ export const RegisterForm: React.FC<RegisterFormValues> = ({
                                <FormItem>
                                     <FormLabel>Nom</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="ex: Camus" {...field} />
+                                        <Input disabled={loading} placeholder="ex: Camus" {...field} size={50}/>
                                     </FormControl>
                                     <FormMessage />
                                </FormItem>
                             )}
                         />
+                        </div>
+                        <div className="xl:lg:col-span-1 col-span-2">
                         <FormField 
                             control={form.control}
                             name="first_name"
@@ -102,18 +110,20 @@ export const RegisterForm: React.FC<RegisterFormValues> = ({
                                <FormItem>
                                     <FormLabel>Prénom</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="ex: Lucas" {...field} />
+                                        <Input disabled={loading} placeholder="ex: Lucas" {...field} size={50}/>
                                     </FormControl>
                                     <FormMessage />
                                </FormItem>
                             )}
                         />
+                        </div>
+                        <div className="xl:lg:col-span-1 col-span-2">
                         <FormField 
                             control={form.control}
                             name="birthday"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Votre Date de naissance</FormLabel>
+                                    <FormLabel>Date de naissance</FormLabel>
                                     <FormControl>
                                         <Input 
                                             disabled={loading} 
@@ -127,13 +137,14 @@ export const RegisterForm: React.FC<RegisterFormValues> = ({
                                 </FormItem>
                             )}
                         />
-
+                        </div>
+                        <div className="xl:lg:col-span-1 col-span-2">
                         <FormField 
                             control={form.control}
                             name="phone"
                             render={({ field }) => (
                                <FormItem>
-                                    <FormLabel>Votre numéro de téléphone</FormLabel>
+                                    <FormLabel>Numéro de téléphone</FormLabel>
                                     <FormControl>
                                         <Input disabled={loading} type="tel" placeholder="06 21 .. .. .. .." {...field} />
                                     </FormControl>
@@ -141,12 +152,14 @@ export const RegisterForm: React.FC<RegisterFormValues> = ({
                                </FormItem>
                             )}
                         />
+                        </div>
+                        <div className="xl:lg:col-span-1 col-span-2">
                         <FormField 
                             control={form.control}
                             name="email"
                             render={({ field }) => (
                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>Adresse Email</FormLabel>
                                     <FormControl>
                                         <Input disabled={loading} type="email" placeholder="Email" {...field} />
                                     </FormControl>
@@ -154,12 +167,14 @@ export const RegisterForm: React.FC<RegisterFormValues> = ({
                                </FormItem>
                             )}
                         />
+                        </div>
+                        <div className="xl:lg:col-span-1 col-span-2">
                         <FormField 
                             control={form.control}
                             name="password"
                             render={({ field }) => (
                                <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>Mot de passe</FormLabel>
                                     <FormControl>
                                         <Input type="password" disabled={loading} placeholder="Password" {...field} />
                                     </FormControl>
@@ -167,8 +182,24 @@ export const RegisterForm: React.FC<RegisterFormValues> = ({
                                </FormItem>
                             )}
                         />
+                        </div>
+                        <div className="xl:lg:col-span-1 col-span-2">
+                            <FormField 
+                                control={form.control}
+                                name="confirmPassword"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel>Confirmer votre mot de passe</FormLabel>
+                                        <FormControl>
+                                            <Input type="password" disabled={loading} placeholder="Password" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
                     </div>
-                    <Button disabled={loading} className="ml-auto" type="submit">
+                    <Button disabled={loading} className="w-full" size="lg" type="submit">
                         Register
                     </Button>
                 </form>
