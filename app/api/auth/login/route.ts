@@ -19,13 +19,13 @@ export async function POST(
 
       const user = await User.findOne({ email });
       if (!user) {
-        return new NextResponse("Identifiants invalides", { status: 401 });
+        return new NextResponse("Identifiants invalides", { status: 404 });
       }
 
       const isMatch = await bcrypt.compare(password + PEPPER, user.password);
 
       if (!isMatch) {
-        return new NextResponse("Identifiants invalides", { status: 401 });
+        return new NextResponse("Identifiants invalides", { status: 403 });
       }
 
       const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });

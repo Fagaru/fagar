@@ -90,7 +90,7 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
     
 
     return (
-        <div className='m-6'>
+        <div className='m-6 dark:bg-gray-950'>
             {error && <p>{error}</p>}
             {corporation && (
                 <>

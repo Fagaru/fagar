@@ -54,7 +54,7 @@ const ManagementPage: React.FC<ManagementPageProps> = ({
         return <Loader />; // Affiche un loader pendant la vérification de l'authentification et la récupération des données
     }
     return (
-        <div className="items-center">
+        <div className="items-center dark:bg-gray-950">
             <div className="flex-1 space-y-4 p-8 pt-6">
                 <CorporationForm initialData={corporation} categories={categories} />
             </div>

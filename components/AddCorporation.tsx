@@ -59,9 +59,9 @@ const AddCorporation = () => {
   };
 
   return (
-    <div className={cn(`flex items-center border-2 rounded-full`)}>
+    <div className={cn(`flex items-center ml-auto`)}>
 
-      <Button className="relative flex items-center rounded-full border-gray-300 px-4 py-2 text-xs gap-2" variant={'destructive'} onClick={handleClick}>
+      <Button className="relative flex items-center rounded-lg border-gray-300 px-4 py-2 text-xs gap-2" variant={'destructive'} onClick={handleClick}>
         <PackageCheck size={15} />
           Ajouter votre entreprise
       </Button>

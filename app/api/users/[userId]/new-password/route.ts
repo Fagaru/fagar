@@ -38,7 +38,7 @@ export async function PATCH (
         const isMatch = await bcrypt.compare(oldPassword + PEPPER, currentUser.password);
     
         if (!isMatch) {
-          return new NextResponse("Mot de passe incorrect", { status: 401 });
+          return new NextResponse("Mot de passe incorrect", { status: 403 });
         }
 
         const salt = await bcrypt.genSalt(10);

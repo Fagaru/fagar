@@ -40,6 +40,7 @@ import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { useAuth } from "@/context/authContext";
 import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
+import { useTheme } from "next-themes";
 
 // import Tag as TagType from "@/types/tag";
 
@@ -107,6 +108,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     const params = useParams();
     const router = useRouter();
     const { user } = useAuth();
+    const { theme } = useTheme();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -370,7 +372,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 control={form.control}
                                 name="tags"
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem >
                                         <FormLabel>Tags</FormLabel>
                                         <FormControl>
                                         <Controller
@@ -405,6 +407,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
 
                                                     return (
                                                         <CreatableSelect
+                                                            className="dark:text-white"
                                                             isMulti
                                                             options={availableTags.map((tag: any) => ({
                                                                 value: tag.label,
@@ -437,6 +440,28 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                                                 } else {
                                                                     toast.error('Tag already exists');
                                                                 }
+                                                            }}
+                                                            styles={{
+                                                                control: (provided) => ({
+                                                                    ...provided,
+                                                                    backgroundColor: theme === 'dark' ? '#020817' : '#FFFFFF',
+                                                                    borderColor: theme === 'dark' ? '#374151' : '#D1D5DB',
+                                                                    color: `${theme === 'dark' ? '#FFFFFF' : '#111827'} !important`,
+                                                                }),
+                                                                menu: (provided) => ({
+                                                                    ...provided,
+                                                                    backgroundColor: theme === 'dark' ? '#020817' : '#FFFFFF',
+                                                                    color: `${theme === 'dark' ? '#020817' : '#111827'} !important`,
+                                                                }),
+                                                                multiValue: (provided) => ({
+                                                                    ...provided,
+                                                                    backgroundColor: theme === 'dark' ? '#ff495f' : '#ff495f',
+                                                                    color: `${theme === 'dark' ? '#FFFFFF' : '#111827'} !important`,
+                                                                }),
+                                                                input: (provided) => ({
+                                                                    ...provided,
+                                                                    color: `${theme === 'dark' ? '#FFFFFF' : '#111827'} !important`,
+                                                                }),
                                                             }}
                                                         />
                                                     );

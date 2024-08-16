@@ -76,7 +76,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
 
     return (
         <>
-            <div className="relative grid grid-cols-6 p-6 bg-gray-50 auto-rows-[minmax(50px,auto)] border-b w-full">
+            <div className="relative grid grid-cols-6 p-6 bg-gray-50 dark:bg-gray-950 auto-rows-[minmax(50px,auto)] border-b w-full">
                 <div className="relative xl:lg:col-span-2 md:col-span-4 xs:col-span-6 p-2 gap-2 items-center">
                     <h2 className="text-lg font-semibold">Paramétres généraux</h2>
                     <p className="text-gray-600 text-sm">Modifier vos données personnelles</p>
