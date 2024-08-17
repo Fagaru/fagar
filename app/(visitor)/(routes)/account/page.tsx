@@ -1,7 +1,7 @@
 // app/profile/page.tsx
 "use client";
 
-import getUser from '@/services/getUser';
+import { getUser } from '@/services/getUser';
 
 import { useAuth } from '@/context/authContext';
 import { format } from 'date-fns';

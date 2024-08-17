@@ -21,7 +21,7 @@ export const withAuth = async (roles: string | string[], req: AuthenticatedReque
     const token = req.headers.get('authorization')?.split(' ')[1];
 
     if (!token) {
-      return new NextResponse('Accès refusé. Aucun token fourni.', { status: 401 });
+      return new NextResponse('Accès refusé. Veuillez vous authentifier !', { status: 401 });
     }
 
     // Vérifier et décoder le token
@@ -34,7 +34,7 @@ export const withAuth = async (roles: string | string[], req: AuthenticatedReque
     // Rechercher l'utilisateur dans la base de données par son ID
     const user = await User.findById(decoded.userId).select(['-password']);
     if (!user) {
-      return new NextResponse('Utilisateur non trouvé.', { status: 404 });
+      return new NextResponse('Utilisateur introuvable.', { status: 404 });
     }
 
     // Vérifier si l'utilisateur a l'un des rôles autorisés
@@ -50,6 +50,6 @@ export const withAuth = async (roles: string | string[], req: AuthenticatedReque
     return null;
   } catch (error) {
     console.error('Erreur dans withAuth:', error);
-    return new NextResponse('Token invalide ou expiré.', { status: 401 });
+    return new NextResponse('Token invalide ou expiré. Veuillez vous authentifier !', { status: 401 });
   }
 };

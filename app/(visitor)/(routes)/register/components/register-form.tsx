@@ -20,7 +20,6 @@ import {
     FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ROLES } from "@/types/roles";
 
 // Définition du schéma de validation avec zod
 const formSchema = z.object({

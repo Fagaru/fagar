@@ -12,36 +12,42 @@ interface AuthenticatedRequest extends Request {
 }
 
 export async function POST(
-    req: Request
+    req: AuthenticatedRequest
 ) {
     try {
         const body = await req.json();
 
-        const { first_name, last_name, email, password, role } = body;
+        const authResponse = await withAuth(['admin'], req);
+        let init_password: boolean = false;
+        if (!authResponse) {
+            console.log("ADMIN USER", req.user.role);
+            body.password = "123456";
+            init_password = true;
+        }
+
+        const { first_name, last_name, email, password } = body;
+
 
         if (!first_name || !last_name) {
-            return new NextResponse("Unauthenticated", { status: 403 });
+            return new NextResponse("Veuillez remplir le formulaire", { status: 403 });
         }
         if (!email || !password) {
-            return new NextResponse("Unauthenticated", { status: 403 });
+            return new NextResponse("Veuillez remplir le formulaire", { status: 403 });
         }
 
-        const current_user = await User.find({email});
+        // Se connecter à la base de données si ce n'est pas déjà fait
+        await dbConnect();
+        const current_user = await User.findOne({email});
 
         if (current_user) {
-            throw new Error('User already exists');
+            return new NextResponse("Cet utilisateur existe déjà.", { status: 409 });
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password + PEPPER, salt);
 
-        // Se connecter à la base de données si ce n'est pas déjà fait
-        await dbConnect();
         const user = new User({
-            first_name,
-            last_name,
-            email,
+            ...body,
             password: hashedPassword,
-            role
         });
         await user.save();
         return NextResponse.json(user);
@@ -58,6 +64,8 @@ export async function GET(
         const authResponse = await withAuth(['admin'], req);
         if (authResponse) return authResponse;
 
+        // Se connecter à la base de données si ce n'est pas déjà fait
+        await dbConnect();
         const users = await User.find().select(['-password']);
 
         return NextResponse.json(users);

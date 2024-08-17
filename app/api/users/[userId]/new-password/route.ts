@@ -14,7 +14,6 @@ interface AuthenticatedRequest extends Request {
 
 export async function PATCH (
     req: AuthenticatedRequest,
-    { params }: { params: {userId: string}}
 ) {
     try {
         const authResponse = await withAuth(['admin', 'professional', 'visitor'], req);
@@ -45,12 +44,12 @@ export async function PATCH (
         const hashedPassword = await bcrypt.hash(newPassword + PEPPER, salt);
     
         // Mettre à jour du USER
-        const filter = {_id: params.userId};
+        const filter = {_id: req.user._id};
         const updatedUser = await User.updateOne(
             filter, 
             { 
                 password: hashedPassword,
-                _id: params.userId, 
+                _id: req.user._id, 
                 updateAt: Date.now()
             }
         );

@@ -5,7 +5,7 @@ import axios from "axios";
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/users/`;
 
-const getUsers = async (token: string): Promise<User> => {
+const getUsers = async (token: string): Promise<User[]> => {
   try {
     const url = `${URL}`;
     console.log("URL Service", url);
@@ -18,7 +18,7 @@ const getUsers = async (token: string): Promise<User> => {
     });
 
     // Retourner les données utilisateur
-    return res.data as User;
+    return res.data as User[];
   } catch (error) {
     console.error("Error fetching User:", error);
     throw error;

@@ -152,15 +152,15 @@ export function SideBar({
                                 <span className="text-sm/[20px]">Régions</span>
                             </Link>
                             <Link 
-                                key='/dashboard/tags'
-                                href='/dashboard/tags'
+                                key='/dashboard/users'
+                                href='/dashboard/users'
                                 className={cn(
                                     "flex items-center gap-5 m-1 p-[10px] rounded-[5px] transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/dashboard/tags') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    (pathname === '/dashboard/users') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
                                 )}
                             >
                                 <Ruler size="20px" />
-                                <span className="text-sm/[20px]">Tags</span>
+                                <span className="text-sm/[20px]">Utilisateurs</span>
                             </Link>
                         </div>
                         <div className="gap-3 mb-3">

@@ -47,7 +47,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
         resolver: zodResolver(formSchema),
         defaultValues: initialData ? {
             ...initialData,
-            birthday: initialData.birthday ? new Date(initialData.birthday).toISOString().split('T')[0] : ''
+            birthday: initialData.birthday ? new Date(initialData.birthday) : ''
         } 
             :
             {

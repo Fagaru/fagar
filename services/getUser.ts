@@ -9,7 +9,7 @@ interface Query {
   userId: string
 }
 
-const getUser = async (query: Query, token: string): Promise<User> => {
+export const getUser = async (query: Query, token: string): Promise<User> => {
   try {
     const url = `${URL}${query.userId}`;
     console.log("URL Service", url);
@@ -29,4 +29,22 @@ const getUser = async (query: Query, token: string): Promise<User> => {
   }
 };
 
-export default getUser;
+export const getUser4Admin = async (query: Query, token: string): Promise<User> => {
+  try {
+    const url = `${URL}${query.userId}/admin`;
+    console.log("URL Service", url);
+
+    // Configurer les headers avec le token
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // Retourner les données utilisateur
+    return res.data as User;
+  } catch (error) {
+    console.error("Error fetching User:", error);
+    throw error;
+  }
+};
