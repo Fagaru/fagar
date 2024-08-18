@@ -33,7 +33,7 @@ export const DeleteProfile: React.FC<DeleteFormValues> = ({
                 toast.success("Compte supprimé.");
                 logout();
                 router.refresh();
-                router.push(`/login`);
+                router.push('/auth?tab=login')
             }).catch((e) => {
                 toast.error(e.response.data);
             });

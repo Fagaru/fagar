@@ -24,7 +24,7 @@ export default function DashboardLayout({
     setLoading(true);
     if (isAuthenticated === false) {
         toast.error('Veuillez vous authentifier pour poursuivre !');
-        router.push('/login');
+        router.push('/auth?tab=login')
     } else {
         setLoading(false);
     }

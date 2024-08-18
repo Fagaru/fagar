@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { jwtDecode } from 'jwt-decode';
 
@@ -54,16 +53,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (token) {
       const decoded: any = jwtDecode(token);
       const currentTime = Date.now() / 1000;
-      console.log("REST TIME", decoded.exp - currentTime);
 
       if (decoded.exp < currentTime) {
         logout()
-        router.push('/login')
+        router.push('/auth?tab=login')
       } else {
         setIsAuthenticated(true);
       }
-    // } else {
-    //   setIsAuthenticated(false);
     }
   };
 
@@ -80,9 +76,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = async () => {
     try {
-      // const id = user.id;
-      // console.log("ID LOGOUT", id);
-      // await axios.post(`/api/auth/logout`, {"id": id});
       sessionStorage.removeItem('token'); // Remove user data from cookies
       sessionStorage.removeItem('user'); // Remove user data from cookies
       setUser(null);
