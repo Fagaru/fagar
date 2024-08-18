@@ -36,7 +36,6 @@ import { Category } from "@/types/category";
 import { Textarea } from "@/components/ui/textarea";
 import { Controller } from "react-hook-form";
 
-import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { useAuth } from "@/context/authContext";
 import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";

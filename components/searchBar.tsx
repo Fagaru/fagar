@@ -48,7 +48,7 @@ const SearchBar = () => {
   const clearAddress = () => {
     setAddress('');
   };
-  // console.log(query)
+
   return (
     <div className="flex items-center border-2 rounded-full">
       <div className="flex items-center relative">
@@ -63,11 +63,6 @@ const SearchBar = () => {
             handleQueryChange(e.target.value);
           }}
         />
-        {/* {query && (
-          <button onClick={clearQuery} className="absolute right-0 mr-2">
-            <X size={15} opacity={0.55}/>
-          </button>
-        )} */}
       </div>
       <div className="flex items-center relative">
         <Input
@@ -86,7 +81,7 @@ const SearchBar = () => {
           </button>
         )}
       </div>
-      <button className="rounded-r-full border-gray-300 px-4 py-2 max-w-3" onClick={handleSearch}>
+      <button className="rounded-r-full border-gray-300 px-4 py-2 max-w-3 relative mr-6" onClick={handleSearch}>
         <Search />
       </button>
     </div>

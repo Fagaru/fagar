@@ -27,6 +27,12 @@ import Link from "next/link";
 import { Trash } from "lucide-react";
 import { AlertModal } from "@/components/modals/alert-modal";
 
+export const ROLE_OPTIONS = [
+    { value: 'visitor', label: 'Basic' },
+    { value: 'professional', label: 'Professionel' },
+    { value: 'admin', label: 'Administrateur' }
+  ];
+
 // Définition du schéma de validation avec zod
 const formSchema = z.object({
     first_name: z.string().min(1, "Prénom requis"),
@@ -254,16 +260,26 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                                     render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Rôle</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <Select 
+                                            disabled={loading} 
+                                            onValueChange={field.onChange} 
+                                            value={field.value} 
+                                            defaultValue={field.value}
+                                        >
                                             <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Attribuer un rôle à cet utilisateur" />
                                             </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                            <SelectItem value="visitor">Basic</SelectItem>
-                                            <SelectItem value="professional">Professionel</SelectItem>
-                                            <SelectItem value="admin">Administrateur</SelectItem>
+                                            {ROLE_OPTIONS.map((role) => (
+                                                <SelectItem
+                                                    key={role.value}
+                                                    value={role.value}
+                                                >
+                                                    {role.label}
+                                                </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                         <FormDescription>

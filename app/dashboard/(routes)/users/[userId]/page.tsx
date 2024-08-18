@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { User } from "@/types/user";
 import toast from "react-hot-toast";
 
-
 const UserPage = ({
     params
 }: {
