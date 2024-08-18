@@ -4,6 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import Region from '@/models/region.model';
 import User, { ROLES } from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 interface AuthenticatedRequest extends Request {
     user?: any;
@@ -19,15 +20,13 @@ export async function PATCH (
 
         const body = await req.json();
 
-        const { label, imageUrl } = body;
-
         await dbConnect();
     
         // Récupérer la REGION actuelle
         const currentRegion = await Region.findById(params.regionId);
     
         if (!currentRegion) {
-          throw new Error('REGION not found');
+            return createCorsResponse('Region not found', { status: 404 });
         }
     
         // Mettre à jour la REGION
@@ -42,10 +41,10 @@ export async function PATCH (
 
         console.log('Updated REGION:', updatedRegion);
 
-        return NextResponse.json(updatedRegion);
+        return createCorsResponse(updatedRegion);
     } catch (error) {
         console.log('[REGION_PATCH] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -62,15 +61,15 @@ export async function DELETE (
 
         const currentRegion = await Region.findById(params.regionId);
         if (!currentRegion) {
-            throw new Error('REGION not found');
+            return createCorsResponse('Region not found', { status: 404 });
         }
         
         const deleteRegion = await Region.deleteOne(filter);
         
-        return NextResponse.json(deleteRegion);
+        return createCorsResponse(deleteRegion);
     } catch (error) {
         console.log('[REGION_DELETE] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -83,9 +82,9 @@ export async function GET(
         const filter = {_id: params.regionId};
         const region = await Region.findOne(filter);
 
-        return NextResponse.json(region);
+        return createCorsResponse(region);
     } catch (error) {
         console.log('[REGION_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

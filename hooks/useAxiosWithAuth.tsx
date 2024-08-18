@@ -6,34 +6,41 @@ import toast from 'react-hot-toast';
 const useAxiosWithAuth = () => {
     const { token, checkTokenExp, logout } = useAuth();
     const router = useRouter();
-        
-    const instance = axios.create();
+    
+    const instance = axios.create({
+        headers: {
+            // En-têtes CORS ajoutés par défaut à toutes les requêtes
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
+    });
 
-    // Interceptor to add token to requests
+    // Intercepteur pour ajouter le token aux requêtes
     instance.interceptors.request.use(
         (config) => {
-            checkTokenExp(); // Ensure the token is valid
+            checkTokenExp(); // Vérifie si le token est toujours valide
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
             return config;
         },
         (error) => {
-        return Promise.reject(error);
+            return Promise.reject(error);
         }
     );
 
-    // Optionally handle responses and errors globally
+    // Optionnellement, gérer les réponses et les erreurs globalement
     instance.interceptors.response.use(
         (response) => response,
         (error) => {
-            if (error.response.status === 401) {
+            if (error.response?.status === 401) {
                 logout();
                 toast.error('Votre connexion a expiré. Veuillez vous authentifier !');
-                router.push('/login')
-            // Handle unauthorized errors, e.g., redirect to login
+                router.push('/auth?tab=login');
+                // Gérer les erreurs d'authentification, par ex., rediriger vers la page de connexion
             }
-        return Promise.reject(error);
+            return Promise.reject(error);
         }
     );
 

@@ -4,6 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import mongoose from "mongoose";
 import User from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 interface AuthenticatedRequest extends Request {
     user?: any; // Vous pouvez remplacer 'any' par le type de votre utilisateur si nécessaire
@@ -26,7 +27,7 @@ export async function PATCH (
         const currentUser = await User.findOne(filter);
     
         if (!currentUser) {
-            return new NextResponse('Utilisateur introuvable', { status: 404 });
+            return createCorsResponse('Utilisateur introuvable', { status: 404 });
         }
 
         const updatedUser = await User.updateOne(
@@ -37,10 +38,10 @@ export async function PATCH (
             }
         );
 
-        return NextResponse.json(updatedUser);
+        return createCorsResponse(updatedUser);
     } catch (error) {
         console.log('[USER_PATCH] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -56,15 +57,15 @@ export async function DELETE (
         const currentUser = await User.findOne(filter);
     
         if (!currentUser) {
-            return new NextResponse('Utilisateur introuvable', { status: 404 });
+            return createCorsResponse('Utilisateur introuvable', { status: 404 });
         }
         
         const deleteUser = await User.deleteOne(filter);
         
-        return NextResponse.json(deleteUser);
+        return createCorsResponse(deleteUser);
     } catch (error) {
         console.log('[USER_DELETE] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -75,9 +76,9 @@ export async function GET(
         const authResponse = await withAuth(['admin', 'professional', 'visitor'], req);
         if (authResponse) return authResponse;
 
-        return NextResponse.json(req.user);
+        return createCorsResponse(req.user);
     } catch (error) {
         console.log('[USER_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

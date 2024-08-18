@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 import User from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 const PEPPER = process.env.PEPPER || 'your-secret-pepper';
 
@@ -23,7 +24,7 @@ export async function PATCH (
         const { oldPassword, newPassword } = body;
 
         if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
-            return new NextResponse('Invalid user ID', { status: 400 });
+            return createCorsResponse('Invalid user ID', { status: 400 });
           }
         
         await dbConnect();
@@ -31,13 +32,13 @@ export async function PATCH (
         const currentUser = await User.findById(req.user._id);
     
         if (!currentUser) {
-            return new NextResponse('Utilisateur introuvable', { status: 404 });
+            return createCorsResponse('Utilisateur introuvable', { status: 404 });
         }
     
         const isMatch = await bcrypt.compare(oldPassword + PEPPER, currentUser.password);
     
         if (!isMatch) {
-          return new NextResponse("Mot de passe incorrect", { status: 403 });
+          return createCorsResponse("Mot de passe incorrect", { status: 403 });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -54,9 +55,9 @@ export async function PATCH (
             }
         );
 
-        return NextResponse.json(updatedUser);
+        return createCorsResponse(updatedUser);
     } catch (error) {
         console.log('[USER_PATCH Password] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };

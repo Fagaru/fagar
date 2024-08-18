@@ -5,6 +5,7 @@ import Subscription from '@/models/subscription.model';
 import mongoose from "mongoose";
 import User, { ROLES } from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 interface AuthenticatedRequest extends Request {
     user?: any;
@@ -23,14 +24,14 @@ export async function PATCH (
         await dbConnect();
 
         if (!mongoose.Types.ObjectId.isValid(params.subscriptionId)) {
-            return new NextResponse('Invalid Subscription ID', { status: 400 });
+            return createCorsResponse('Invalid Subscription ID', { status: 400 });
         }
         
         // Récupérer la Subscription actuelle
         const currentSubscription = await Subscription.findById(params.subscriptionId);
     
         if (!currentSubscription) {
-            return new NextResponse('Subscription not found', { status: 404 });
+            return createCorsResponse('Subscription not found', { status: 404 });
         }
     
         // Mettre à jour la Subscription
@@ -43,10 +44,10 @@ export async function PATCH (
             }
         );
 
-        return NextResponse.json(updatedSubscription);
+        return createCorsResponse(updatedSubscription);
     } catch (error) {
         console.log('[Subscription_PATCH] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -62,23 +63,23 @@ export async function DELETE (
         await dbConnect();
         
         if (!mongoose.Types.ObjectId.isValid(params.subscriptionId)) {
-            return new NextResponse('Invalid Subscription ID', { status: 400 });
+            return createCorsResponse('Invalid Subscription ID', { status: 400 });
         }
         
         // Récupérer la Subscription actuelle
         const currentSubscription = await Subscription.findById(params.subscriptionId);
     
         if (!currentSubscription) {
-            return new NextResponse('Subscription not found', { status: 404 });
+            return createCorsResponse('Subscription not found', { status: 404 });
         }
 
         const filter = {_id: params.subscriptionId};
         const deleteSubscription = await Subscription.deleteOne(filter);
         
-        return NextResponse.json(deleteSubscription);
+        return createCorsResponse(deleteSubscription);
     } catch (error) {
         console.log('[Subscription_DELETE] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -89,16 +90,16 @@ export async function GET(
     try {
 
         if (!mongoose.Types.ObjectId.isValid(params.subscriptionId)) {
-            return new NextResponse('Invalid Subscription ID', { status: 400 });
+            return createCorsResponse('Invalid Subscription ID', { status: 400 });
         }
         
         await dbConnect();
         const filter = {_id: params.subscriptionId};
         const subscription = await Subscription.findOne(filter);
 
-        return NextResponse.json(subscription);
+        return createCorsResponse(subscription);
     } catch (error) {
         console.log('[Subscription_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

@@ -5,6 +5,7 @@ import dbConnect from '@/lib/dbConnect';
 import Corporation from '@/models/corporation.model';
 import User, { ROLES } from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin', 'professional'];
@@ -31,7 +32,7 @@ export async function POST(
         } = body;
 
         if (!name) {
-            return new NextResponse("Name is required", {  status: 400});
+            return createCorsResponse("Name is required", {  status: 400});
         }
 
         await dbConnect();
@@ -58,10 +59,10 @@ export async function POST(
         });
 
         await corporation.save();
-        return NextResponse.json(corporation);
+        return createCorsResponse(corporation);
     } catch (error) {
         console.log('[CORPORATION_POST] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }
 
@@ -107,9 +108,9 @@ export async function GET(
         .exec();
 
         console.log('Corporations trouvées:', corporations);
-        return NextResponse.json(corporations);
+        return createCorsResponse(corporations);
     } catch (error) {
         console.log('[CORPORATIONS_GET] ', error);
-        return new NextResponse("Internal error : Erreur lors de la recherche des corporations:", { status: 500 });
+        return createCorsResponse("Internal error : Erreur lors de la recherche des corporations:", { status: 500 });
     }
 }

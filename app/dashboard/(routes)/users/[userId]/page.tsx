@@ -26,7 +26,6 @@ const UserPage = ({
 
         const fetchData = async () => {
         try {
-            console.log("DASH USER ID", params.userId);
             const fetchedUser = await getUser4Admin({
                 userId: params.userId
                 },

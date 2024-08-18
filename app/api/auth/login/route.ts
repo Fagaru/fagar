@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import User from '@/models/user.model';
 import dbConnect from '@/lib/dbConnect';
 import { NextResponse } from 'next/server';
+import { createCorsResponse } from '@/lib/createCorsResponse';
 
 const PEPPER = process.env.PEPPER || 'your-secret-pepper';
 const JWT_SECRET = process.env.JWT_SECRET!;
@@ -19,13 +20,13 @@ export async function POST(
 
       const user = await User.findOne({ email });
       if (!user) {
-        return new NextResponse("Identifiants invalides", { status: 404 });
+        return createCorsResponse("Identifiants invalides", { status: 404 });
       }
 
       const isMatch = await bcrypt.compare(password + PEPPER, user.password);
 
       if (!isMatch) {
-        return new NextResponse("Identifiants invalides", { status: 403 });
+        return createCorsResponse("Identifiants invalides", { status: 403 });
       }
 
       const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
@@ -49,8 +50,8 @@ export async function POST(
         isSuspended: user.isSuspended
       }
 
-      return NextResponse.json({userInfo, token});
+      return createCorsResponse({userInfo, token});
     } catch (error) {
-      return new NextResponse("Internal error", { status: 500 });
+      return createCorsResponse("Internal error", { status: 500 });
     }
 }

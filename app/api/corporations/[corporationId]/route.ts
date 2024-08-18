@@ -5,6 +5,7 @@ import Corporation from '@/models/corporation.model';
 import moment from 'moment';
 import User, { ROLES } from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 // Interface for Schedule Subschema
 interface ISchedule {
@@ -42,11 +43,11 @@ export async function PATCH (
         const currentCorporation = await Corporation.findById(params.corporationId);
     
         if (!currentCorporation) {
-          throw new Error('Corporation not found');
+            return createCorsResponse('Corporation not found', { status: 404 });
         }
 
         if (req.user.role === ROLES.PROFESSIONAL && req.user._id !== currentCorporation.userId) {
-            return new NextResponse('Unauthorized', { status: 401 });
+            return createCorsResponse('Unauthorized', { status: 401 });
         }
     
         // Maintenir les valeurs actuelles si les nouvelles sont vides
@@ -85,10 +86,10 @@ export async function PATCH (
             }
         );
 
-        return NextResponse.json(updatedCorporation);
+        return createCorsResponse(updatedCorporation);
     } catch (error) {
         console.log('[CORPORATION_PATCH] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -105,19 +106,19 @@ export async function DELETE (
 
         const currentCorporation = await Corporation.findOne(filter);
         if (!currentCorporation) {
-            throw new Error('Corporation not found');
+            return createCorsResponse('Corporation not found', { status: 404 });
         }
 
         if (req.user.role === ROLES.PROFESSIONAL && req.user._id !== currentCorporation.userId) {
-            return new NextResponse('Unauthorized', { status: 401 });
+            return createCorsResponse('Unauthorized', { status: 401 });
         }
         
         const deleteCorporation = await Corporation.deleteOne(filter);
         
-        return NextResponse.json(deleteCorporation);
+        return createCorsResponse(deleteCorporation);
     } catch (error) {
         console.log('[CORPORATION_DELETE] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -130,9 +131,9 @@ export async function GET(
         const filter = {_id: params.corporationId};
         const corporation = await Corporation.findOne(filter);
 
-        return NextResponse.json(corporation);
+        return createCorsResponse(corporation);
     } catch (error) {
         console.log('[CORPORATION_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

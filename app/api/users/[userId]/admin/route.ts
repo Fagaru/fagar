@@ -4,6 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import mongoose from "mongoose";
 import User from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 interface AuthenticatedRequest extends Request {
     user?: any;
@@ -15,7 +16,7 @@ export async function PATCH (
 ) {
     try {
         if (!params.userId) {
-            return new NextResponse("User ID is required", {  status: 400});
+            return createCorsResponse("User ID is required", {  status: 400});
         }
 
         const authResponse = await withAuth(['admin'], req);
@@ -24,7 +25,7 @@ export async function PATCH (
 
 
         if (!mongoose.Types.ObjectId.isValid(params.userId)) {
-            return new NextResponse('Invalid user ID', { status: 400 });
+            return createCorsResponse('Invalid user ID', { status: 400 });
         }
 
         body.image = Array.isArray(body.image) ? body.image[0] : body.image;
@@ -35,7 +36,7 @@ export async function PATCH (
         const currentUser = await User.findOne(filter);
     
         if (!currentUser) {
-            return new NextResponse('Utilisateur introuvable', { status: 404 });
+            return createCorsResponse('Utilisateur introuvable', { status: 404 });
         }
         
         const updatedUser = await User.updateOne(
@@ -46,10 +47,10 @@ export async function PATCH (
             }
         );
 
-        return NextResponse.json(updatedUser);
+        return createCorsResponse(updatedUser);
     } catch (error) {
         console.log('[USER_PATCH] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -59,7 +60,7 @@ export async function DELETE (
 ) {
     try {
         if (!params.userId) {
-            return new NextResponse("User ID is required", {  status: 400});
+            return createCorsResponse("User ID is required", {  status: 400});
         }
         const authResponse = await withAuth(['admin'], req);
         if (authResponse) return authResponse;
@@ -69,15 +70,15 @@ export async function DELETE (
         const currentUser = await User.findOne(filter);
     
         if (!currentUser) {
-            return new NextResponse('Utilisateur introuvable', { status: 404 });
+            return createCorsResponse('Utilisateur introuvable', { status: 404 });
         }
         
         const deleteUser = await User.deleteOne(filter);
         
-        return NextResponse.json(deleteUser);
+        return createCorsResponse(deleteUser);
     } catch (error) {
         console.log('[USER_DELETE] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -87,7 +88,7 @@ export async function GET(
 ) {
     try {
         if (!params.userId) {
-            return new NextResponse("User ID is required", {  status: 400});
+            return createCorsResponse("User ID is required", {  status: 400});
         }
         const authResponse = await withAuth(['admin'], req);
         if (authResponse) return authResponse;
@@ -97,12 +98,12 @@ export async function GET(
         const user = await User.findOne(filter);
 
         if (!user) {
-            return new NextResponse('Utilisateur introuvable', { status: 404 });
+            return createCorsResponse('Utilisateur introuvable', { status: 404 });
         }
 
-        return NextResponse.json(user);
+        return createCorsResponse(user);
     } catch (error) {
         console.log('[USER_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

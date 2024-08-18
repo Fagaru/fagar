@@ -4,6 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import Subscription from "@/models/subscription.model";
 import User, { ROLES } from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin'];
@@ -25,7 +26,7 @@ export async function POST(
         const { label, description, price } = body;
 
         if (!label) {
-        return new NextResponse("Label is required", { status: 400 });
+        return createCorsResponse("Label is required", { status: 400 });
         }
 
         // Connectez-vous à la base de données
@@ -40,10 +41,10 @@ export async function POST(
 
         await subscription.save();
 
-        return NextResponse.json(subscription);
+        return createCorsResponse(subscription);
     } catch (error) {
         console.error('[Subscription_POST]', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }
 
@@ -54,9 +55,9 @@ export async function GET(
         await dbConnect();
         const subscriptions = await Subscription.find({});
 
-        return NextResponse.json(subscriptions);
+        return createCorsResponse(subscriptions);
     } catch (error) {
         console.log('[Subscription_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

@@ -4,6 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import City from "@/models/city.model";
 import User, { ROLES } from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin'];
@@ -27,7 +28,7 @@ export async function POST(
         await dbConnect();
 
         if (!label) {
-            return new NextResponse("Label is required", {  status: 400});
+            return createCorsResponse("Label is required", {  status: 400});
         }
 
         const city = new City({
@@ -36,10 +37,10 @@ export async function POST(
         });
 
         await city.save();
-        return NextResponse.json(city);
+        return createCorsResponse(city);
     } catch (error) {
         console.log('[CITY_POST] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }
 
@@ -50,9 +51,9 @@ export async function GET(
         await dbConnect();
         const cities = await City.find({});
 
-        return NextResponse.json(cities);
+        return createCorsResponse(cities);
     } catch (error) {
         console.log('[CITIES_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

@@ -18,6 +18,8 @@ export const getUser = async (query: Query, token: string): Promise<User> => {
     const res = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
     });
 
@@ -38,6 +40,8 @@ export const getUser4Admin = async (query: Query, token: string): Promise<User> 
     const res = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
     });
 

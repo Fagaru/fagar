@@ -2,9 +2,8 @@ import { NextResponse } from "next/server";
 
 import dbConnect from '@/lib/dbConnect';
 import Category from "@/models/category.model";
-import { NextApiRequest, NextApiResponse } from "next";
-import { authenticateToken, authorize, withAuth } from "@/lib/auth";
-import User, { ROLES } from "@/models/user.model";
+import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin'];
@@ -28,11 +27,11 @@ export async function POST(
         await dbConnect();
 
         if (!label) {
-            return new NextResponse("Label is required", {  status: 400});
+            return createCorsResponse("Label is required", {  status: 400});
         }
 
         if (!imageUrl) {
-            return new NextResponse("Image URL is required", {  status: 400});
+            return createCorsResponse("Image URL is required", {  status: 400});
         }
 
         const category = new Category({
@@ -41,10 +40,10 @@ export async function POST(
         });
 
         await category.save();
-        return NextResponse.json(category);
+        return createCorsResponse(category);
     } catch (error) {
         console.log('[CATEGORY_POST] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }
 
@@ -55,9 +54,9 @@ export async function GET(
         await dbConnect();
         const categories = await Category.find({});
 
-        return NextResponse.json(categories);
+        return createCorsResponse(categories);
     } catch (error) {
         console.log('[CATEGORY_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

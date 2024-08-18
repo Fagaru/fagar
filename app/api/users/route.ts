@@ -4,6 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import User from "@/models/user.model";
 import bcrypt from "bcrypt";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 const PEPPER = process.env.PEPPER || 'password par défaut'; // Utiliser une valeur secrète plus complexe en production
 
@@ -20,7 +21,6 @@ export async function POST(
         const authResponse = await withAuth(['admin'], req);
         let init_password: boolean = false;
         if (!authResponse) {
-            console.log("ADMIN USER", req.user.role);
             body.password = "123456";
             init_password = true;
         }
@@ -29,10 +29,10 @@ export async function POST(
 
 
         if (!first_name || !last_name) {
-            return new NextResponse("Veuillez remplir le formulaire", { status: 403 });
+            return createCorsResponse("Veuillez remplir le formulaire", { status: 403 });
         }
         if (!email || !password) {
-            return new NextResponse("Veuillez remplir le formulaire", { status: 403 });
+            return createCorsResponse("Veuillez remplir le formulaire", { status: 403 });
         }
 
         // Se connecter à la base de données si ce n'est pas déjà fait
@@ -40,7 +40,7 @@ export async function POST(
         const current_user = await User.findOne({email});
 
         if (current_user) {
-            return new NextResponse("Cet utilisateur existe déjà.", { status: 409 });
+            return createCorsResponse("Cet utilisateur existe déjà.", { status: 409 });
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password + PEPPER, salt);
@@ -50,10 +50,10 @@ export async function POST(
             password: hashedPassword,
         });
         await user.save();
-        return NextResponse.json(user);
+        return createCorsResponse(user);
     } catch (error) {
         console.log('[User_POST] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }
 
@@ -68,9 +68,9 @@ export async function GET(
         await dbConnect();
         const users = await User.find().select(['-password']);
 
-        return NextResponse.json(users);
+        return createCorsResponse(users);
     } catch (error) {
         console.log('[USERS_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

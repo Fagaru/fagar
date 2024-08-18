@@ -5,6 +5,7 @@ import City from '@/models/city.model';
 import mongoose from "mongoose";
 import User, { ROLES } from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 interface AuthenticatedRequest extends Request {
     user?: any;
@@ -24,14 +25,14 @@ export async function PATCH (
         await dbConnect();
 
         if (!mongoose.Types.ObjectId.isValid(params.cityId)) {
-            return new NextResponse('Invalid city ID', { status: 400 });
+            return createCorsResponse('Invalid city ID', { status: 400 });
         }
 
         // Récupérer la CITY actuelle
         const currentCity = await City.findById(params.cityId);
     
         if (!currentCity) {
-            return new NextResponse('City not found', { status: 404 });
+            return createCorsResponse('City not found', { status: 404 });
         }
     
         // Mettre à jour la CitY
@@ -46,10 +47,10 @@ export async function PATCH (
 
         console.log('Updated CITY:', updatedCity);
 
-        return NextResponse.json(updatedCity);
+        return createCorsResponse(updatedCity);
     } catch (error) {
         console.log('[CITY_PATCH] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -72,10 +73,10 @@ export async function DELETE (
         
         const deleteCity = await City.deleteOne(filter);
         
-        return NextResponse.json(deleteCity);
+        return createCorsResponse(deleteCity);
     } catch (error) {
         console.log('[CITY_DELETE] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -88,9 +89,9 @@ export async function GET(
         const filter = {_id: params.cityId};
         const city = await City.findOne(filter);
 
-        return NextResponse.json(city);
+        return createCorsResponse(city);
     } catch (error) {
         console.log('[CITY_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

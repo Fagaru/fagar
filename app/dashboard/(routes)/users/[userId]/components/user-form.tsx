@@ -109,7 +109,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                 })
             }
         } catch (error) {
-            console.log("DASH SUB USER ", error)
             toast.error("Something went wrong.");
         } finally {
             setLoading(false);
@@ -258,7 +257,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Select a verified email to display" />
+                                                <SelectValue placeholder="Attribuer un rôle à cet utilisateur" />
                                             </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>

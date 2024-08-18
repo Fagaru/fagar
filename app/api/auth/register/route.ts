@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 import User, { IUser, ROLES } from '@/models/user.model';
 import dbConnect from '@/lib/dbConnect';
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 const PEPPER = process.env.PEPPER || 'your-secret-pepper';
 
@@ -26,9 +27,9 @@ export async function POST(
       role
     });
     await user.save();
-    return NextResponse.json(user);
+    return createCorsResponse(user);
   } catch (error) {
     console.log('[Register_POST] ', error);
-    return new NextResponse("Internal error", { status: 500 });
+    return createCorsResponse("Internal error", { status: 500 });
   } 
 }

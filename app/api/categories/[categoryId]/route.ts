@@ -5,6 +5,7 @@ import Category from '@/models/category.model';
 import mongoose from "mongoose";
 import User, { ROLES } from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 interface AuthenticatedRequest extends Request {
     user?: any;
@@ -20,19 +21,17 @@ export async function PATCH (
 
         const body = await req.json();
 
-        const { label, imageUrl } = body;
-
         await dbConnect();
         
         if (!mongoose.Types.ObjectId.isValid(params.categoryId)) {
-            return new NextResponse('Invalid category ID', { status: 400 });
+            return createCorsResponse('Invalid category ID', { status: 400 });
           }
         
         // Récupérer la CATEGORY actuelle
         const currentCategory = await Category.findById(params.categoryId);
     
         if (!currentCategory) {
-            return new NextResponse('Category not found', { status: 404 });
+            return createCorsResponse('Category not found', { status: 404 });
         }
     
         // Mettre à jour la CATEGORY
@@ -45,10 +44,10 @@ export async function PATCH (
             }
         );
 
-        return NextResponse.json(updatedCategory);
+        return createCorsResponse(updatedCategory);
     } catch (error) {
         console.log('[CATEGORY_PATCH] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -71,10 +70,10 @@ export async function DELETE (
         
         const deleteCategory = await Category.deleteOne(filter);
         
-        return NextResponse.json(deleteCategory);
+        return createCorsResponse(deleteCategory);
     } catch (error) {
         console.log('[CATEGORY_DELETE] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 };
 
@@ -87,9 +86,9 @@ export async function GET(
         const filter = {_id: params.categoryId};
         const category = await Category.findOne(filter);
 
-        return NextResponse.json(category);
+        return createCorsResponse(category);
     } catch (error) {
         console.log('[CATEGORY_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }

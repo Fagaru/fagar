@@ -4,6 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import Region from "@/models/region.model";
 import User, { ROLES } from "@/models/user.model";
 import { withAuth } from "@/lib/auth";
+import { createCorsResponse } from "@/lib/createCorsResponse";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin'];
@@ -27,7 +28,7 @@ export async function POST(
         await dbConnect();
 
         if (!label) {
-            return new NextResponse("Label is required", {  status: 400});
+            return createCorsResponse("Label is required", {  status: 400});
         }
 
         const region = new Region({
@@ -36,10 +37,10 @@ export async function POST(
         });
 
         await region.save();
-        return NextResponse.json(region);
+        return createCorsResponse(region);
     } catch (error) {
         console.log('[REGION_POST] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }
 
@@ -50,9 +51,9 @@ export async function GET(
         await dbConnect();
         const regions = await Region.find({});
 
-        return NextResponse.json(regions);
+        return createCorsResponse(regions);
     } catch (error) {
         console.log('[REGION_GET] ', error);
-        return new NextResponse("Internal error", { status: 500 });
+        return createCorsResponse("Internal error", { status: 500 });
     }
 }
