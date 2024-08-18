@@ -11,7 +11,7 @@ module.exports = {
         exec_mode: 'fork', // Utilisez 'cluster' pour une gestion de charge équilibrée
         watch: false, // Définissez sur true si vous souhaitez que pm2 redémarre votre application lors des changements de fichiers
         env: {
-          NODE_ENV: 'production',
+          NODE_ENV: 'development',
         },
       },
     ],
