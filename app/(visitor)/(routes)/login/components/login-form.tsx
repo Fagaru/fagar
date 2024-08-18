@@ -53,7 +53,7 @@ export const LoginForm: React.FC = () => {
                 sessionStorage.setItem("user", JSON.stringify(userInfo));
                 checkAuthStatus();
                 
-                router.push(`/dashboard`);
+                router.push(`/account`);
                 toast.success("Logged in successfully");
             }).catch((e) => {
                 toast.error(e.response.data);
