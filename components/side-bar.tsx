@@ -166,7 +166,7 @@ export function SideBar({
             </div>
 
             {/* Button to toggle sidebar */}
-            <Button variant="ghost" size="sm" onClick={toggleSidebar} className={cn(`fixed top-20 left-4 lg:block z-50 transition-all duration-500`, className)}>
+            <Button variant="ghost" size="sm" onClick={toggleSidebar} className={cn(`fixed top-20 left-2 lg:block z-50 transition-all duration-500`, className)}>
                 <Menu />
             </Button>
         </>

@@ -13,7 +13,7 @@ const Header = () => {
     return (
         <div>
             {/* Conteneur principal du header */}
-            <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-950 border-b pb-10">
+            <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-950 border-b pb-10 h-16">
                 <div className="flex items-center justify-between h-16 p-4">
                     {/* Logo et nom du site */}
                     <div className="flex items-center">
@@ -46,7 +46,7 @@ const Header = () => {
                 </div>
 
                 {/* SearchBar fixe et seule sur une ligne pour les petits écrans */}
-                <div className="md:hidden fixed top-16 left-0 right-0 bg-white dark:bg-gray-950 px-4 py-2 border-t z-50 h-14">
+                <div className="md:hidden top-16 left-0 right-0 bg-white dark:bg-gray-950 px-4 py-2 border-t z-50 h-14">
                     <SearchBar />
                 </div>
             </div>
