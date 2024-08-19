@@ -13,7 +13,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '@/components/errorFallback';
 import ImageForm from './components/imageForm';
 
-export const AccountPage = () => {
+const AccountPage = () => {
   const { user, isAuthenticated, token } = useAuth();
   const [currentUser, setCurrentUser] = useState<any>(null);
 
@@ -100,6 +100,8 @@ export const AccountPage = () => {
     </div>
   );
 };
+
+export default AccountPage;
 
 // export default function WrappedAccountPage() {
 //   return (

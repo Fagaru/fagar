@@ -10,7 +10,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Suspense } from "react";
 import Loader from "@/components/loader";
 
-export const AuthPage = () => {
+const AuthPage = () => {
     const searchParams = useSearchParams();
     const tab = searchParams.get('tab'); // Lire le paramètre 'tab' de l'URL
 
@@ -44,6 +44,8 @@ export const AuthPage = () => {
         </div>
     );
 };
+
+export default AuthPage;
 
 // export default function WrappedAuthPage() {
 //     return (
