@@ -54,12 +54,12 @@ export const LoginForm: React.FC = () => {
                 checkAuthStatus();
                 
                 router.push(`/account`);
-                toast.success("Logged in successfully");
+                toast.success("Connexion réussie.");
             }).catch((e) => {
                 toast.error(e.response.data);
             });
         } catch (error) {
-            toast.error("Invalid email or password");
+            toast.error("Adresse email ou mot de passe incorrect.");
         } finally {
             setLoading(false);
         }

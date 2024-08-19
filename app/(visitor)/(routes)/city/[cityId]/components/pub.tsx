@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import PubDescription from "./Pub_description";
 import {Corporation as CorporationType} from "@/types/corporation";
@@ -14,25 +14,27 @@ const PubSlider:React.FC <PubSliderProps> = ({corporations}) => {
 
   const images = corporations?.images?.length > 0 ? corporations.images : [{ url: "/default_image.jpg" }];
 
-  const clickNext = () => {
-    activeImage === images.length - 1
-      ? setActiveImage(0)
-      : setActiveImage(activeImage + 1);
-  };
+  const clickNext = useCallback(() => {
+    setActiveImage((prevActiveImage) =>
+      prevActiveImage === images.length - 1 ? 0 : prevActiveImage + 1
+    );
+  }, [images.length]);
+
   const clickPrev = () => {
-    activeImage === 0
-      ? setActiveImage(images.length - 1)
-      : setActiveImage(activeImage - 1);
+    setActiveImage((prevActiveImage) =>
+      prevActiveImage === 0 ? images.length - 1 : prevActiveImage - 1
+    );
   };
 
   useEffect(() => {
     const timer = setTimeout(() => {
       clickNext();
-    }, 5000);
+    }, 4000);
     return () => {
       clearTimeout(timer);
     };
-  }, [activeImage]);
+  }, [clickNext]);
+  
   return (
     <main className="grid place-items-center md:grid-cols-2 grid-cols-1 w-full mx-auto max-w-5xl shadow-2xl rounded-2xl relative">
       <div

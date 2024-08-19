@@ -4,7 +4,6 @@ import { formatter } from "@/lib/utils";
 import { CorporationsClient } from "./components/client";
 import { Corporation } from '@/types/corporation';
 import getCorporations from "@/services/getCorporations";
-import getTags from "@/services/getTags";
 import getCategories from "@/services/getCategories";
 import getSubscriptions from "@/services/getSubscriptions";
 import getRegions from "@/services/getRegions";
@@ -100,7 +99,7 @@ const CorporationsPage = () => {
 
   return (
     <div className="flex-col">
-      <div className="flex-1 space-y-4 p-10 pt-8">
+      <div className="flex-1 space-y-4 p-16 pt-20">
         <CorporationsClient data={formattedCorporations} />
       </div>
     </div>

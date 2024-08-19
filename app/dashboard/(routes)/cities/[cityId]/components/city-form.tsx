@@ -63,7 +63,7 @@ export const CityForm: React.FC<CityFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/cities/${params.cityId}`, data).then(() => {
+                await axios.patch(`/cities/${params.cityId}`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/cities`);
@@ -72,7 +72,7 @@ export const CityForm: React.FC<CityFormValues> = ({
                     toast.error(e.response.data);
                 });
             } else {
-                await axios.post(`/api/cities`, data).then(() => {
+                await axios.post(`/cities`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/cities`);
@@ -91,7 +91,7 @@ export const CityForm: React.FC<CityFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/cities/${params.cityId}`).then(() => {
+            await axios.delete(`/cities/${params.cityId}`).then(() => {
                 toast.success("City deleted.");
                 router.refresh();
                 router.push(`/dashboard/cities`);

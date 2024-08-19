@@ -41,7 +41,7 @@ const UserPage = ({
             fetchData();   
         }
         
-        }, [isMounted]);
+        }, [isMounted, token, params.userId]);
 
     if (!isMounted) {
         return null;

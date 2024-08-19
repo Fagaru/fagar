@@ -67,7 +67,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
             setLoading(true);
             // data.price = Number(data.price)
             if (initialData) {
-                await axios.patch(`/api/subscriptions/${params.subscriptionId}`, data).then(() => {
+                await axios.patch(`/subscriptions/${params.subscriptionId}`, data).then(() => {
                     router.refresh();
                     toast.success(toastMessage);
                     router.push('/dashboard/subscriptions'); 
@@ -76,7 +76,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
                     toast.error(e.response.data);
                 });
             } else {
-                await axios.post('/api/subscriptions', data).then(() => {
+                await axios.post('/subscriptions', data).then(() => {
                     router.refresh();
                     toast.success(toastMessage);
                     router.push('/dashboard/subscriptions'); 
@@ -95,7 +95,7 @@ export const SubscriptionForm: React.FC<SubscriptionFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/subscriptions/${params.subscriptionId}`).then(() => {
+            await axios.delete(`/subscriptions/${params.subscriptionId}`).then(() => {
                 router.refresh();
                 router.push(`/dashboard/subscriptions`);
                 toast.success("Subscription deleted.");

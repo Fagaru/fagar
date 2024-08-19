@@ -91,14 +91,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                 birthday: initialData.birthday ? new Date(initialData.birthday) : ''
             });
         }
-    }, [initialData]);
+    }, [initialData, form, form.reset]);
 
     const onSubmit = async (data: ProfileFormType) => {
         try {
-            console.log("DASH SUB USER ", data)
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/users/${initialData._id}/admin`, data).then(() => {
+                await axios.patch(`/users/${initialData._id}/admin`, data).then(() => {
                     router.push('/dashboard/users');
                     router.refresh();
                     toast.success(toastMessage); 
@@ -106,7 +105,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                     toast.error(e.response.data);
                 })
             } else {
-                await axios.post(`/api/users`, data).then(() => {
+                await axios.post(`/users`, data).then(() => {
                     router.push('/dashboard/users');
                     router.refresh();
                     toast.success(toastMessage);
@@ -124,7 +123,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/users/${params.userId}/admin`).then(() => {
+            await axios.delete(`/users/${params.userId}/admin`).then(() => {
                 toast.success("Compte supprimé.");
                 router.refresh();
                 router.push(`/dashboard/users`);
@@ -283,8 +282,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
                                             </SelectContent>
                                         </Select>
                                         <FormDescription>
-                                            Vous pouvez définir ici le niveau d'accès de l'utilisateur{" "}
-                                            <Link href="/examples/forms">email settings</Link>.
+                                            Vous pouvez définir ici le niveau d&#39;accès de l&#39;utilisateur{" "}
+                                            <Link href="/examples/forms">role settings</Link>.
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>

@@ -39,7 +39,7 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/categories/${data._id}`).then(() => {
+            await axios.delete(`/categories/${data._id}`).then(() => {
                 router.refresh();
                 toast.success("Categories deleted.");
             }).catch((e) => {

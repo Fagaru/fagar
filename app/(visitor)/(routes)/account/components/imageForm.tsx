@@ -71,26 +71,28 @@ const ImageForm: React.FC<ImageFormProps> = ({
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-full">
-                <FormField 
-                    control={form.control}
-                    name="image"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormControl>
-                                <ImageUpload 
-                                    value={field.value || []} 
-                                    disabled={loading} 
-                                    onChange={handleImageChange} 
-                                    onRemove={handleImageRemove} 
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <div className="flex justify-center">
-                    <Button disabled={loading} className="" type="submit">
-                        Enregistrer
+                <div className="">
+                    <FormField 
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <ImageUpload 
+                                        value={field.value || []} 
+                                        disabled={loading} 
+                                        onChange={handleImageChange} 
+                                        onRemove={handleImageRemove} 
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className="">
+                    <Button disabled={loading} className="m-auto" type="submit">
+                        Mis à jour photo de profil
                     </Button>
                 </div>
             </form>

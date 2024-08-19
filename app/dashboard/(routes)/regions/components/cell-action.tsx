@@ -40,7 +40,7 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/regions/${data._id}`).then(() => {
+            await axios.delete(`/regions/${data._id}`).then(() => {
                 router.refresh();
                 toast.success("Region deleted.");
             }).catch((e) => {

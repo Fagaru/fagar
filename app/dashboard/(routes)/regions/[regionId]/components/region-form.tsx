@@ -63,7 +63,7 @@ export const RegionForm: React.FC<RegionFormValues> = ({
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/regions/${params.regionId}`, data).then(() => {
+                await axios.patch(`/regions/${params.regionId}`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/regions`);
@@ -72,7 +72,7 @@ export const RegionForm: React.FC<RegionFormValues> = ({
                     toast.error(e.response.data);
                 });
             } else {
-                await axios.post(`/api/regions`, data).then(() => {
+                await axios.post(`/regions`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/dashboard/regions`);
@@ -91,7 +91,7 @@ export const RegionForm: React.FC<RegionFormValues> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/regions/${params.regionId}`).then(() => {
+            await axios.delete(`/regions/${params.regionId}`).then(() => {
                 toast.success("Region deleted.");
                 router.refresh();
                 router.push(`/dashboard/regions`);

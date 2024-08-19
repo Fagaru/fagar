@@ -96,16 +96,15 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                 <>
                     <div className="relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(50px,auto)]">
                         <div className="relative row-span-6 col-span-2 p-5 rounded-[10px] border-solid border-[1px]">
-                            {/* <ImagesGallery images={corporation.images[0]} /> */}
                             <div className="absolute h-full w-full aspect-square inset-0 overflow-hidden rounded-md shadow-md">
-                                    <Image 
-                                        fill
-                                        src={corporation.images[0]?.url || "/default_image.jpg"}
-                                        alt="Image"
-                                        className=""
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    />
-                                </div>
+                                <Image 
+                                    fill
+                                    src={corporation.images[0]?.url || "/default_image.jpg"}
+                                    alt="Image"
+                                    className=""
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                />
+                            </div>
                         </div>
                         {corporation.images.slice(1,5).map((image,index) => (
                             <div className="relative p-5 row-span-3 rounded-[10px] border-solid border-[1px]" key={index}>
@@ -139,16 +138,16 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                             </div>
                             <span className='pl-12 font-light text-sm'>{category?.label}</span>
                         </div>
-                        <div className="row-span-1 rounded-[10px]">
-                            <div className="pl-20 pt-5 pb-5">
+                        <div className="row-span-1 rounded-[10px] flex justify-center">
+                            <div className="pl-20 pt-5 pb-5 flex justify-center">
                                 <Link
                                     key={`/pros/${corporation._id}`}
                                     href={`/pros/${corporation._id}`}
-                                    className='grid grid-cols-1 justify-items-stretch rounded-xl'
+                                    className='grid grid-cols-1 rounded-xl'
                                 >
-                                    <span className='font-medium justify-self-center'>Laisser un avis</span>
+                                    <span className='font-medium flex justify-center'>Laisser un avis</span>
                                     <ReviewSection stars={4} rating_mode="no-value" />
-                                    <Button className='justify-self-center'> Ecrire un avis</Button>
+                                    <Button className='flex justify-center'> Ecrire un avis</Button>
                                 </Link>
                             </div>
                         </div>

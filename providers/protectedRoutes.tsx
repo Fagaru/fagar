@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/authContext';
 import toast from 'react-hot-toast';
+import Loader from '@/components/loader';
 
 interface ProtectedRoutesProps {
   allowedRoles: string[];
@@ -21,7 +22,7 @@ const ProtectedRoute: React.FC<ProtectedRoutesProps> = ({
     setLoading(true);
     if (isAuthenticated === false) {
       toast.error('Veuillez vous authentifier pour poursuivre !');
-      router.push('/login');
+      router.push('/auth?tab=login');
     } else if (user && !allowedRoles.includes(user.role)) {
       toast.error('Accès non autorisé !');
       router.push('/unauthorized');
@@ -31,7 +32,7 @@ const ProtectedRoute: React.FC<ProtectedRoutesProps> = ({
   }, [user, isAuthenticated, router, allowedRoles]);
 
   if (loading) {
-    return null; // Affiche un loader pendant la vérification de l'accès
+    return <Loader />; // Affiche un loader pendant la vérification de l'accès
   }
 
   return <>{children}</>; // Affiche les enfants une fois la vérification terminée

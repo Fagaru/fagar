@@ -125,7 +125,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
         };
 
         fetchTags();
-    }, []);
+    }, [initialData?.tags]);
 
     const title = initialData ? "Edit company" : "Create company";
     const description = initialData ? "Edit company" : "Add a new company";
@@ -179,7 +179,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                 data.userId = user.id;
             }
             if (initialData){
-                await axios.patch(`/api/corporations/${params.corporationId}`, data).then(() => {
+                await axios.patch(`/corporations/${params.corporationId}`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/pros/${params.corporationId}`);
@@ -189,7 +189,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                 });
             } else {
                 data.userId = user.id;
-                await axios.post(`/api/corporations`, data).then(() => {
+                await axios.post(`/corporations`, data).then(() => {
                     toast.success(toastMessage);
                     router.refresh();
                     router.push(`/pros/${params.corporationId}`);
@@ -207,7 +207,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/corporations/${params.corporationId}`).then(() => {
+            await axios.delete(`/corporations/${params.corporationId}`).then(() => {
                 toast.success("Corporation deleted.");
                 router.refresh();
                 router.push(`/management`);

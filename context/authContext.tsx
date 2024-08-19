@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { jwtDecode } from 'jwt-decode';
@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }
 
   // Check if token is valid
-  const checkTokenExp = () => {
+  const checkTokenExp = useCallback(() => {
     if (token) {
       const decoded: any = jwtDecode(token);
       const currentTime = Date.now() / 1000;
@@ -61,7 +61,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setIsAuthenticated(true);
       }
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     checkTokenExp();

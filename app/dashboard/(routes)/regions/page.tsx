@@ -49,7 +49,7 @@ const RegionsPage = () => {
 
     return (
         <div className="flex-col">
-            <div className="flex-1 space-y-4 p-10 pt-8">
+            <div className="flex-1 space-y-4 p-16 pt-20">
                 <RegionClient data={formattedRegions}/>
             </div>
         </div>

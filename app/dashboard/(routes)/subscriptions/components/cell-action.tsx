@@ -40,7 +40,7 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/subscriptions/${data._id}`).then(()=> {
+            await axios.delete(`/subscriptions/${data._id}`).then(()=> {
                 toast.success("Subscription deleted.");
                 router.refresh();
             })

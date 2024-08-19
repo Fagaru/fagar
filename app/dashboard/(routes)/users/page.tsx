@@ -32,7 +32,7 @@ const UsersPage = () => {
     };
 
     fetchData();
-  }, [isMounted]);
+  }, [isMounted, token]);
 
   if (!isMounted) {
     return null;
@@ -56,7 +56,7 @@ const UsersPage = () => {
 
   return (
     <div className="flex-col">
-      <div className="flex-1 space-y-4 p-10 pt-8">
+      <div className="flex-1 space-y-4 p-16 pt-20">
         <UserClient data={formattedUsers} />
       </div>
     </div>

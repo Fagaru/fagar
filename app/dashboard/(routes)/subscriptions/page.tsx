@@ -50,7 +50,7 @@ const SubscriptionsPage = () => {
 
     return (
         <div className="flex-col">
-            <div className="flex-1 space-y-4 p-10 pt-8">
+            <div className="flex-1 space-y-4 p-16 pt-20">
                 <SubscriptionClient data={formattedSubscriptions}/>
             </div>
         </div>

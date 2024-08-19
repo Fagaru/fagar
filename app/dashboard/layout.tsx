@@ -8,7 +8,6 @@ import ProtectedRoute from "@/providers/protectedRoutes";
 import { useAuth } from "@/context/authContext";
 import toast from "react-hot-toast";
 import Loader from "@/components/loader";
-// import Loader from "@/components/loader"; // Assurez-vous d'avoir un composant Loader
 
 export default function DashboardLayout({
   children
@@ -17,7 +16,7 @@ export default function DashboardLayout({
 }) {
   const { isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -31,32 +30,27 @@ export default function DashboardLayout({
   }, [isAuthenticated, router]);
 
   if (loading) {
-    return <Loader />; // Affiche un loader pendant la vérification de l'authentification
+    return <Loader />;
   }
+  console.log("IsOpen", isOpen);
 
   return (
     <>
       <Header />
       <ProtectedRoute allowedRoles={["admin"]}>
-        <div className="flex flex-row">
-          <SideBar className="fixed" setIsOpen={setIsOpen}/>
-          { isOpen ?
-            <>
-              <div className="w-10/12 bg-gray-50 dark:bg-gray-950">
-                {children}
-              </div>
-            </>
-            :
-            <>
-              <div className="w-full bg-gray-50 dark:bg-gray-950">
-                {children}
-              </div>
-            </>
-          }
-          {/* <div className="w-full bg-gray-50 dark:bg-gray-950">
-            {children}
-          </div> */}
-        </div>
+        <div className="flex flex-1 overflow-hidden pt-10">
+          {/* Sidebar */}
+          <SideBar setIsOpen={setIsOpen} />
+          <main
+              className={`transition-all duration-300 ease-in-out overflow-auto bg-gray-50 dark:bg-gray-950`}
+              style={{
+                  width: isOpen ? "calc(100% - 16rem)" : "100%",
+                  marginLeft: isOpen ? "16rem" : "0",
+              }}
+          >
+              {children}
+          </main>
+         </div>
       </ProtectedRoute>
     </>
   );
