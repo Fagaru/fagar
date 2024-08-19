@@ -10,7 +10,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Suspense } from "react";
 import Loader from "@/components/loader";
 
-const AuthPage = () => {
+export const AuthPage = () => {
     const searchParams = useSearchParams();
     const tab = searchParams.get('tab'); // Lire le paramètre 'tab' de l'URL
 
@@ -45,12 +45,12 @@ const AuthPage = () => {
     );
 };
 
-export default function WrappedAuthPage() {
-    return (
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <Suspense fallback={<Loader />}>
-          <AuthPage />
-        </Suspense>
-      </ErrorBoundary>
-    );
-  }
+// export default function WrappedAuthPage() {
+//     return (
+//       <ErrorBoundary FallbackComponent={ErrorFallback}>
+//         <Suspense fallback={<Loader />}>
+//           <AuthPage />
+//         </Suspense>
+//       </ErrorBoundary>
+//     );
+//   }

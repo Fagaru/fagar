@@ -13,7 +13,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '@/components/errorFallback';
 import ImageForm from './components/imageForm';
 
-const AccountPage = () => {
+export const AccountPage = () => {
   const { user, isAuthenticated, token } = useAuth();
   const [currentUser, setCurrentUser] = useState<any>(null);
 
@@ -44,7 +44,7 @@ const AccountPage = () => {
   if (!currentUser) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <p>Chargement des données utilisateurs...</p>
+        <p>Chargement des données utilisateur...</p>
         <Loader />
       </div>
     );
@@ -101,12 +101,12 @@ const AccountPage = () => {
   );
 };
 
-export default function WrappedAccountPage() {
-  return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Suspense fallback={<Loader />}>
-        <AccountPage />
-      </Suspense>
-    </ErrorBoundary>
-  );
-}
+// export default function WrappedAccountPage() {
+//   return (
+//     <ErrorBoundary FallbackComponent={ErrorFallback}>
+//       <Suspense fallback={<Loader />}>
+//         <AccountPage />
+//       </Suspense>
+//     </ErrorBoundary>
+//   );
+// }
