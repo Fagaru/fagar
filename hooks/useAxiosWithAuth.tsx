@@ -8,12 +8,12 @@ const useAxiosWithAuth = () => {
     const router = useRouter();
     
     const instance = axios.create({
+        baseURL: process.env.NEXT_PUBLIC_API_URL, // Assurez-vous que l'URL de base est bien configurée
         headers: {
-            // En-têtes CORS ajoutés par défaut à toutes les requêtes
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        },
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization"
+        }
     });
 
     // Intercepteur pour ajouter le token aux requêtes
@@ -30,7 +30,7 @@ const useAxiosWithAuth = () => {
         }
     );
 
-    // Optionnellement, gérer les réponses et les erreurs globalement
+    // Gérer les réponses et les erreurs globalement
     instance.interceptors.response.use(
         (response) => response,
         (error) => {
@@ -39,6 +39,10 @@ const useAxiosWithAuth = () => {
                 toast.error('Votre connexion a expiré. Veuillez vous authentifier !');
                 router.push('/auth?tab=login');
                 // Gérer les erreurs d'authentification, par ex., rediriger vers la page de connexion
+            } else if (error.message === 'Network Error') {
+                toast.error('Erreur réseau, vérifiez votre connexion internet.');
+            } else {
+                toast.error('Une erreur est survenue, veuillez réessayer.');
             }
             return Promise.reject(error);
         }

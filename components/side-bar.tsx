@@ -84,10 +84,10 @@ export function SideBar({
                             </Link>
                             <Link 
                                 key='/dashboard/profile'
-                                href='/dashboard'
+                                href='/dashboard/profile'
                                 className={cn(
                                     "flex items-center gap-5 m-1 p-[10px] rounded-[5px] transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/dashboard') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    (pathname === '/account') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
                                 )}
                             >
                                 <User size="20px" />
