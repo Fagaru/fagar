@@ -46,7 +46,7 @@ const ImageForm: React.FC<ImageFormProps> = ({
     const onSubmit = async (data: ImageFormType) => {
         try {
             setLoading(true);
-            await axios.patch(`/api/users/${initialData.userId}`, data).then(() => {
+            await axios.patch(`/users/${initialData.userId}`, data).then(() => {
                 toast.success("Mise à jour réussie !");
                 router.refresh();
             }).catch((e) => {

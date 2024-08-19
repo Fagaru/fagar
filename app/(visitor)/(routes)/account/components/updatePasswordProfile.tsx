@@ -51,7 +51,7 @@ const UpdatePasswordForm: React.FC<UpdatePasswordFormProps> = ({
             if (data.newPassword !== data.confirmPassword) {
                 toast.error("Vos nouveaux mots de passe ne correspondent pas !");
             } else {
-                await axios.patch(`/api/users/${userId}/new-password`, data).then(() => {
+                await axios.patch(`/users/${userId}/new-password`, data).then(() => {
                     toast.success("Mise à jour réussie !");
                 }).catch((e) => {
                     toast.error(e.response.data);

@@ -62,7 +62,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     const onSubmit = async (data: ProfileFormType) => {
         try {
             setLoading(true);
-            await axios.patch(`/api/users/${initialData._id}`, data).then(() => {
+            await axios.patch(`/users/${initialData._id}`, data).then(() => {
                 toast.success("Mise à jour réussie !");
             }).catch((e) => {
                 toast.error(e.response.data);

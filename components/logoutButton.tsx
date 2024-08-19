@@ -22,7 +22,7 @@ const LogoutButton: React.FC<LogoutProps> = (
       await axios.post(`/api/auth/logout`, {"id": id});
       logout();
       toast.success('Successfully logged out');
-      router.push('/login'); // Redirect to login page or homepage
+      router.push('/auth?tab=login'); // Redirect to login page or homepage
     } catch (error) {
       toast.error('Error logging out');
       console.log("ERROR", error);
