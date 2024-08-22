@@ -17,10 +17,8 @@ export const getUser = async (query: Query, token: string): Promise<User> => {
     // Configurer les headers avec le token
     const res = await axios.get(url, {
       headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
+        Authorization: `Bearer ${token}`,   
+      }
     });
 
     // Retourner les données utilisateur

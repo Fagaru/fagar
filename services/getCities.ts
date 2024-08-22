@@ -17,15 +17,8 @@ const getCities = async (query: Query): Promise<City[]> => {
       }
     })
     const res = await fetch(url, {
-      method: 'GET',
-      headers: {
-        // En-têtes CORS ajoutés à la requête
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Content-Type': 'application/json', // S'assure que le Content-Type est JSON
-      },
-    });;
+      method: 'GET'
+    });
     
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
