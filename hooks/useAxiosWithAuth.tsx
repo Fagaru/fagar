@@ -8,12 +8,7 @@ const useAxiosWithAuth = () => {
     const router = useRouter();
     
     const instance = axios.create({
-        baseURL: process.env.NEXT_PUBLIC_API_URL, // Assurez-vous que l'URL de base est bien configurée
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization"
-        }
+        baseURL: process.env.NEXT_PUBLIC_API_URL
     });
 
     // Intercepteur pour ajouter le token aux requêtes

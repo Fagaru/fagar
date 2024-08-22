@@ -63,7 +63,7 @@ export const RegisterForm: React.FC<RegisterFormValues> = ({
             if (data.password !== data.confirmPassword) {
                 toast.error("Vos nouveaux mots de passe ne correspondent pas !");
             } else {
-                await axios.post(`/auth/register`, data);
+                await axios.post(`api/auth/register`, data);
                 router.push(`/login`);
                 toast.success("User registered successfully");
             }
