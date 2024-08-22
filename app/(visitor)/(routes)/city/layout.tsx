@@ -23,7 +23,7 @@ export default async function DashboardLayout({
 
     return (
         <>
-        <div className="bg-gray-50 dark:bg-slate-950">
+        <div className="bg-gray-50 dark:bg-slate-950 pt-10">
             <Header />
             {/* <Container> */}
                 <div className="flex flex-row">

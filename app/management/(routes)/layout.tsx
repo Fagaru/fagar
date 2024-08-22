@@ -36,7 +36,7 @@ export default function ManagementLayout({
 
     return (
         <>
-        <div className="bg-gray-50 dark:bg-slate-950">
+        <div className="bg-gray-50 dark:bg-slate-950 pt-10">
             <Header />
             <Container>
                 <ProtectedRoute allowedRoles={['admin', 'professional']}>

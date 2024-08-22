@@ -1,28 +1,24 @@
 "use client";
-import { useState } from "react";
+
 import { ThemeToggle } from "@/components/theme-toggle";
-import UserAccount from "@/components/user-account";
 import FagarLogo from "@/components/fagarLogo";
 import SearchBar from "@/components/searchBar";
 import AddCorporation from "./AddCorporation";
-import { Menu, X } from "lucide-react";
 import MenuUnsignedUser from "./menu-unsigned";
 
 const Header = () => {
-
     return (
-        <div>
+        <header>
             {/* Conteneur principal du header */}
-            <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-950 border-b pb-10 h-16">
+            <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-950 border-b h-16">
                 <div className="flex items-center justify-between h-16 p-4">
                     {/* Logo et nom du site */}
                     <div className="flex items-center">
                         <FagarLogo />
-                        <span className="text-lg font-medium text-baguet italic text-rose-600 ml-2">
-                            Fagar
+                        <span className="text-lg font-medium text-baguet text-rose-600 ml-2">
+                            Proximus Prime
                         </span>
                     </div>
-
                     {/* SearchBar cachée sur mobile */}
                     <div className="flex-1 justify-center hidden md:flex">
                         <SearchBar />
@@ -50,7 +46,11 @@ const Header = () => {
                     <SearchBar />
                 </div>
             </div>
-        </div>
+            {/* Ajout d'une marge pour le contenu principal */}
+            <div className="mt-16 md:mt-0">
+                {/* Ici commence le contenu principal de la page */}
+            </div>
+        </header>
     );
 };
 

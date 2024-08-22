@@ -10,7 +10,7 @@ export default async function PROSLayout({
 
     return (
         <>
-        <div className="bg-gray-50 dark:bg-slate-950">
+        <div className="bg-gray-50 dark:bg-slate-950 pt-10">
             <Container>
                 <Header />
                 <div className="flex flex-row">

@@ -94,14 +94,14 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
             {error && <p>{error}</p>}
             {corporation && (
                 <>
-                    <div className="relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(50px,auto)]">
+                    <div className="relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-1 gap-3 p-2 auto-rows-[minmax(50px,auto)]">
                         <div className="relative row-span-6 col-span-2 p-5 rounded-[10px] border-solid border-[1px]">
                             <div className="absolute h-full w-full aspect-square inset-0 overflow-hidden rounded-md shadow-md">
                                 <Image 
                                     fill
                                     src={corporation.images[0]?.url || "/default_image.jpg"}
                                     alt="Image"
-                                    className=""
+                                    className="object-cover"
                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 />
                             </div>
@@ -113,7 +113,7 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                                         fill 
                                         src={image.url} 
                                         alt={`Image ${index + 1}`} 
-                                        className=""
+                                        className="object-cover"
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
                                 </span>
