@@ -35,7 +35,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     }
 
     return (
-        <div>
+        <div className="relative">
             <div className="relative grid grid-cols-6 gap-5 p-2 auto-rows-[minmax(50px,auto)] w-full">
                 {value.map((url) => (
                     <div className="relative col-span-3 xl:lg:col-span-1 md:col-span-2" key={url+1}>
@@ -67,9 +67,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                                 disabled={disabled}
                                 variant="secondary"
                                 onClick={onclick}
+                                className="relative ml-2 pl-6 pr-5"
                             >
-                                <ImagePlus className="h-4 w-4 mr-2" />
-                                Upload an Image
+                                <ImagePlus className="h-4 w-4 m-2" />
+                                charger une image
                             </Button>
                         );
                     }}

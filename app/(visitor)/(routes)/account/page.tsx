@@ -14,7 +14,7 @@ import ErrorFallback from '@/components/errorFallback';
 import ImageForm from './components/imageForm';
 
 const AccountPage = () => {
-  const { user, isAuthenticated, token } = useAuth();
+  const { user, isAuthenticated, token, checkTokenExp } = useAuth();
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const AccountPage = () => {
   }, [user, isAuthenticated, token]);
 
   if (!isAuthenticated) {
+    // checkTokenExp();
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <Loader />
@@ -51,8 +52,8 @@ const AccountPage = () => {
   }
 
   return (
-    <div className="relative grid grid-cols-6 p-6 bg-white dark:bg-gray-950 auto-rows-[minmax(50px,auto)] rounded-[10px] w-full">
-      <div className="relative col-span-5 xl:lg:md:col-span-1 p-2 gap-2 flex justify-center w-full">
+    <div className="relative grid grid-cols-6 pt-6 bg-white dark:bg-gray-950 auto-rows-[minmax(50px,auto)] rounded-[10px] w-full">
+      <div className="relative col-span-5 xl:lg:md:col-span-1 gap-2 flex justify-center w-full">
         <div className="relative inset-0 overflow-full rounded-full w-full flex justify-center">
           <ImageForm initialData={{ image: { url: currentUser.image || "/default_image.jpg" }, userId: currentUser._id }} />
         </div>

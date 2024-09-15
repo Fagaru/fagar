@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Loader from "@/components/loader";
 
+import {SideBarManag} from "./[corporationId]/components/side-bar-manag";
+
 
 export default function ManagementLayout({
    children
@@ -18,10 +20,11 @@ export default function ManagementLayout({
 }) {
     const { isAuthenticated } = useAuth();
     const [loading, setLoading] = useState(true);
+    const [isOpen, setIsOpen] = useState(null);
     const router = useRouter();
 
     useEffect(() => {
-        // setLoading(true);
+        setLoading(true);
         if (isAuthenticated === false) {
             toast.error('Veuillez vous authentifier pour poursuivre !');
             router.push('/auth?tab=login')
@@ -31,7 +34,7 @@ export default function ManagementLayout({
     }, [isAuthenticated, router]);
 
     if (loading) {
-        return <Loader />; // Affiche un loader pendant la vérification de l'authentification
+        return <Loader />;
     }
 
     return (
@@ -40,11 +43,19 @@ export default function ManagementLayout({
             <Header />
             <Container>
                 <ProtectedRoute allowedRoles={['admin', 'professional']}>
-                <div className="flex flex-row">
-                    <div className="w-full">
+                <div className="flex flex-1 overflow-hidden pt-10">
+                    {/* Sidebar */}
+                    <SideBarManag setIsOpen={setIsOpen} />
+                    <main
+                        className={`transition-all duration-300 ease-in-out overflow-auto bg-gray-50 dark:bg-gray-950`}
+                        style={{
+                            width: isOpen ? "calc(100% - 16rem)" : "100%",
+                            marginLeft: isOpen ? "16rem" : "0",
+                        }}
+                    >
                         {children}
+                    </main>
                     </div>
-                </div>
                 </ProtectedRoute>
             </Container>
         </div>

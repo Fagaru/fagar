@@ -9,6 +9,7 @@ import {
     LifeBuoy, 
     LogIn, 
     Menu,
+    PackageCheck,
     Paperclip,
     UserRound
 } from "lucide-react";
@@ -57,6 +58,16 @@ export default function MenuUnsignedUser({
                     <DropdownMenuSeparator />
                     { isAuthenticated ?
                         <>
+                            <DropdownMenuItem>
+                                <Link  
+                                    key='/management'
+                                    href='/management'
+                                    className="flex align-items"
+                                    >
+                                    <PackageCheck className="mr-2 h-4 w-4" />
+                                    <span>Mon espace pro</span>
+                                </Link>
+                            </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <Link  
                                     key='/account'

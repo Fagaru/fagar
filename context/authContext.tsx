@@ -50,16 +50,30 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Check if token is valid
   const checkTokenExp = useCallback(() => {
-    if (token) {
-      const decoded: any = jwtDecode(token);
-      const currentTime = Date.now() / 1000;
+    console.log("checkTokenExp", token)
+    
+    if (!token) {
+      // Si le token n'existe pas (peut-être parce qu'il est en cours de chargement), on attend.
+      return;
+    }
+    try {
+      if (token) {
+        const decoded: any = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
 
-      if (decoded.exp < currentTime) {
-        logout()
-        router.push('/auth?tab=login')
-      } else {
-        setIsAuthenticated(true);
+        if (decoded.exp < currentTime) {
+          logout()
+          router.push('/auth?tab=login')
+        } else {
+          setIsAuthenticated(true);
+        }
       }
+    }
+    catch(error) {
+      // En cas d'erreur lors du décodage du token, déconnexion et redirection vers la page de connexion
+      console.error("Error decoding token:", error);
+      logout();
+      router.push('/auth?tab=login');
     }
   }, [token]);
 

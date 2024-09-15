@@ -70,7 +70,7 @@ const ImageForm: React.FC<ImageFormProps> = ({
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
                 <div className="">
                     <FormField 
                         control={form.control}
@@ -91,7 +91,7 @@ const ImageForm: React.FC<ImageFormProps> = ({
                     />
                 </div>
                 <div className="">
-                    <Button disabled={loading} className="m-auto" type="submit">
+                    <Button disabled={loading} className="m-2" type="submit">
                         Mis à jour photo de profil
                     </Button>
                 </div>
