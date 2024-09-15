@@ -6,6 +6,7 @@ const URL = `${process.env.NEXT_PUBLIC_API_URL}/cities`;
 
 interface Query {
   cityId?: string
+  label ?:string,
 }
 
 const getCities = async (query: Query): Promise<City[]> => {
@@ -13,7 +14,8 @@ const getCities = async (query: Query): Promise<City[]> => {
     const url = qs.stringifyUrl({
       url: URL,
       query: {
-        cityId: query.cityId
+        cityId: query.cityId,
+        label:query.label,
       }
     })
     const res = await fetch(url);

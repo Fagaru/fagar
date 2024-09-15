@@ -47,8 +47,19 @@ export async function GET(
     req: Request,
 ) {
     try {
+        const { searchParams } = new URL(req.url);
+        const label= searchParams.get("label") || undefined;
+
+          // Construire la requête de recherche
+          const query: any = {};
+
+          // Filtrer par cityId
+        if (label) {
+            query.label = label;
+        }
+
         await dbConnect();
-        const cities = await City.find({});
+        const cities = await City.find(query);
 
         return NextResponse.json(cities);
     } catch (error) {

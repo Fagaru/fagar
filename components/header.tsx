@@ -42,6 +42,7 @@ import SearchBar from "@/components/searchBar";
 import AddCorporation from "./AddCorporation";
 import { Menu, X } from "lucide-react";
 import MenuUnsignedUser from "./menu-unsigned";
+import MapBoxApiKeyWrapper from "@/providers/map-box-apikey-wrapper";
 
 const Header = () => {
 
@@ -53,6 +54,7 @@ const Header = () => {
                         <FagarLogo />
                         <span className="text-lg font-medium text-baguet italic text-rose-600 ml-2">Fagar</span>
                     </div>
+                    <MapBoxApiKeyWrapper/>
                     <div className="flex-1 justify-center hidden md:flex">
                         <SearchBar />
                     </div>
