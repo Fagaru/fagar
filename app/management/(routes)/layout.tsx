@@ -41,7 +41,7 @@ export default function ManagementLayout({
         <>
         <div className="bg-gray-50 dark:bg-slate-950 pt-10">
             <Header />
-            <Container>
+            {/* <Container> */}
                 <ProtectedRoute allowedRoles={['admin', 'professional']}>
                 <div className="flex flex-1 overflow-hidden pt-10">
                     {/* Sidebar */}
@@ -57,7 +57,7 @@ export default function ManagementLayout({
                     </main>
                     </div>
                 </ProtectedRoute>
-            </Container>
+            {/* </Container> */}
         </div>
         </>
     );

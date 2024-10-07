@@ -9,6 +9,7 @@ interface Query {
   tags?: string;
   cityId?: string;
   regionId?: string;
+  userId?: string;
 }
 
 const getCorporations = async (query: Query): Promise<Corporation[]> => {
@@ -19,7 +20,8 @@ const getCorporations = async (query: Query): Promise<Corporation[]> => {
           categoryId: query.categoryId,
           tags: query.tags,
           cityId: query.cityId,
-          regionId: query.regionId
+          regionId: query.regionId,
+          userId: query.userId
       }
     })
     const res = await fetch(url, {

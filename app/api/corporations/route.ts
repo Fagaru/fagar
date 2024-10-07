@@ -75,6 +75,7 @@ export async function GET(
         const tags = searchParams.get("tags") || undefined;
         const cityId = searchParams.get("cityId") || undefined;
         const regionId = searchParams.get("regionId") || undefined;
+        const userId = searchParams.get("userId") || undefined;
         // Construire la requête de recherche
         const query: any = {};
 
@@ -96,6 +97,11 @@ export async function GET(
         // Filtrer par regionId
         if (regionId) {
             query['address.regionId'] = regionId;
+        }
+
+        // Filtrer par userId
+        if (userId) {
+            query.userId = userId;
         }
 
         await dbConnect();

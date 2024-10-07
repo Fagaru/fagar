@@ -5,9 +5,11 @@ import { useParams, usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { Album, AreaChart, Home, Menu, Monitor, Package, Palette, Ruler, Settings, ShoppingCart, Target, TrendingUp, User } from "lucide-react";
+import { Album, AreaChart, BadgeEuro, Home, Menu, Monitor, Package, Palette, Ruler, Settings, PackageCheck, ListTodo, TrendingUp, User, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/authContext";
+import getCorporations from "@/services/getCorporations";
+import { Corporation } from "@/types/corporation";
 
 export function SideBarManag({
     className,
@@ -21,6 +23,39 @@ export function SideBarManag({
         setIsHidden(!isHidden);
         setIsOpen(isHidden);
     };
+
+    const [corporation, setCorporation] = useState<Corporation>();
+    const [error, setError] = useState<string | null>(null);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isMounted) return;
+
+        const fetchData = async () => {
+        try {
+            const corps = await getCorporations({userId : user.id});
+            console.log("Client : ", corps);
+
+            setCorporation(corps[0]);
+        } catch (err) {
+            setError("Failed to fetch corporation data");
+        }
+        };
+
+        fetchData();
+    }, [isMounted]);
+
+    if (!isMounted) {
+        return null;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <>
@@ -67,25 +102,36 @@ export function SideBarManag({
                         <div className="gap-3 mb-3">
                             <span className="text-xs font-extralight">LISTS</span>
                             <Link
-                                key='/management/corporations'
-                                href='/management/corporations'
+                                key={`/management/${corporation?._id}`}
+                                href={`/management/${corporation?._id}`}
                                 className={cn(
                                     "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/corporations') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    (pathname === `/management/${corporation?._id}`) ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
                                 )}
                             >
-                                <ShoppingCart size="20px" />
+                                <PackageCheck size="20px" />
                                 <span className="text-sm">Mon entreprise</span>
                             </Link>
                             <Link
-                                key='/management/reservations'
-                                href='/management/reservations'
+                                key='/management/sales'
+                                href='/management/sales'
                                 className={cn(
                                     "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/users') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    (pathname === '/management/sales') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
                                 )}
                             >
-                                <Ruler size="20px" />
+                                <BadgeEuro size="20px" />
+                                <span className="text-sm">Ventes</span>
+                            </Link>
+                            <Link
+                                key='/management/bookings'
+                                href='/management/bookings'
+                                className={cn(
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
+                                    (pathname === '/management/bookings') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                )}
+                            >
+                                <CalendarDays size="20px" />
                                 <span className="text-sm">Réservations</span>
                             </Link>
                             <Link
@@ -93,10 +139,10 @@ export function SideBarManag({
                                 href='/management/orders'
                                 className={cn(
                                     "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/users') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    (pathname === '/management/orders') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
                                 )}
                             >
-                                <Ruler size="20px" />
+                                <ListTodo size="20px" />
                                 <span className="text-sm">Commandes</span>
                             </Link>
                         </div>
@@ -136,7 +182,7 @@ export function SideBarManag({
                                 )}
                             >
                                 <TrendingUp size="20px" />
-                                <span className="text-sm">Compte {user.role}</span>
+                                <span className="text-sm">Compte {user?.role}</span>
                             </Link>
                         </div>
                     </div>
