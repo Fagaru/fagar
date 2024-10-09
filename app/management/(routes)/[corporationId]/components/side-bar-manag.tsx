@@ -69,8 +69,8 @@ export function SideBarManag({
                                 key='/management/home'
                                 href='/management'
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/home') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === '/management') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <Home size="20px" />
@@ -80,8 +80,8 @@ export function SideBarManag({
                                 key='/account'
                                 href='/account'
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/profile') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === '/management/profile') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <User size="20px" />
@@ -91,8 +91,8 @@ export function SideBarManag({
                                 key='/management/settings'
                                 href='/management/settings'
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/settings') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === '/management/settings') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <Settings size="20px" />
@@ -105,8 +105,8 @@ export function SideBarManag({
                                 key={`/management/${corporation?._id}`}
                                 href={`/management/${corporation?._id}`}
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === `/management/${corporation?._id}`) ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === `/management/${corporation?._id}`) ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <PackageCheck size="20px" />
@@ -116,8 +116,8 @@ export function SideBarManag({
                                 key='/management/sales'
                                 href='/management/sales'
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/sales') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === '/management/sales') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <BadgeEuro size="20px" />
@@ -127,8 +127,8 @@ export function SideBarManag({
                                 key='/management/bookings'
                                 href='/management/bookings'
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/bookings') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === '/management/bookings') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <CalendarDays size="20px" />
@@ -138,8 +138,8 @@ export function SideBarManag({
                                 key='/management/orders'
                                 href='/management/orders'
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/orders') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === '/management/orders') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <ListTodo size="20px" />
@@ -152,8 +152,8 @@ export function SideBarManag({
                                 key='/management/charts'
                                 href='/management'
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/charts') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === '/management/charts') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <AreaChart size="20px" />
@@ -163,8 +163,8 @@ export function SideBarManag({
                                 key='/management/activity'
                                 href='/management'
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/activity') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === '/management/activity') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <Monitor size="20px" />
@@ -177,8 +177,8 @@ export function SideBarManag({
                                 key='/management/subscriptions'
                                 href='/management/subscriptions'
                                 className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-green-100 dark:hover:bg-green-800",
-                                    (pathname === '/management/subscriptions') ? "bg-green-100 dark:bg-green-800 text-green-600 dark:text-white font-medium" : ""
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === '/management/subscriptions') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
                                 <TrendingUp size="20px" />
