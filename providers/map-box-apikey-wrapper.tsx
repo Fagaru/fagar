@@ -1,5 +1,4 @@
-"use client"
-
+//"use client"
 import { LoadScript } from "@react-google-maps/api";
 import MapBox from "./map-box";
 import isGoogleApiKeyLoaded from "@/hooks/google-api-loader";

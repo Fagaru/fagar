@@ -5,6 +5,13 @@ import FagarLogo from "@/components/fagarLogo";
 import SearchBar from "@/components/searchBar";
 import AddCorporation from "./AddCorporation";
 import MenuUnsignedUser from "./menu-unsigned";
+import MapBoxApiKeyWrapper from "@/providers/map-box-apikey-wrapper";
+import dynamic from 'next/dynamic'
+ 
+const NoSSR = dynamic(() => import('@/providers/map-box-apikey-wrapper'), { ssr: false })
+ 
+
+     
 
 const Header = () => {
     return (
@@ -19,6 +26,7 @@ const Header = () => {
                             Proximus Prime
                         </span>
                     </div>
+                    <NoSSR />
                     {/* SearchBar cachée sur mobile */}
                     <div className="flex-1 justify-center hidden md:flex">
                         <SearchBar />

@@ -1,65 +1,95 @@
-"use client"
+"use client";
 
 import React from "react";
 import { useState, useEffect } from "react";
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-
+import GooglePlacesAutocomplete ,{ geocodeByAddress }from 'react-google-places-autocomplete';
+import { useRouter} from "next/navigation";
+import getCities from '@/services/getCities';
 import { cn } from "@/lib/utils";
+import { Search} from 'lucide-react';
 
 import { 
     LocateFixed, 
-    MapPin
 } from "lucide-react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 
-import useLocation from "@/hooks/use-location";
-import GoGetMyPosition from "@/hooks/get-my-position";
+import { toast } from "react-hot-toast";
 
 
-type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
 
-interface MapBoxProps extends PopoverTriggerProps {
-};
 
-export default function MapBox({className
+interface MapBoxProps {
+    className?: string; 
+}
 
-}: MapBoxProps) {
+const MapBox: React.FC<MapBoxProps> = ({ className }) => { {
 
-    type newAddress = {
-        placeId: string|undefined;
-        label: string|undefined;
-      };
-
-    const [newAddress, setnewAddress] = useState<newAddress>({
-        placeId:"",
-        label:"",
-    });
     const [open, setOpen] = useState(false);
     const placeholder:string = "Entrer votre adresse de livraison";
-    const [updateValue] = GoGetMyPosition();
-    const address = useLocation();
-
+    const router = useRouter();
   
-    useEffect(() => {
-        if (address?.item[0]?.label === "" || address?.item[0]?.label === null || address?.item[0]?.label === undefined) {
-            updateValue();
+    const [city, setCity] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return window.localStorage.getItem('user_selected_city') || '';
         }
-      }, [address]);
+        return '';
+    });
+    
 
     useEffect(() => {
-        if (newAddress?.label!==null && newAddress?.label!=="" && newAddress?.label!==undefined) {
-            address.addItem({
-                label: newAddress.label,
-                placeId: newAddress.placeId,
-            })
+        if (city) {
+            window.localStorage.setItem('user_selected_city', city);
         }
-    }, [newAddress]);
+    }, [city]);
+
+    const handleAddressChange = async (place:any) => {
+
+        const value=place?.label
+        try {
+          const results = await geocodeByAddress(value);
+          const addressComponents = results[0].address_components;
+    
+          let city = '';
+          for (const component of addressComponents) {
+            if (component.types.includes('locality')) {
+              city = component.long_name;
+              break;
+            }
+          }
+          
+          setCity(city);
+
+          handleSearch(city)
+        } catch (error) {
+    
+        }
+      };
+  
+
+      const handleSearch = async (city:any) => {
+   
+        if(!city){
+        toast.error("Veuillez saisir une ville!");
+        }
+        else{
+          try {
+            const response = await getCities({
+              label: city
+            });
+            console.log("fefefeeeee",response)
+            router.push(`/city/${response[0]._id}`);
+          } catch (err) {
+              toast.error("nous ne sommes pas encore disponible dans cette ville!");
+          }
+        }
+       
+      };
+    
     
     return  (
-        // p-3 rounded-lg m-5 flex items-center gap-2 
-        <div className="m-1 ">
+        <div suppressHydrationWarning={true}>
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button
@@ -71,20 +101,24 @@ export default function MapBox({className
                         className={cn("max-w-[400px] flex items-center justify-between", className)}
                     >
                         <LocateFixed className="mr-2 h-4 w-8"/>
-                        {address?.item[0]?.label}
+                        
+                        {city}
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="flex items-center p-0 w-full">
+                
                     <GooglePlacesAutocomplete 
+                            
                             selectProps={{
                                 //newAddress, if problem, unindent
-                                onChange:(place:any)=> {setnewAddress(place)},
+                                onChange:(place:any)=> {{handleAddressChange(place)}},
                                 placeholder: placeholder ,
                                 isClearable: true,
                                 className: 'p-1 border-[2px] rounded-lg w-[400px] h-full dark:text-black',
                                 components: {
                                     DropdownIndicator: null,
                                 },
+                                
                                 styles: {
                                     control: (provided: any) => ({
                                     ...provided,
@@ -96,11 +130,13 @@ export default function MapBox({className
                                     }),
                                 },
                             }}
-                            
+
                     ></GooglePlacesAutocomplete>
-                    <Button onClick={() => updateValue()} className="p-0 m-1"><MapPin className="m-2 h-3 w-8"/></Button>
                 </PopoverContent>
             </Popover>
         </div>
     )
+}
 };
+
+export default MapBox;

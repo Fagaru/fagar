@@ -48,12 +48,23 @@ export async function GET(
     req: Request,
 ) {
     try {
-        await dbConnect();
-        const cities = await City.find({});
+        const { searchParams } = new URL(req.url);
+        const label= searchParams.get("label") || undefined;
 
-        return createCorsResponse(cities);
+          // Construire la requête de recherche
+          const query: any = {};
+
+          // Filtrer par cityId
+        if (label) {
+            query.label = label;
+        }
+
+        await dbConnect();
+        const cities = await City.find(query);
+
+        return NextResponse.json(cities);
     } catch (error) {
         console.log('[CITIES_GET] ', error);
-        return createCorsResponse("Internal error", { status: 500 });
+        return new NextResponse("Internal error", { status: 500 });
     }
 }
