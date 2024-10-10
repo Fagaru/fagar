@@ -14,8 +14,8 @@ import Footer from '@/components/footer';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Fagar',
-  description: 'Plus proche de chez vous',
+  title: 'proximus prime',
+  description: 'on est juste à côté',
 }
 
 export default function RootLayout({
