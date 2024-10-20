@@ -23,6 +23,7 @@ export interface IUser extends Document {
   image: String;
   password: string;
   role: ROLES;
+  bookings: mongoose.Types.ObjectId;
   isVerified: boolean;
   isSuspended: boolean;
   isActive: boolean;
@@ -46,6 +47,7 @@ const UserSchema: Schema = new Schema({
     isSuspended: { type: Boolean, default: false },
     isActive: { type: Boolean, default: false },
     role: { type: String, enum: Object.values(ROLES), default: ROLES.VISITOR },
+    bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking' }],
     lastLogin: { type: Date },
     lastLogout: { type: Date },
   }, {

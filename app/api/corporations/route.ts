@@ -9,7 +9,7 @@ import { createCorsResponse } from "@/lib/createCorsResponse";
 
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin', 'professional'];
-const allowedRolesForGET = ['admin', 'professional', 'visitor', 'anonymous'];
+//const allowedRolesForGET = ['admin', 'professional', 'visitor', 'anonymous'];
 
 interface AuthenticatedRequest extends Request {
     user?: any;
@@ -21,7 +21,7 @@ export async function POST(
     try {
 
         // Vérifiez l'authentification et les rôles
-        const authResponse = await withAuth(['admin', 'professional'], req);
+        const authResponse = await withAuth(allowedRolesForPOST, req);
         if (authResponse) return authResponse;
         
         const body = await req.json();
