@@ -85,6 +85,7 @@ export interface ICorporation extends Document {
   schedules: ISchedule[];
   reviews: IReview[];
   subscription: ISubscription;
+  duration_booking: string;
   isVerified: boolean;
   isActive: boolean;
   isSuspended: boolean;
@@ -171,6 +172,7 @@ const corporationSchema: Schema = new Schema({
   schedules: [scheduleSchema],
   reviews: [reviewSchema],
   subscription: subscriptionSchema,
+  duration_booking: { type: String, default: '01:00' },
   isVerified: { type: Boolean, default: false },
   isActive: { type: Boolean, default: false },
   isSuspended: { type: Boolean, default: false },

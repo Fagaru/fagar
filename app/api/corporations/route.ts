@@ -28,8 +28,10 @@ export async function POST(
 
         const {
             name, userId, phone, mail_pro, description, siretNum, siren_num, codeNAF, linkFacebook, linkInstagram, linkLinkedIn, linkX,
-            starting_date, numEmplyees, address, categoryId, tags, images, schedules
+            starting_date, numEmplyees, address, categoryId, tags, images, schedules, duration_booking
         } = body;
+
+        console.log("DURATION BACKEND", duration_booking)
 
         if (!name) {
             return createCorsResponse("Name is required", {  status: 400});
@@ -55,7 +57,8 @@ export async function POST(
             categoryId,
             tags,   // Embedded tags
             images, // Embedded images
-            schedules // Embedded schedules
+            schedules, // Embedded schedules
+            duration_booking
         });
 
         await corporation.save();

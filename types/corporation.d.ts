@@ -20,6 +20,7 @@ export interface Corporation {
     schedules: Schedule[];
     reviews: Review[];
     subscription: Subscription;
+    duration_booking: string;
     isActive: boolean;
     isSuspended: boolean;
     createdAt: Date;

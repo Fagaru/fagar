@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { SideBar } from "@/components/side-bar";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import Snowfall from "@/components/snowfall";
 
 
 export default async function VisitorLayout({
@@ -15,6 +16,12 @@ export default async function VisitorLayout({
     return (
         <>
             <div className="bg-gray-50 dark:bg-slate-950">
+                <Snowfall 
+                    snowflakeCount={400} 
+                    color="lightblue" 
+                    sizeRange={[5, 15]} 
+                    speedRange={[5, 15]} 
+                />
                 <div className="w-full">
                     {children}
                 </div>

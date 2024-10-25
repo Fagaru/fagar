@@ -4,6 +4,8 @@ import Booking from '@/models/booking.model';
 import { withAuth } from "@/lib/auth";
 import { createCorsResponse } from "@/lib/createCorsResponse";
 
+import { format, parseISO, startOfDay, endOfDay } from 'date-fns';
+
 // Types d'utilisateurs autorisés
 const allowedRolesForPOST = ['admin', 'professional', 'visitor'];
 
@@ -18,14 +20,14 @@ export async function POST(req: Request) {
 
         //console.log("TRACE BOOKING", body);
     
-        if (!userId || !corporationId || !date || !timeSlot || !timeSlot.startTime || !timeSlot.endTime) {
+        if (!userId || !corporationId || !date || !timeSlot || !timeSlot) {
             return createCorsResponse("Tous les champs sont obligatoires, y compris le créneau horaire.", { status: 400 });
         }
     
         // Validation pour s'assurer que l'heure de fin est après l'heure de début
-        if (timeSlot.endTime <= timeSlot.startTime) {
-            return createCorsResponse("L'heure de fin doit être après l'heure de début.", { status: 400 });
-        }
+        // if (timeSlot.endTime <= timeSlot.startTime) {
+        //     return createCorsResponse("L'heure de fin doit être après l'heure de début.", { status: 400 });
+        // }
     
         // Connexion à la base de données
         await dbConnect();
@@ -103,10 +105,8 @@ export async function GET(req: Request) {
         const userId = searchParams.get("userId") || undefined;
         const corporationId = searchParams.get("corporationId") || undefined;
         const status = searchParams.get("status") || undefined;
-        const startDate = searchParams.get("startDate") || undefined;
-        const endDate = searchParams.get("endDate") || undefined;
-        const startTime = searchParams.get("startTime") || undefined;
-        const endTime = searchParams.get("endTime") || undefined;
+        const categoryId = searchParams.get("categoryId") || undefined;
+        const date = searchParams.get("date") || undefined;
 
         const query: any = {};
 
@@ -116,25 +116,17 @@ export async function GET(req: Request) {
         // Filtrer par corporationId
         if (corporationId) query.corporationId = corporationId;
 
+        // Filtrer par categoryId
+        if (categoryId) query.categoryId = categoryId;
+
         // Filtrer par statut
         if (status) query.status = status;
 
         // Filtrer par date
-        if (startDate || endDate) {
-            query.date = {
-                ...(startDate && { $gte: new Date(startDate) }),
-                ...(endDate && { $lte: new Date(endDate) }),
-            };
+        if (date) {
+            query['date'] = date;
         }
-
-        // Filtrer par timeSlot (heure de début et heure de fin)
-        if (startTime || endTime) {
-            query['timeSlot.startTime'] = {
-                ...(startTime && { $gte: new Date(startTime) }), // Heure de début minimum
-                ...(endTime && { $lte: new Date(endTime) }),     // Heure de fin maximum
-            };
-        }
-
+        console.log("TRACE BOOKING", query);
         // Connexion à la base de données
         await dbConnect();
 

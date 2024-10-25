@@ -35,8 +35,10 @@ export async function PATCH (
 
         const {
             name, userId, phone, mail_pro, description, siretNum, siren_num, codeNAF, linkFacebook, linkInstagram, linkLinkedIn, linkX,
-            starting_date, numEmplyees, address, categoryId, tags, images, schedules
+            starting_date, numEmplyees, address, categoryId, tags, images, schedules, duration_booking
         } = body;
+
+        console.log("DURATION BACKEND", duration_booking)
 
         
         // Récupérer la corporation actuelle
@@ -63,6 +65,10 @@ export async function PATCH (
           body.tags = currentCorporation.tags;
         }
 
+        if (!body.duration_booking) {
+            body.duration_booking = currentCorporation.duration_booking;
+          }
+
         // let dateAndTime = moment(schedule.begin_am, [moment.ISO_8601, 'HH:mm']);
 
         // Ensure schedules are correctly formatted
@@ -73,6 +79,8 @@ export async function PATCH (
             begin_pm: schedule.begin_pm,
             end_pm: schedule.end_pm,
         }));
+
+        console.log("DURATION BACKEND BODY", body);
     
         await dbConnect();
         // Mettre à jour la corporation
@@ -81,6 +89,7 @@ export async function PATCH (
             filter, 
             { ...body, 
                 schedules: updatedSchedules,  // Use the correctly formatted schedules
+                duration_booking: body.duration_booking,
                 _id: params.corporationId, 
                 updateAt: Date.now()
             }

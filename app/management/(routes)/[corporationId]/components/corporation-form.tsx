@@ -40,6 +40,7 @@ import CreatableSelect from 'react-select/creatable';
 import { useAuth } from "@/context/authContext";
 import useAxiosWithAuth from "@/hooks/useAxiosWithAuth";
 import { useTheme } from "next-themes";
+import { duration } from "moment";
 
 // import Tag as TagType from "@/types/tag";
 
@@ -89,6 +90,7 @@ const formSchema = z.object({
     code_naf: z.string().optional(),
     isActive: z.boolean().default(false).optional(),
     isSuspended: z.boolean().default(false).optional(),
+    duration_booking: z.string().min(1).optional(),
 });
 
 type CorporationFormValues = z.infer<typeof formSchema>;
@@ -168,7 +170,8 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
             linkFacebook: '',
             linkInstagram: '',
             linkLinkedIn: '',
-            linkX: ''
+            linkX: '',
+            duration_booking: '01:00'
         }
     });
 
@@ -478,8 +481,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             />
                         </div>
 
-
-                        <div className="relative xl:lg:col-span-2 md:col-span-2 xs:col-span-4 row-span-4 p-1 rounded-[10px] border-solid border-[1px] gap-4">
+                        <div className="relative xl:lg:col-span-2 md:col-span-3 xs:col-span-4 row-span-4 p-1 rounded-[10px] border-solid border-[1px] gap-4">
                             <FormField 
                                 control={form.control}
                                 name="schedules"
@@ -575,7 +577,30 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2  xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
+
+                        <div className="relative row-span-auto xl:col-span-1 lg:col-span-1 md:col-span-1 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
+                            <FormField 
+                                control={form.control}
+                                name="duration_booking"
+                                render={({ field }) => (
+                                <FormItem>
+                                        <FormLabel>Durée des réservations</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="time"
+                                                placeholder="01:00"
+                                                value={field.value || '01:00'}
+                                                onChange={(e) => field.onChange(e.target.value)}
+                                                disabled={loading}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        <div className="relative xl:lg:col-span-1 md:col-span-1 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkFacebook"
@@ -590,7 +615,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                             </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-1 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkInstagram"
@@ -605,7 +630,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                          </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-1 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkLinkedIn"
@@ -620,7 +645,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-1 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="linkX"
@@ -635,7 +660,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-1 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="starting_date"
@@ -656,7 +681,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-1 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="siret_num"
@@ -671,7 +696,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-1 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="siren_num"
@@ -686,7 +711,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative row-span-1 xl:lg:col-span-1 md:col-span-1 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="code_naf"
@@ -701,7 +726,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-2 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-1 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="isActive"
@@ -726,7 +751,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 )}
                             />
                         </div>
-                        <div className="relative xl:lg:col-span-2 md:col-span-2 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
+                        <div className="relative xl:lg:col-span-1 md:col-span-1 xs:col-span-3 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="isSuspended"

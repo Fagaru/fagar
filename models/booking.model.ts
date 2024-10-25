@@ -6,16 +6,11 @@ export enum STATUS {
     CANCELLED = 'cancelled'
 };
 
-export interface ITimeSlot {
-    startTime: string; // format 'HH:mm'
-    endTime: string;   // format 'HH:mm'
-}
-
 export interface IBooking extends Document {
     userId: mongoose.Types.ObjectId;
     corporationId: mongoose.Types.ObjectId;
     date: Date;
-    timeSlot: ITimeSlot;
+    timeSlot: string;
     status: string;
     createdAt: Date;
     updatedAt: Date;
@@ -26,10 +21,7 @@ const bookingSchema: Schema = new Schema({
     corporationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Corporation', required: true },
     // serviceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Service', required: true }, // Prochaine amélioration
     date: { type: Date, required: true },
-    timeSlot: {
-        startTime: { type: String, required: true }, // Format 'HH:mm'
-        endTime: { type: String, required: true }    // Format 'HH:mm'
-    },
+    timeSlot: { type: String, required: true }, // Format 'HH:mm-HH:mm'
     status: { type: String, enum: Object.values(STATUS), default: STATUS.PENDING },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

@@ -1,4 +1,5 @@
-// "use client";
+"use client";
+import AddBooking from "@/components/AddBooking";
 // import { format } from "date-fns";
 // import { formatter } from "@/lib/utils";
 // import { CorporationsClient } from "./components/client";
@@ -15,6 +16,9 @@
 // import { City } from "@/types/city";
 
 import BookingForm from "@/components/bookingForm";
+import { BookingModal } from "@/components/modals/booking-modal";
+import { useAuth } from "@/context/authContext";
+import { ModalBookingProvider } from "@/providers/modal_booking-provider";
 
 // const BookingsPage = () => {
 //   const [corporations, setCorporations] = useState<Corporation[]>([]);
@@ -115,14 +119,17 @@ interface ManagementPageProps {
     params: {userId: string}
 };
 
-const ManagementPage: React.FC<ManagementPageProps> = async({
+const ManagementPage: React.FC<ManagementPageProps> = ({
     params
 }) => {
+
+    const { user, isAuthenticated, token } = useAuth();
     return (
         <div className="items-center">
             <div className="flex-1 space-y-4 p-8 pt-6">
                 {/* <CorporationForm /> */}
-                <BookingForm corporationId="66579e72774b52e54ad30b25" />
+                {/* <BookingForm corporationId="66579e72774b52e54ad30b25" /> */}
+                {/* <BookingModal corporationId="66579e72774b52e54ad30b25" userId={user._id} token={token} /> */}
             </div>
         </div>
     );

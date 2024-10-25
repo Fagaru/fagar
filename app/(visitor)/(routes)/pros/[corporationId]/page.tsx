@@ -14,6 +14,8 @@ import { Facebook, Instagram, Linkedin, MapPinned, Phone, X } from 'lucide-react
 import { Button } from '@/components/ui/button';
 import getCategory from '@/services/getCategory';
 import { Category } from '@/types/category';
+import { ModalBookingProvider } from '@/providers/modal_booking-provider';
+import AddBooking from '@/components/AddBooking';
 
 const daysOfWeek = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
@@ -138,8 +140,12 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                             </div>
                             <span className='pl-12 font-light text-sm'>{category?.label}</span>
                         </div>
-                        <div className="row-span-1 rounded-[10px] flex justify-center">
-                            <div className="pl-20 pt-5 pb-5 flex justify-center">
+                        <div className="row-span-1 rounded-[10px] flex justify-center gap-5">
+                            <div className="mt-10 flex justify-center">
+                                <ModalBookingProvider corporationId={params.corporationId} />
+                                <AddBooking />
+                            </div>
+                            <div className="mt-15 pb-5 flex justify-center">
                                 <Link
                                     key={`/pros/${corporation._id}`}
                                     href={`/pros/${corporation._id}`}

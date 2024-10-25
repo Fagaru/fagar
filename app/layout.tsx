@@ -28,16 +28,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ToasterProvider />
-          {/* <VineAnimation /> */}
-          <Snowfall 
-            snowflakeCount={400} 
-            color="lightblue" 
-            sizeRange={[5, 15]} 
-            speedRange={[5, 15]} 
-          />
           <AuthProvider>
             <ModalProvider />
-            {children}
+              {children}
             <Footer />
           </AuthProvider>
         </ThemeProvider>

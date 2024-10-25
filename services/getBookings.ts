@@ -7,9 +7,9 @@ const URL = `${process.env.NEXT_PUBLIC_API_URL}/bookings`;
 interface Query {
   categoryId?: string;
   status?: string;
-  startDate?: string;
-  endDate?: string;
+  corporationId: string;
   userId?: string;
+  date?: string;
 }
 
 const getBookings = async (query: Query): Promise<Booking[]> => {
@@ -17,11 +17,11 @@ const getBookings = async (query: Query): Promise<Booking[]> => {
     const url = qs.stringifyUrl({
       url: URL,
       query: {
+          corporationId: query.corporationId,
           categoryId: query.categoryId,
           userId: query.userId,
           status: query.status,
-          startDate: query.startDate,
-          endDate: query.endDate
+          date: query.date
       }
     })
     const res = await fetch(url, {
