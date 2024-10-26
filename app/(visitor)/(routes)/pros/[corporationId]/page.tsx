@@ -122,44 +122,12 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                             </div>
                         ))}
                     </div>
-                    <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(100px,auto)]">
-                        <div className="p-5 row-span-1 col-span-2 rounded-[10px] border-solid border-y-[1px] h-25 shadow-md">
-                            {/* {corporation.address?.label} */}
-                            Paris, France
-                            <div className="pt-2 flex items-center">
-                                <div className="aspect-square relative w-10 h-10 sm:rounded-full overflow-hidden">
-                                    <Image 
-                                        fill
-                                        src="/default_image.jpg"
-                                        alt="Image"
-                                        className="object-cover object-center"
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    />
-                                </div>
-                                <span className='pl-5 font-medium'>{corporation.name}</span>
-                            </div>
-                            <span className='pl-12 font-light text-sm'>{category?.label}</span>
-                        </div>
-                        <div className="row-span-1 rounded-[10px] flex justify-center gap-5">
-                            <div className="mt-10 flex justify-center">
-                                <ModalBookingProvider corporationId={params.corporationId} />
-                                <AddBooking />
-                            </div>
-                            <div className="mt-15 pb-5 flex justify-center">
-                                <Link
-                                    key={`/pros/${corporation._id}`}
-                                    href={`/pros/${corporation._id}`}
-                                    className='grid grid-cols-1 rounded-xl'
-                                >
-                                    <span className='font-medium flex justify-center'>Laisser un avis</span>
-                                    <ReviewSection stars={4} rating_mode="no-value" />
-                                    <Button className='flex justify-center'> Ecrire un avis</Button>
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="flex justify-between p-5 row-span-1 col-span-2 rounded-[10px] border-solid border-y-[1px] shadow-md">
-                            <div className="grid gap-4 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 xs:grid-cols-1">
-                                <div className="flex justify-center items-center">
+                    <div className="grid xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-1 gap-5 p-2 auto-rows-[minmax(100px,auto)]">
+                        {/* <div className="col-span-6"> */}
+                            <div className="relative xl:lg:col-span-4 md:col-span-6 xs:col-span-6 p-2 rounded-[10px] border-solid border-[1px]"> {/*p-5 row-span-1 col-span-4 rounded-[10px] border-solid border-y-[1px] h-25 shadow-md">*/}
+                                {/* {corporation.address?.label} */}
+                                Paris, France
+                                <div className="pt-2 flex items-center">
                                     <div className="aspect-square relative w-10 h-10 sm:rounded-full overflow-hidden">
                                         <Image 
                                             fill
@@ -169,17 +137,79 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         />
                                     </div>
-                                    <span className="font-medium pl-5">{"Engagé pour l'environnement"}</span>
+                                    <span className='pl-5 font-medium'>{corporation.name}</span>
                                 </div>
-                                <div className="">
-                                    <ReviewSection stars={4} rating_mode="read-only" />
-                                </div>
-                                <div className="flex justify-center items-center">
-                                    <a href="#target-comment" className="font-medium">120 commentaires</a>
+                                <span className='pl-12 font-light text-sm'>{category?.label}</span>
+                            </div>
+                            <div className="relative xl:lg:col-span-2 md:col-span-6 xs:col-span-6 p-2 rounded-[10px] border-solid border-[1px] shadow-md">
+                                <div className="grid grid-cols-2">
+                                    <div className="flex justify-center">
+                                        <div className='grid grid-cols-1 rounded-xl'>
+                                            <ModalBookingProvider corporationId={params.corporationId} />
+                                            <span className='font-medium flex justify-center'>Réservation</span>
+                                            <AddBooking />
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-center">
+                                        <Link
+                                            key={`/pros/${corporation._id}`}
+                                            href={`/pros/${corporation._id}`}
+                                            className='grid grid-cols-1 rounded-xl'
+                                        >
+                                            <span className='font-medium flex justify-center'>Laisser un avis</span>
+                                            <ReviewSection stars={4} rating_mode="no-value" />
+                                            <Button className='flex justify-center'> Ecrire un avis</Button>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
+                    </div>
+                    <div className="grid xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-1 p-2 auto-rows-[minmax(100px,auto)] gap-5">
+                        <div className="relative xl:lg:col-span-4 md:col-span-6 xs:col-span-6 gap-5">
+                            <div className="rounded-[10px] border-solid border-[1px] mb-2 p-2 shadow-md">
+                                <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 xs:grid-cols-1">
+                                    <div className="flex justify-center items-center">
+                                        <div className="aspect-square relative w-10 h-10 sm:rounded-full overflow-hidden">
+                                            <Image 
+                                                fill
+                                                src="/default_image.jpg"
+                                                alt="Image"
+                                                className="object-cover object-center"
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            />
+                                        </div>
+                                        <span className="font-medium pl-5">{"Engagé pour l'environnement"}</span>
+                                    </div>
+                                    <div className="">
+                                        <ReviewSection stars={4} rating_mode="read-only" />
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                        <a href="#target-comment" className="font-medium">120 commentaires</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="p-5 col-span-2 rounded-[10px] border-solid border-y-[1px]">
+                                <InfoSection title="Description" content={corporation.description} />
+                            </div>
+                            <div className="p-5 col-span-2 rounded-[10px] border-solid">
+                                <span className='font-sans font-medium mb-5 text-lg'>Les valeurs de L&apos;entreprise</span>
+                                <InfoSection title="Valeur Sociale" content="Lorem ipsum dolor sit amet..." />
+                                <InfoSection title="Valeur Environnementale" content="Lorem ipsum dolor sit amet..." />
+                            </div>
+                            <div className="p-5 col-span-2 rounded-[10px] border-solid border-y-[1px]">
+                                <InfoSection title="Services et prestations de l’entreprise" content="loin de moi l'idée de graver dans le marbre de tailler dans une écorce d'arbre loin de moi l'idée de suggérer que je m'en moque que je n'en ai rien à faire que guère je ne m'en soucie loin de moi ces folies mais je m'échine depuis octobre et pourquoi donc depuis début octobre même et qui m'aime me suive depuis octobre depuis ce même dernier octobre le trois du mois je crois depuis ce temps-là depuis trois mois depuis trois mois et une semaine je m'échine ailleurs et le très long texte n'a pas avancé d'un poil pas beaucoup sans doute est-ce mon côté velléitaire qui ne cesse de me jouer des tours et les méandres du très long texte se sont figés comme une gelée le long des parois d'un bocal de verre et je vitupère contre mes essais éphémères mon tempérament affreusement velléitaire et ce teint d'albâtre qui n'est pas le mien comme je voudrais qu'il fût d'albâtre ou d'ébène ou autrement même sans métaphore mais au moins qu'il ait quelque tenue que mon visage sans retenue puisse soudain passer pour un tissu une pierre un songe soit en quelque sorte un tableau fasse tableau mais ce n'est pas le cas même ce mot albâtre jeté au visage jeté tout à trac sur la page en haut de page ce mot me défigure ne me figure pas ne me représente pas ne figure rien de ce que je suis de ce que je pense être et je suis encore et toujours circonspect dans le doute et ce mot n'apporte rien aucune réponse et donc toujours je me jette à la figure ces accusations comme des bouteilles non pas à la mer mais bien dans la gueule oui je me donne des coups de bouteille tessons épars sur le parquet et mes joues ensanglantées enfin que ce soit ou non métaphore que le mot d'albâtre me figure ou non je prends ces coups ces reproches en plein visage et je m'accuse d'être velléitaire aussi bien sûr pour trop entreprendre je lance cent feux il est normal qu'un certain nombre des foyers meure et même ne démarre qu'à peine avant de s'achever dans un bruit de feuilles mouillées de bois mort de bois trop vert encore pour prendre tout cela encore métaphore et toujours métaphore peut-être est-ce le mot albâtre qui appelle autant de métaphores ou bien les conditions d'écriture du très long texte que par facétie ou encore autodérision je pourrais être tenté de rebaptiser très long texte interrompu et l'adjectif interrompu ici au milieu de la ligne interrompt mes songes interrompt le torrent de sornettes lance d'autres tirades propose peut-être d'autres charades mais pour mieux me ramener vers le rivage bourbeux où je ne cesse de me lancer ces reproches à la figure velléitaire velléitaire et me voici encore à ne pas même essayer de me justifier moi-même de tout cela feux mal éteints et feux qui n'ont jamais pris aussi me trouvé-je vingt vaines justifications improbables même si certaines sont justes par ailleurs comme dans le cas du projet de traduire régulièrement et pensais-je au début au moins une fois par semaine un poème et qui s'est enlisé après à peine trois ou quatre tracasseries mais cela reprendra parfois aussi depuis début octobre le trois je crois suspendu à ce mot d'albâtre depuis le trois octobre le trois je crois je me disais que pour être interrompu ou inachevé le très long texte recelait de vraies possibilités et qu'il suffisait suffirait eût suffi de s'y remettre et la machine reprendrait du galon non là cette image-là ne va pas je mélange les formules croise les figures de style et donc je pensais qu'il me faudrait toutes proportions gardées envisager ces carnets comme Paul Valéry travaillant régulièrement et sans espoir d'en finir jamais chaque matin à ses Cahiers désormais regroupés en deux tomes en Pléiade et que j'ai dévorés consultés admirés lus compulsés longuement naguère mais il faudrait dire jadis ou balancer entre les deux lus disons entre 1993 et 1997 et donc toutes proportions gardées je me verrais bien ainsi à reprendre tel chantier interrompu trois mois et le faisant avancer un petit peu mais enfin ce n'est pas possible il ne va pas se comparer à Paul Valéry l'autre oiseux oisif ex-oisien de surcroît ancien oisien into the bargain non il ne va pas se comparer à Paul Valéry tout de même alors que seulement et il nous l'a dit même avec métaphores tout le tintouin oui oui noir sur blanc dit ce n'est rien d'autre qu'un affreux" />
+                            </div>
+                            <div className="p-5 col-span-2 rounded-[10px] border-solid">
+                                <InfoSection title="Informations pratiques" content="Lorem ipsum dolor sit amet..." />
+                            </div>
+                            <div className="p-5 col-span-2 rounded-[10px] border-solid border-y-[1px]">
+                                <InfoSection title="Activités" content="Lorem ipsum dolor sit amet..." />
+                            </div>
+                            <div className="p-5 col-span-2 rounded-[10px] border-solid">
+                                <InfoSection title="Informations financières et juridiques" content="Lorem ipsum dolor sit amet..." />
+                            </div>
                         </div>
-                        <div className="p-5 row-span-6 rounded-[10px] border-solid border-y-[1px] shadow-md">
+                        <div className="relative xl:lg:col-span-2 md:col-span-6 xs:col-span-6 p-2 rounded-[10px] border-solid border-[1px]">
                             <div className="pb-5">
                                 <InfoSection title="Horaires" content={renderSchedule()} />
                             </div>
@@ -212,27 +242,8 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                                 <ContactForm name_pro={corporation.name} mail_pro={corporation.mail_pro}/>
                             </div>
                         </div>
-                        <div className="p-5 row-span-1 col-span-2 rounded-[10px] border-solid border-y-[1px]">
-                            <InfoSection title="Description" content={corporation.description} />
-                        </div>
-                        <div className="p-5 col-span-2 rounded-[10px] border-solid border-y-[1px]">
-                            <span className='font-sans font-medium mb-5 text-lg'>Les valeurs de L&apos;entreprise</span>
-                            <InfoSection title="Valeur Sociale" content="Lorem ipsum dolor sit amet..." />
-                            <InfoSection title="Valeur Environnementale" content="Lorem ipsum dolor sit amet..." />
-                        </div>
-                        <div className="p-5 col-span-2 rounded-[10px] border-solid border-y-[1px]">
-                            <InfoSection title="Services et prestations de l’entreprise" content="loin de moi l'idée de graver dans le marbre de tailler dans une écorce d'arbre loin de moi l'idée de suggérer que je m'en moque que je n'en ai rien à faire que guère je ne m'en soucie loin de moi ces folies mais je m'échine depuis octobre et pourquoi donc depuis début octobre même et qui m'aime me suive depuis octobre depuis ce même dernier octobre le trois du mois je crois depuis ce temps-là depuis trois mois depuis trois mois et une semaine je m'échine ailleurs et le très long texte n'a pas avancé d'un poil pas beaucoup sans doute est-ce mon côté velléitaire qui ne cesse de me jouer des tours et les méandres du très long texte se sont figés comme une gelée le long des parois d'un bocal de verre et je vitupère contre mes essais éphémères mon tempérament affreusement velléitaire et ce teint d'albâtre qui n'est pas le mien comme je voudrais qu'il fût d'albâtre ou d'ébène ou autrement même sans métaphore mais au moins qu'il ait quelque tenue que mon visage sans retenue puisse soudain passer pour un tissu une pierre un songe soit en quelque sorte un tableau fasse tableau mais ce n'est pas le cas même ce mot albâtre jeté au visage jeté tout à trac sur la page en haut de page ce mot me défigure ne me figure pas ne me représente pas ne figure rien de ce que je suis de ce que je pense être et je suis encore et toujours circonspect dans le doute et ce mot n'apporte rien aucune réponse et donc toujours je me jette à la figure ces accusations comme des bouteilles non pas à la mer mais bien dans la gueule oui je me donne des coups de bouteille tessons épars sur le parquet et mes joues ensanglantées enfin que ce soit ou non métaphore que le mot d'albâtre me figure ou non je prends ces coups ces reproches en plein visage et je m'accuse d'être velléitaire aussi bien sûr pour trop entreprendre je lance cent feux il est normal qu'un certain nombre des foyers meure et même ne démarre qu'à peine avant de s'achever dans un bruit de feuilles mouillées de bois mort de bois trop vert encore pour prendre tout cela encore métaphore et toujours métaphore peut-être est-ce le mot albâtre qui appelle autant de métaphores ou bien les conditions d'écriture du très long texte que par facétie ou encore autodérision je pourrais être tenté de rebaptiser très long texte interrompu et l'adjectif interrompu ici au milieu de la ligne interrompt mes songes interrompt le torrent de sornettes lance d'autres tirades propose peut-être d'autres charades mais pour mieux me ramener vers le rivage bourbeux où je ne cesse de me lancer ces reproches à la figure velléitaire velléitaire et me voici encore à ne pas même essayer de me justifier moi-même de tout cela feux mal éteints et feux qui n'ont jamais pris aussi me trouvé-je vingt vaines justifications improbables même si certaines sont justes par ailleurs comme dans le cas du projet de traduire régulièrement et pensais-je au début au moins une fois par semaine un poème et qui s'est enlisé après à peine trois ou quatre tracasseries mais cela reprendra parfois aussi depuis début octobre le trois je crois suspendu à ce mot d'albâtre depuis le trois octobre le trois je crois je me disais que pour être interrompu ou inachevé le très long texte recelait de vraies possibilités et qu'il suffisait suffirait eût suffi de s'y remettre et la machine reprendrait du galon non là cette image-là ne va pas je mélange les formules croise les figures de style et donc je pensais qu'il me faudrait toutes proportions gardées envisager ces carnets comme Paul Valéry travaillant régulièrement et sans espoir d'en finir jamais chaque matin à ses Cahiers désormais regroupés en deux tomes en Pléiade et que j'ai dévorés consultés admirés lus compulsés longuement naguère mais il faudrait dire jadis ou balancer entre les deux lus disons entre 1993 et 1997 et donc toutes proportions gardées je me verrais bien ainsi à reprendre tel chantier interrompu trois mois et le faisant avancer un petit peu mais enfin ce n'est pas possible il ne va pas se comparer à Paul Valéry l'autre oiseux oisif ex-oisien de surcroît ancien oisien into the bargain non il ne va pas se comparer à Paul Valéry tout de même alors que seulement et il nous l'a dit même avec métaphores tout le tintouin oui oui noir sur blanc dit ce n'est rien d'autre qu'un affreux" />
-                        </div>
-                        <div className="p-5 col-span-2 rounded-[10px] border-solid border-y-[1px]">
-                            <InfoSection title="Informations pratiques" content="Lorem ipsum dolor sit amet..." />
-                        </div>
-                        <div className="p-5 col-span-2 rounded-[10px] border-solid border-y-[1px]">
-                            <InfoSection title="Activités" content="Lorem ipsum dolor sit amet..." />
-                        </div>
-                        <div className="p-5 col-span-2 rounded-[10px] border-solid border-y-[1px]">
-                            <InfoSection title="Informations financières et juridiques" content="Lorem ipsum dolor sit amet..." />
-                        </div>
                     </div>
+                    
                     <div className="p-5 rounded-[10px] border-solid border-y-[1px]" id="target-comment">
                         Commentaires
                     </div>

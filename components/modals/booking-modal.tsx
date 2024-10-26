@@ -170,7 +170,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                                 mode="single"
                                                 selected={date}
                                                 onSelect={setDate}
-                                                className="rounded-md border"
+                                                className="rounded-md border place-items-center"
                                             />
                                         </FormControl>
                                         <FormMessage />
