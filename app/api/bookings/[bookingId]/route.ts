@@ -1,21 +1,24 @@
-import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Booking from '@/models/booking.model';
 import { withAuth } from "@/lib/auth";
 import { createCorsResponse } from "@/lib/createCorsResponse";
 
 // Types d'utilisateurs autorisés
-const allowedRolesForPOST = ['admin', 'professional', 'visitor'];
+const allowedRolesForPATCH = ['admin', 'professional', 'visitor'];
 
 export async function PATCH(req: Request,
     { params }: { params: {bookingId: string}}
 ) {
     try {
+
+        const authResponse = await withAuth(allowedRolesForPATCH, req);
+        if (authResponse) return authResponse;
+
         const id = params.bookingId; // Récupérer l'ID de la réservation depuis l'URL
         const body = await req.json();
         const { status } = body;
 
-        if (!['pending', 'confirmed', 'cancelled'].includes(status)) {
+        if (!['pending', 'confirmed', 'denied'].includes(status)) {
             return createCorsResponse("Statut invalide", { status: 400 });
         }
 

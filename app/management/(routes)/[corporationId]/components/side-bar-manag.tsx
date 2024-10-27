@@ -17,6 +17,7 @@ export function SideBarManag({
 }: any) {
     const { user } = useAuth();
     const pathname = usePathname();
+
     const [isHidden, setIsHidden] = useState<any>(null);
 
     const toggleSidebar = () => {
@@ -113,6 +114,17 @@ export function SideBarManag({
                                 <span className="text-sm">Mon entreprise</span>
                             </Link>
                             <Link
+                                key={`/management/bookings?corporationId=${corporation?._id}`}
+                                href={`/management/bookings?corporationId=${corporation?._id}`}
+                                className={cn(
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === `/management/bookings?corporationId=${corporation?._id}`) ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
+                                )}
+                            >
+                                <CalendarDays size="20px" />
+                                <span className="text-sm">Réservations</span>
+                            </Link>
+                            <Link
                                 key='/management/sales'
                                 href='/management/sales'
                                 className={cn(
@@ -122,17 +134,6 @@ export function SideBarManag({
                             >
                                 <BadgeEuro size="20px" />
                                 <span className="text-sm">Ventes</span>
-                            </Link>
-                            <Link
-                                key='/management/bookings'
-                                href='/management/bookings'
-                                className={cn(
-                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
-                                    (pathname === '/management/bookings') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
-                                )}
-                            >
-                                <CalendarDays size="20px" />
-                                <span className="text-sm">Réservations</span>
                             </Link>
                             <Link
                                 key='/management/orders'

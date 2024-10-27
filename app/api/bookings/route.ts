@@ -16,9 +16,9 @@ export async function POST(req: Request) {
         if (authResponse) return authResponse;
 
         const body = await req.json();
-        const { userId, corporationId, date, timeSlot } = body;
+        const { userId, corporationId, date, timeSlot, comment } = body;
 
-        //console.log("TRACE BOOKING", body);
+        console.log("TRACE BOOKING", body);
     
         if (!userId || !corporationId || !date || !timeSlot || !timeSlot) {
             return createCorsResponse("Tous les champs sont obligatoires, y compris le créneau horaire.", { status: 400 });
@@ -50,6 +50,7 @@ export async function POST(req: Request) {
             corporationId,
             date,
             timeSlot,
+            comment
         });
     
         await booking.save();

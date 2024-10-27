@@ -27,7 +27,7 @@ export async function POST(
         return createCorsResponse("Identifiants invalides", { status: 403 });
       }
 
-      const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '2h' });
 
       const filter = {_id: user._id};
       await User.updateOne(

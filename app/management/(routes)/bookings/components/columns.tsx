@@ -2,48 +2,36 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { CellAction } from "./cell-action"
-import { Corporation } from '@/types/corporation';
+import { Booking } from '@/types/booking';
 
-export const columns: ColumnDef<Corporation>[] = [
+export const columns: ColumnDef<Booking>[] = [
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "status",
+    header: "Statut",
   },
   {
-    accessorKey: "category",
-    header: "Category",
+    accessorKey: "user",
+    header: "Client",
   },
   {
-    accessorKey: "tags",
-    header: "Tags",
+    accessorKey: "date",
+    header: "Date",
   },
   {
-    accessorKey: "subscription",
-    header: "Subscription",
+    accessorKey: "heure_debut",
+    header: "Début",
   },
   {
-    accessorKey: "address.cityId",
-    header: "City",
+    accessorKey: "heure_fin",
+    header: "Fin",
   },
   {
-    accessorKey: "address.regionId",
-    header: "Region",
-  },
-  {
-    accessorKey: "isActive",
-    header: "Active",
-  },
-  {
-    accessorKey: "isSuspended",
-    header: "Suspended",
-  },
-  {
-    accessorKey: "userId",
-    header: "User",
+    accessorKey: "comment",
+    header: "Commentaires",
   },
   {
     accessorKey: "createdAt",
-    header: "Date",
+    header: "Date de création",
   },
   {
     id: "actions",

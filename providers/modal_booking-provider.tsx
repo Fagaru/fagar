@@ -16,6 +16,8 @@ export const ModalBookingProvider: React.FC<ModalBookingProviderProps> = ({
     const { user, isAuthenticated, token } = useAuth();
     const [isMounted, setIsMounted] = useState(false);
 
+    console.log(" BOOKING MODAL Corporation ID", corporationId);
+
     useEffect(() => {
         setIsMounted(true);
     }, []);

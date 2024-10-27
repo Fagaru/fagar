@@ -12,12 +12,13 @@ import { ApiList } from "@/components/ui/api-list";
 import { columns } from "./columns";
 import { Corporation } from '@/types/corporation';
 import AddCorporation from "@/components/AddCorporation";
+import AddBooking from "@/components/AddBooking";
 
-interface CorporationClientProps {
+interface BookingsClientProps {
     data: any
 }
 
-export const CorporationsClient: React.FC<CorporationClientProps> = ({
+export const BookingsClient: React.FC<BookingsClientProps> = ({
     data
 }) => {
     const router = useRouter();
@@ -27,16 +28,13 @@ export const CorporationsClient: React.FC<CorporationClientProps> = ({
         <>
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`Entreprises (${data.length})`}
-                    description="Liste de nos entreprises"
+                    title={`Réservations (${data.length})`}
+                    description="La durée moyenne avant le désistement du client est estimée à 5h. Vos réservervations s'annuleront automatiquement au bout 12h sans validation de votre part."
                 />
-                <AddCorporation />
+                <AddBooking />
             </div>
             <Separator />
-            <DataTable searchKey="name" columns={columns} data={data} />
-            <Heading title="API" description="API calls for Corporations" />
-            <Separator />
-            <ApiList entityName="corporations" entityIdName="corporationId"/>
+            <DataTable searchKey="status" columns={columns} data={data} />
         </>
     );
 }

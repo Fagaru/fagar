@@ -3,7 +3,7 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 export enum STATUS {
     PENDING = 'pending',
     CONFIRMED = 'confirmed',
-    CANCELLED = 'cancelled'
+    DENIED = 'denied'
 };
 
 export interface IBooking extends Document {
@@ -12,6 +12,7 @@ export interface IBooking extends Document {
     date: Date;
     timeSlot: string;
     status: string;
+    comment: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -23,6 +24,7 @@ const bookingSchema: Schema = new Schema({
     date: { type: Date, required: true },
     timeSlot: { type: String, required: true }, // Format 'HH:mm-HH:mm'
     status: { type: String, enum: Object.values(STATUS), default: STATUS.PENDING },
+    comment: { type: String },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 });

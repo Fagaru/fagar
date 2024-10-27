@@ -14,8 +14,8 @@ import { Facebook, Instagram, Linkedin, MapPinned, Phone, X } from 'lucide-react
 import { Button } from '@/components/ui/button';
 import getCategory from '@/services/getCategory';
 import { Category } from '@/types/category';
-import { ModalBookingProvider } from '@/providers/modal_booking-provider';
-import AddBooking from '@/components/AddBooking';
+import AddBooking from "@/components/AddBooking";
+import { ModalBookingProvider } from "@/providers/modal_booking-provider";
 
 const daysOfWeek = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
@@ -30,6 +30,8 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
     const [category, setCategory] = useState<Category | null>(null);
     const [error, setError] = useState<string | null>(null);
     // let category: any = null;
+
+    console.log("Corporation ID", params.corporationId);
 
     useEffect(() => {
         const fetchCorporation = async () => {
@@ -92,6 +94,7 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
     
 
     return (
+        
         <div className='m-6 dark:bg-gray-950'>
             {error && <p>{error}</p>}
             {corporation && (
@@ -143,14 +146,14 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
                             </div>
                             <div className="relative xl:lg:col-span-2 md:col-span-6 xs:col-span-6 p-2 rounded-[10px] border-solid border-[1px] shadow-md">
                                 <div className="grid grid-cols-2">
-                                    <div className="flex justify-center">
+                                    <div className="flex justify-center xl:lg:col-span-1 md:col-span-1 col-span-2">
                                         <div className='grid grid-cols-1 rounded-xl'>
-                                            <ModalBookingProvider corporationId={params.corporationId} />
                                             <span className='font-medium flex justify-center'>Réservation</span>
+                                            <ModalBookingProvider corporationId={corporation._id} />
                                             <AddBooking />
                                         </div>
                                     </div>
-                                    <div className="flex justify-center">
+                                    <div className="flex justify-center xl:lg:col-span-1 md:col-span-1 col-span-2">
                                         <Link
                                             key={`/pros/${corporation._id}`}
                                             href={`/pros/${corporation._id}`}

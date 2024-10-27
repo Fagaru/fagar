@@ -10,12 +10,12 @@ import { useRouter } from "next/navigation";
 
 import { useBookingModal } from "@/hooks/use-booking-modal";
 import { Modal } from "@/components/ui/modal";
-import { 
+import {
     Form, 
     FormControl, 
     FormField, 
-    FormItem, 
-    FormLabel, 
+    FormItem,
+    FormLabel,
     FormMessage 
 } from "@/components/ui/form";
 
@@ -27,12 +27,15 @@ import getBookings from "@/services/getBookings";
 import { getTimeSlotsForDate } from "@/lib/timeSlot";
 import TimeSlotSelector from "../timeSlotSelector";
 import { format } from "date-fns";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
     userId: z.string(),
     corporationId: z.string().min(1),
     date: z.string(),
-    timeSlot: z.string()
+    timeSlot: z.string().min(1, "Veuillez sélectionner un créneau."),
+    comment: z.string().optional()
 });
 
 interface TimeSlot {
@@ -72,6 +75,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             corporationId,
             date: '',
             timeSlot: '',
+            comment: '',
         },
     });
 
@@ -94,34 +98,40 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       }, [corporationId, date]);
     
     useEffect(() => {
-      try {
-          const chosenDate = date; // Date choisie par l'utilisateur
-          const durationBooking: any = corporation?.duration_booking;
-          const schedules: any = corporation?.schedules;
-          const bookedSlots_list: any = bookSlots.map((bookSlot: any) => { return bookSlot.timeSlot});
+        try {
+            const chosenDate = date; // Date choisie par l'utilisateur
+            const durationBooking: any = corporation?.duration_booking;
+            const schedules: any = corporation?.schedules;
+            const bookedSlots_list: any = bookSlots.map((bookSlot: any) => { return bookSlot.timeSlot});
 
-          const currentTimeSlots = getTimeSlotsForDate(schedules, chosenDate, durationBooking, bookedSlots_list);
-          console.log("TIMESLOTS ",currentTimeSlots); // Affiche: ["08:00-09:00", "09:00-10:00", "10:00-11:00"]
-          console.log("BOOKSLOTS ",bookedSlots_list); // Affiche: ["08:00-09:00", "09:00-10:00", "10:00-11:00"]
-          setTimeSlots(currentTimeSlots);
-      } catch (err) {
-          setError("Failed to update booking duration");
-      }
+            const currentTimeSlots = getTimeSlotsForDate(schedules, chosenDate, durationBooking, bookedSlots_list);
+            console.log("TIMESLOTS ",currentTimeSlots); // Affiche: ["08:00-09:00", "09:00-10:00", "10:00-11:00"]
+            console.log("BOOKSLOTS ",bookedSlots_list); // Affiche: ["08:00-09:00", "09:00-10:00", "10:00-11:00"]
+            setTimeSlots(currentTimeSlots);
+        } catch (err) {
+            setError("Failed to update booking duration");
+        }
     }, [corporation, date]);
 
     const handleTimeSlotSelection = (timeSlot: string) => {
-      setSelectedTimeSlot(timeSlot);
-      console.log("Créneau sélectionné :", timeSlot);
+        setSelectedTimeSlot(timeSlot);
+        form.setValue("date", format(date, 'yyyy-MM-dd')); // Synchronisation avec le formulaire
+        form.setValue("timeSlot", timeSlot); // Synchronisation avec le formulaire
+        console.log("Créneau sélectionné :", timeSlot);
     };
 
     const onSubmit = async (values: z.infer<typeof formSchema>, e: any) => {
         try {
             e.preventDefault();
             setLoading(true);
+            if (!selectedTimeSlot) {
+                toast.error('Veuillez sélectionner un créneau.');
+                setLoading(false); // Arrêter le chargement si la validation échoue
+                return;
+            }
 
-            values.date = format(date, 'yyyy-MM-dd');;
-            values.timeSlot = String(selectedTimeSlot);
-
+            // values.date = format(date, 'yyyy-MM-dd');
+            // values.timeSlot = String(selectedTimeSlot);
             await axios.post('/api/bookings',
                 values,
                 {
@@ -136,7 +146,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             }).catch((e) => {
                 console.log(e);
                 toast.error(e.response.data);
-            });
+            });           
         } catch (error) {
             // Gérer les erreurs
             if (error) {
@@ -192,6 +202,19 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                                     </> : <h1>Aucun créneau disponible</h1>
                                                 }
                                             </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="comment"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Demande</FormLabel>
+                                        <FormControl>
+                                        <Textarea disabled={loading} placeholder="Faites une bréve formulation de votre demande" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

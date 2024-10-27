@@ -21,40 +21,17 @@ const AddBooking = () => {
   const [loading, setLoading] = useState(true);
   const [action, setAction] = useState<any>(null);
 
-  // useEffect(() => {
-  //   const fetchAction= async () => {
-  //       try {
-            
-  //           if (user?.role === "professional" || user?.role === "admin") {
-  //               // toast.error('Accès non autorisé');
-  //               setAction(true)
-  //               setLoading(false);
-  //           } else {
-  //               setAction(false)
-  //               setLoading(false);
-  //           }
-  //       } catch (error) {
-  //           toast.error('Erreur lors de la récupération des données');
-  //           console.error(error);
-  //       }
-  //   };
-
-  //   fetchAction();
-  // }, [isAuthenticated, user, router]);
-
-  // if (loading) {
-  //     return <Loader />; // Affiche un loader pendant la vérification de l'authentification et la récupération des données
-  // }
+  console.log("ON CLICK");
 
 
 
   const handleClick = () => {
-    // if (action) {
-      setOpen(false);
-      bookingModal.onOpen();
-    // } else {
-    //   toast.error("Veuillez poursuivre avec un compte pro !")
-    // }
+    if (isAuthenticated) {
+    bookingModal.onOpen();
+    setOpen(false);
+    } else {
+      toast.error("Veuillez vous connecter pour poursuivre !")
+    }
     
   };
 
