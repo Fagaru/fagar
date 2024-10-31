@@ -15,6 +15,13 @@ export async function POST(
     const { first_name, last_name, email, password, role, phone, birthday } = body;
     
     await dbConnect();
+
+    const existingUser = await User.findOne({email});
+
+    if (existingUser) {
+      return createCorsResponse("Vous êtes déja inscrit.", { status: 409 });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password + PEPPER, salt);
     const user = new User({

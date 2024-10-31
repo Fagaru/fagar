@@ -53,7 +53,10 @@ export const LoginForm: React.FC = () => {
                 sessionStorage.setItem("user", JSON.stringify(userInfo));
                 checkAuthStatus();
                 
-                router.push(`/account`);
+                //router.push(`/account`);
+                console.log("HISTORIQUE DE NAVIGATION", window.history.back());
+                // Retourner à la page précédente
+                window.history.back();
                 toast.success("Connexion réussie.");
             }).catch((e) => {
                 toast.error(e.response.data);
