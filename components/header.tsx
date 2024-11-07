@@ -5,7 +5,7 @@ import FagarLogo from "@/components/fagarLogo";
 import SearchBar from "@/components/searchBar";
 import AddCorporation from "./AddCorporation";
 import MenuUnsignedUser from "./menu-unsigned";
-import MapBoxApiKeyWrapper from "@/providers/map-box-apikey-wrapper";
+// import MapBoxApiKeyWrapper from "@/providers/map-box-apikey-wrapper";
 import dynamic from 'next/dynamic'
  
 const NoSSR = dynamic(() => import('@/providers/map-box-apikey-wrapper'), { ssr: false })
@@ -14,6 +14,8 @@ const NoSSR = dynamic(() => import('@/providers/map-box-apikey-wrapper'), { ssr:
      
 
 const Header = () => {
+
+   
     return (
         <header>
             {/* Conteneur principal du header */}
@@ -36,7 +38,7 @@ const Header = () => {
                     <div className="ml-auto flex items-center space-x-4">
                         {/* Affiché sur les écrans md et plus */}
                         <div className="hidden md:flex items-center space-x-4">
-                            <AddCorporation />
+                            <AddCorporation description={'Ajouter votre entreprise'} />
                             <ThemeToggle />
                             <MenuUnsignedUser />
                         </div>

@@ -29,11 +29,9 @@ const CityPage:React.FC<CityPageProps> = async ({
         categoryId: searchParams.categoryId
     })
    
-    
-
     const categories= await getCategories ()
 
-    // console.log("CATEEEEEEEEEEEEEEEEEEE",Corporations)
+    console.log("CATEEEEEEEEEEEEEEEEEEE",Corporations)
  
     const sportCorpos = Corporations.filter(corporation => corporation.categoryId === '66603b301052c74d3fa95557');
     const sportCateg=categories.filter(category=>category._id ==='66603b301052c74d3fa95557')

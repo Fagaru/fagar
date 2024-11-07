@@ -11,8 +11,13 @@ import { useAuth } from '@/context/authContext';
 import toast from 'react-hot-toast';
 import Loader from '@/components/loader';
 import { cn } from "@/lib/utils";
+interface AddCorporationProps{
+  description:String
 
-const AddCorporation = () => {
+}
+const AddCorporation:React.FC<AddCorporationProps> = ({
+  description
+}) => {
   const storeModal = useStoreModal();
   const [open, setOpen] = useState(false);
 
@@ -58,12 +63,13 @@ const AddCorporation = () => {
     
   };
 
+
   return (
     <div className={cn(`flex items-center ml-auto`)}>
 
       <Button className="relative flex items-center rounded-lg border-gray-300 px-4 py-2 text-xs gap-2" variant={'destructive'} onClick={handleClick}>
         <PackageCheck size={15} />
-          Ajouter votre entreprise
+          {description}
       </Button>
     </div>
   );

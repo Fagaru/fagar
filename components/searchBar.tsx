@@ -64,6 +64,7 @@ const SearchBar = () => {
           }}
         />
       </div>
+      <button className="rounded-r-full border-gray-300 px-4 py-2 max-w-3 relative mr-6" onClick={handleSearch}>
       <div className="flex items-center relative">
         {/*<Input
           type="text"
@@ -81,7 +82,7 @@ const SearchBar = () => {
           </button>
         )} */}
       </div>
-      <button className="rounded-r-full border-gray-300 px-4 py-2 max-w-3 relative mr-6" onClick={handleSearch}>
+      
         <Search />
       </button> 
     </div>
