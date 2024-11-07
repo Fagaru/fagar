@@ -27,8 +27,11 @@ const Header = () => {
                         <span className="text-lg font-medium text-baguet text-rose-600 ml-2">
                             Proximus Prime
                         </span>
-                    </div>
+                        <div className="px-4 ml-4">
                     <NoSSR />
+                    </div>
+                    </div>
+                    
                     {/* SearchBar cachée sur mobile */}
                     <div className="flex-1 justify-center hidden md:flex">
                         <SearchBar />
