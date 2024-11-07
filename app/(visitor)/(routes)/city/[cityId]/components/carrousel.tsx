@@ -66,11 +66,10 @@ const Slider: React.FC<SliderProps> = ({ data }) => {
                     : "hidden"
                 }`}
               >
-                <div className="relative w-full flex justify-center items-center">
+                <div className="relative w-full flex justify-center items-center mt-12">
                   <div className="absolute bottom-60 left-100 font-bold text-3xl sm:text-5xl lg:text-6xl sm:max-w-xl max-w-xs text-white text-center">
-                  <div className="text-white text-center">
-          <h1 className="mt-4 text-4xl md:text-6xl font-bold">Bienvenue à {data?.label}</h1>
-          {/* <p className="mt-4 text-xl md:text-2xl">Découvrez la beauté de {data?.label}</p> */}
+                  <div className="text-white text-center ">
+          <h1 className=" text-4xl md:text-6xl font-bold">Bienvenue à {data?.label}</h1>
         </div>
                   </div>
                 </div>
