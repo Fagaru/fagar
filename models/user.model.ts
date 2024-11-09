@@ -12,6 +12,13 @@ export enum GENDERS {
   OTHER = 'other'
 };
 
+export enum STATUS {
+  NEW = 'new',
+  STARTER = 'starter',
+  INTERMEDIATE = 'intermediate',
+  LOYAL = 'loyal',
+};
+
 export interface IUser extends Document {
   first_name: string;
   last_name: string;
@@ -24,6 +31,7 @@ export interface IUser extends Document {
   password: string;
   role: ROLES;
   bookings: mongoose.Types.ObjectId;
+  status: STATUS;
   isVerified: boolean;
   isSuspended: boolean;
   isActive: boolean;
@@ -48,6 +56,7 @@ const UserSchema: Schema = new Schema({
     isActive: { type: Boolean, default: false },
     role: { type: String, enum: Object.values(ROLES), default: ROLES.VISITOR },
     bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking' }],
+    status: { type: String, enum: Object.values(STATUS), default: STATUS.NEW },
     lastLogin: { type: Date },
     lastLogout: { type: Date },
   }, {

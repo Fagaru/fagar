@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '@/models/user.model';
+import User, { STATUS } from '@/models/user.model';
 import dbConnect from '@/lib/dbConnect';
-import { NextResponse } from 'next/server';
+
 import { createCorsResponse } from '@/lib/createCorsResponse';
 
 const PEPPER = process.env.PEPPER || 'your-secret-pepper';
@@ -28,6 +28,11 @@ export async function POST(
       }
 
       const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '2h' });
+
+      let status = user.status;
+      if (status === 'new') {
+        status = STATUS.STARTER;
+      }
 
       const filter = {_id: user._id};
       await User.updateOne(

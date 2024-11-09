@@ -1,18 +1,18 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-import { CellAction } from "./cell-action"
+import { ColumnDef } from "@tanstack/react-table";
+import { CellAction } from "./cell-action";
 
 import { User } from '@/types/user';
 
 export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: "first_name",
+    accessorKey: "last_name",
     header: "Nom",
   },
   {
-    accessorKey: "last_name",
-    header: "Prénom",
+    accessorKey: "email",
+    header: "Email",
   },
   {
     accessorKey: "phone",
@@ -21,6 +21,18 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "role",
     header: "Type de compte",
+  },
+  {
+    accessorKey: "status",
+    header: "Statut utilisateur",
+  },
+  {
+    accessorKey: "isActive",
+    header: "Statut compte",
+  },
+  {
+    accessorKey: "isSuspended",
+    header: "Accès au compte",
   },
   {
     accessorKey: "lastLogout",

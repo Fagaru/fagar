@@ -2,8 +2,8 @@
 import { format } from "date-fns";
 import { UserClient } from "./components/client";
 import { User } from '@/types/user';
-import getCities from "@/services/getCities";
 import { useEffect, useState } from "react";
+
 import { toast } from "react-hot-toast";
 import getUsers from "@/services/getUsers";
 import { useAuth } from "@/context/authContext";
@@ -44,11 +44,13 @@ const UsersPage = () => {
 
   const formattedUsers = users.map((item: User) => ({
     _id: item._id,
-    first_name: item.first_name,
     last_name: item.last_name,
     email: item.email,
     phone: item.phone,
     role: item.role,
+    status: item.status,
+    isSuspended: item.isSuspended ? "Bloqué" : "Ouvert",
+    isActive: item.isActive ? "Actif" : "Inatif",
     lastLogin: format(new Date(item.lastLogin || null), "MMMM do, yyyy"),
     lastLogout: format(new Date(item.lastLogout || null), "MMMM do, yyyy"),
     createdAt: format(new Date(item.createdAt), "MMMM do, yyyy")

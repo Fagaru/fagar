@@ -90,7 +90,7 @@ const formSchema = z.object({
     code_naf: z.string().optional(),
     isActive: z.boolean().default(false).optional(),
     isSuspended: z.boolean().default(false).optional(),
-    duration_booking: z.string().min(1).optional(),
+    // duration_booking: z.string().min(1).optional(),
 });
 
 type CorporationFormValues = z.infer<typeof formSchema>;
@@ -171,7 +171,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
             linkInstagram: '',
             linkLinkedIn: '',
             linkX: '',
-            duration_booking: '01:00'
+            // duration_booking: '01:00'
         }
     });
 
@@ -578,7 +578,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                             />
                         </div>
 
-                        <div className="relative row-span-auto xl:col-span-1 lg:col-span-1 md:col-span-1 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
+                        {/* <div className="relative row-span-auto xl:col-span-1 lg:col-span-1 md:col-span-1 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 
                                 control={form.control}
                                 name="duration_booking"
@@ -598,7 +598,7 @@ export const CorporationForm: React.FC<CorporationFormProps> = ({
                                 </FormItem>
                                 )}
                             />
-                        </div>
+                        </div> */}
 
                         <div className="relative xl:lg:col-span-1 md:col-span-1 xs:col-span-4 p-2 rounded-[10px] border-solid border-[1px]">
                             <FormField 

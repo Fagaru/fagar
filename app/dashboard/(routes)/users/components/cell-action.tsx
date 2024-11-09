@@ -39,7 +39,7 @@ export const CellAction: React.FC<CellActionProps>= ({
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/users/${data._id}/admin`).then(() => {
+            await axios.delete(`/users/${data._id}/admin`).then(() => {
                 router.refresh();
                 toast.success("User deleted.");
             }).catch((e) => {

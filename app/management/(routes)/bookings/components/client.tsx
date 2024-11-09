@@ -13,6 +13,7 @@ import { columns } from "./columns";
 import { Corporation } from '@/types/corporation';
 import AddCorporation from "@/components/AddCorporation";
 import AddBooking from "@/components/AddBooking";
+import BookingDuration from "@/components/BookingDuration";
 
 interface BookingsClientProps {
     data: any
@@ -31,6 +32,7 @@ export const BookingsClient: React.FC<BookingsClientProps> = ({
                     title={`Réservations (${data.length})`}
                     description="La durée moyenne avant le désistement du client est estimée à 5h. Vos réservervations s'annuleront automatiquement au bout 12h sans validation de votre part."
                 />
+                <BookingDuration />
                 <AddBooking />
             </div>
             <Separator />

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import getBookings from "@/services/getBookings";
 import { ModalBookingProvider } from "@/providers/modal_booking-provider";
 import { useSearchParams } from "next/navigation";
+import { ModalBookingDurationProvider } from "@/providers/modal_booking_duration-provider";
 
 interface BookingsPageProps {
   params: {corporationId: string}
@@ -73,6 +74,7 @@ const BookingsPage: React.FC<BookingsPageProps> = ({
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-16 pt-20">
         <ModalBookingProvider corporationId={corporationId} />
+        <ModalBookingDurationProvider corporationId={corporationId} />
         <BookingsClient data={formattedCorporations} />
       </div>
     </div>

@@ -30,7 +30,7 @@ export const CorporationsClient: React.FC<CorporationClientProps> = ({
                     title={`Entreprises (${data.length})`}
                     description="Liste de nos entreprises"
                 />
-                <AddCorporation />
+                <AddCorporation description="Ajouter une entreprise"/>
             </div>
             <Separator />
             <DataTable searchKey="name" columns={columns} data={data} />

@@ -45,6 +45,7 @@ const SubscriptionsPage = () => {
     const formattedSubscriptions = subscriptions.map((item: Subscription) => ({
         _id: item._id,
         label: item.label,
+        price: item.price,
         createdAt: format(new Date(item.createdAt), "MMMM do, yyyy")
     }));
 

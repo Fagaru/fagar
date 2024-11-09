@@ -1,14 +1,20 @@
-
 export enum ROLES {
     VISITOR = 'visitor',
     PROFESSIONAL = 'professional',
     ADMIN = 'admin'
 };
-  
+
 export enum GENDERS {
     MALE = 'male',
     FEMALE = 'female',
     OTHER = 'other'
+};
+
+export enum STATUS {
+    NEW = 'new',
+    STARTER = 'starter',
+    INTERMEDIATE = 'intermediate',
+    LOYAL = 'loyal',
 };
 
 export interface User {
@@ -22,6 +28,7 @@ export interface User {
     gender: GENDERS,
     image: String;
     role: ROLES;
+    status: STATUS;
     isVerified: boolean;
     isSuspended: boolean;
     isActive: boolean;
