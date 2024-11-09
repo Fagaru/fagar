@@ -62,28 +62,28 @@ const HomePage = async() => {
                
                     <div className="flex justify-center mt-8">
                         <Image
-                            src="/images/Assane.jpg"  
+                            src="/default_image.jpg"  
                             alt="Notre équipe"
                             width={200}  
                             height={200} 
                             className="rounded-full shadow-lg"  // Cercle et ombre
                         />
                         <Image
-                            src="/images/stan.jpg"  
+                            src="/default_image.jpg"  
                             alt="Notre équipe"
                             width={200}  
                             height={200} 
                             className="rounded-full shadow-lg"  // Cercle et ombre
                         />
                         <Image
-                            src="/images/Abdoulaye.jpg"  
+                            src="/default_image.jpg"  
                             alt="Notre équipe"
                             width={200}  
                             height={200} 
                             className="rounded-full shadow-lg"  // Cercle et ombre
                         />
                         <Image
-                            src="/images/fag.jpg"  
+                            src="/default_image.jpg"  
                             alt="Notre équipe"
                             width={200}  
                             height={200} 

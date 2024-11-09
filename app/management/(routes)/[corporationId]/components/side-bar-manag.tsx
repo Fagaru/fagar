@@ -5,7 +5,7 @@ import { useParams, usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { Album, AreaChart, BadgeEuro, Home, Menu, Monitor, Package, Palette, Ruler, Settings, PackageCheck, ListTodo, TrendingUp, User, CalendarDays } from "lucide-react";
+import { Album, AreaChart, BadgeEuro, Home, Menu, Monitor, Package, Palette, Ruler, Settings, PackageCheck, ListTodo, TrendingUp, User, CalendarDays, ShoppingBasket, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/authContext";
 import getCorporations from "@/services/getCorporations";
@@ -110,7 +110,7 @@ export function SideBarManag({
                                     (pathname === `/management/${corporation?._id}`) ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
-                                <PackageCheck size="20px" />
+                                <Store size="20px" />
                                 <span className="text-sm">Mon entreprise</span>
                             </Link>
                             <Link
@@ -123,6 +123,17 @@ export function SideBarManag({
                             >
                                 <CalendarDays size="20px" />
                                 <span className="text-sm">Réservations</span>
+                            </Link>
+                            <Link
+                                key={`/management/bookings?corporationId=${corporation?._id}`}
+                                href={`/management/bookings?corporationId=${corporation?._id}`}
+                                className={cn(
+                                    "flex items-center gap-5 m-1 p-3 rounded-md transition-colors hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    (pathname === `/management/bookings?corporationId=${corporation?._id}`) ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
+                                )}
+                            >
+                                <PackageCheck size="20px" />
+                                <span className="text-sm">Produits</span>
                             </Link>
                             <Link
                                 key='/management/sales'
@@ -143,7 +154,7 @@ export function SideBarManag({
                                     (pathname === '/management/orders') ? "bg-slate-950 dark:bg-gray-800 text-white dark:text-white font-medium" : ""
                                 )}
                             >
-                                <ListTodo size="20px" />
+                                <ShoppingBasket size="20px" />
                                 <span className="text-sm">Commandes</span>
                             </Link>
                         </div>

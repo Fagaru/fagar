@@ -2,14 +2,14 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface ICategory extends Document {
   label: string;
-  imageUrl: string;
+  parentCategoryId: string | null;      // Catégorie parent (pour créer des sous-catégories)
   createdAt: Date;
   updatedAt: Date;
 }
 
 const CategorySchema: Schema = new Schema({
   label: { type: String, required: true },
-  imageUrl: { type: String, required: true },
+  parentCategoryId: { type: String },
 }, {
   timestamps: true,
 });

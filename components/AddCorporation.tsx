@@ -1,6 +1,6 @@
 "use client";
 
-import { PackageCheck, Plus } from 'lucide-react';
+import { PackageCheck, Plus, Store } from 'lucide-react';
 import { Button } from './ui/button';
 
 import { useStoreModal } from "@/hooks/use-store-modal";
@@ -66,9 +66,8 @@ const AddCorporation:React.FC<AddCorporationProps> = ({
 
   return (
     <div className={cn(`flex items-center ml-auto`)}>
-
       <Button className="relative flex items-center rounded-lg border-gray-300 px-4 py-2 text-xs gap-2" variant={'destructive'} onClick={handleClick}>
-        <PackageCheck size={15} />
+        <Store size={15} />
           {description}
       </Button>
     </div>

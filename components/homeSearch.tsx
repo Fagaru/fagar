@@ -35,17 +35,17 @@ const HomeSearchBar = () => {
   };
 
   return (
-    <div className="flex items-center border-2 ">
+    <div className="flex items-center ">
       <button
-        className="rounded-full border-gray-300 p-3 bg-white text-gray-800 shadow-sm hover:bg-gray-100 flex items-center justify-center" // Ajout du bg-white et rounded-full
+        className="rounded-full p-3 bg-white text-gray-800 shadow-sm hover:bg-gray-100 flex items-center justify-center" // Ajout du bg-white et rounded-full
         onClick={handleSearch}
       >
-        <Search className="h-5 w-5" /> {/* Ajustement de la taille de l'icône */}
+        <Search size={15} />
       </button>
       <div className="flex items-center relative">
         <Input
           type="text"
-          className="border border-gray-300 rounded-l-lg rounded-r-none px-4 py-2 h-9 w-80"
+          className="rounded-l-lg rounded-r-none px-4 py-2 h-9 w-80"
           placeholder="De quoi avez-vous besoin ?"
           defaultValue={searchParams.get('query')?.toString()}
           size={50}

@@ -3,7 +3,7 @@ import { RegisterForm } from "./components/register-form";
 import { ROLES } from "@/models/user.model";
 
 const RegisterPage = async () => {
-    const role = ROLES.ADMIN;
+    const role = ROLES.VISITOR;
 
     return (
         <div className="flex-col p-4">

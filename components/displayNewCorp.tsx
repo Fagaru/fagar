@@ -1,6 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+import Image from "next/image";
 import { Corporation as CorporationType } from "@/types/corporation";
 
 interface DisplayProps {
@@ -45,10 +47,12 @@ const NewCorps: React.FC<DisplayProps> = ({ Corpo }) => {
           key={corporation._id}
           className="border border-gray-200 rounded p-4 flex flex-col items-center cursor-pointer" // Ajout de `cursor-pointer` pour indiquer la cliquabilité
         >
-          <img
-            src={corporation.images?.[0]?.url || "/avatar.png"} // Image par défaut si aucune n'est disponible
-            alt={`${corporation.name} logo`}
-            className="w-16 h-16 rounded-full mb-2"
+          <Image
+            src={corporation.images[0]?.url || "/default_image.jpg"} // Image par défaut si aucune n'est disponible
+            alt={`${corporation.name}_logo`}
+            className="rounded-full mb-2 object-cover"
+            width={60}
+            height={60}
           />
           <h3 className="font-semibold">{corporation.name}</h3>
           <p className="text-gray-500">

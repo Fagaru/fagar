@@ -111,7 +111,7 @@ export default function MenuUnsignedUser({
                         <></>
                     :
                         <DropdownMenuItem>
-                            <AddCorporation />
+                            <AddCorporation description="Ajouter votre entreprise" />
                         </DropdownMenuItem>
                     }
                     

@@ -17,7 +17,7 @@ const Search  = () => {
 
   return (
     <div className="relative p-10 w-full h-full ">
-        <div className="absolute inset-0 flex items-center justify-center z-10 mt-10 flex justify-center">
+        <div className="absolute inset-0 items-center z-10 mt-10 flex justify-center">
           <HomeSearchBar/>
           < NoSSR  />
         </div>

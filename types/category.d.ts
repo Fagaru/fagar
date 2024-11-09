@@ -1,7 +1,7 @@
 export interface Category {
     _id: string;
     label: string;
-    imageUrl: string;
+    parentCategoryId: string;
     createdAt: Date;
     updatedAt: Date;
 }
