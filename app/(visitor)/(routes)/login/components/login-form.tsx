@@ -54,9 +54,12 @@ export const LoginForm: React.FC = () => {
                 checkAuthStatus();
                 
                 //router.push(`/account`);
-                console.log("HISTORIQUE DE NAVIGATION", window.history.back());
-                // Retourner à la page précédente
-                window.history.back();
+                if (userInfo.status === 'new') {
+                    router.push(`/account`);
+                } else {
+                    // Retourner à la page précédente
+                    window.history.back();
+                }
                 toast.success("Connexion réussie.");
             }).catch((e) => {
                 toast.error(e.response.data);

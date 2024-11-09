@@ -88,7 +88,7 @@ export async function PATCH (
         const updatedCorporation = await Corporation.updateOne(
             filter, 
             { ...body, 
-                schedules: updatedSchedules,  // Use the correctly formatted schedules
+                schedules: updatedSchedules,
                 duration_booking: body.duration_booking,
                 _id: params.corporationId, 
                 updateAt: Date.now()

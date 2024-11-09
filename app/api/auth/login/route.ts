@@ -30,7 +30,9 @@ export async function POST(
       const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '2h' });
 
       let status = user.status;
-      if (status === 'new') {
+
+      console.log("USER STATUS", user);
+      if (status === 'new' || !status) {
         status = STATUS.STARTER;
       }
 
@@ -39,6 +41,7 @@ export async function POST(
           filter, 
           {
             _id: user._id, 
+            status: status,
             lastLogin: Date.now(),
             updatedAt: Date.now()
           }
@@ -50,7 +53,8 @@ export async function POST(
         role: user.role,
         isVerified: user.isVerified,
         isActive: user.isActive,
-        isSuspended: user.isSuspended
+        isSuspended: user.isSuspended,
+        status: user.status
       }
 
       return createCorsResponse({userInfo, token});
