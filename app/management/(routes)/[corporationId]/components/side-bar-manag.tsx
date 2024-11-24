@@ -122,7 +122,7 @@ export function SideBarManag({
                                 )}
                             >
                                 <CalendarDays size="20px" />
-                                <span className="text-sm">Réservations</span>
+                                <span className="text-sm">Mes réservations</span>
                             </Link>
                             <Link
                                 key={`/management/bookings?corporationId=${corporation?._id}`}
@@ -144,7 +144,7 @@ export function SideBarManag({
                                 )}
                             >
                                 <BadgeEuro size="20px" />
-                                <span className="text-sm">Ventes</span>
+                                <span className="text-sm">Mes ventes</span>
                             </Link>
                             <Link
                                 key='/management/orders'
@@ -155,7 +155,7 @@ export function SideBarManag({
                                 )}
                             >
                                 <ShoppingBasket size="20px" />
-                                <span className="text-sm">Commandes</span>
+                                <span className="text-sm">Mes commandes</span>
                             </Link>
                         </div>
                         <div className="gap-3 mb-3">
