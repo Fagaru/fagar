@@ -3,7 +3,7 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 export interface IVariant extends Document {
     productId: mongoose.Types.ObjectId;
     vendorId: mongoose.Types.ObjectId;
-    sku: string;
+    sku: string; // Numéro unique de variant
     attributes: {
         color?: string;
         size?: string;

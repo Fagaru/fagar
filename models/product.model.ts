@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IProduct extends Document {
-    psin: string;
+    psin: string; // Identifiant unique par produit
     title: string;
     description: string;
     mainImage: string;
