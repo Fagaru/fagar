@@ -12,16 +12,16 @@ interface SearchProductsParams {
   }
 }
 const SearchPage : React.FC<SearchProductsParams> = async({searchParams}) => {
-    const query = searchParams?.query ||'';
+    const query = searchParams?.query ||''
 
     console.log("bigggggggggggggg Querry",query)
     return(
         <Container>
             <div className="space-yt-10 pb-10">
                 {/* <Billboard data={billboard}/> */}
-                <div className="bg-zinc-900 text-zinc-200">
-                   
-                    </div>
+                <div className="mt-20 bg-gray-200 rounded-md text-center py-16 mb-8">
+          <h1 className="text-4xl font-bold">Fagar inc</h1>
+        </div>
               
                 <div className="flex flex-col gap-y-B px-4 sm:px-6 lg:px-8">
                 <Suspense fallback={<SkeletonDemo/>}>

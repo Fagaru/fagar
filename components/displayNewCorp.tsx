@@ -25,28 +25,26 @@ const NewCorps: React.FC<DisplayProps> = ({ Corpo }) => {
   };
 
   const handleClick = (corporationId: string) => {
-    // Redirige vers la page dynamique de la corporation avec son ID
     router.push(`/pros/${corporationId}`);
   };
 
-  // Trier les corporations par `createdAt` en ordre décroissant (plus récentes en premier)
   const sortedCorporations = corporations.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
-  // Prendre les 6 dernières corporations
+
   const recentCorporations = sortedCorporations.slice(0, 6);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
       {recentCorporations.map((corporation) => (
         <div
-          onClick={() => handleClick(corporation._id)} // Redirection à l'événement de clic
+          onClick={() => handleClick(corporation._id)} 
           key={corporation._id}
-          className="border border-gray-200 rounded p-4 flex flex-col items-center cursor-pointer" // Ajout de `cursor-pointer` pour indiquer la cliquabilité
+          className="border border-gray-200 rounded p-4 flex flex-col items-center cursor-pointer" 
         >
           <img
-            src={corporation.images?.[0]?.url || "/avatar.png"} // Image par défaut si aucune n'est disponible
+            src={corporation.images?.[0]?.url || "/avatar.png"} 
             alt={`${corporation.name} logo`}
             className="w-16 h-16 rounded-full mb-2"
           />

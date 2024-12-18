@@ -37,11 +37,12 @@ const HomeSearchBar = () => {
   return (
     <div className="flex items-center border-2 ">
       <button
-        className="rounded-full border-gray-300 p-3 bg-white text-gray-800 shadow-sm hover:bg-gray-100 flex items-center justify-center" // Ajout du bg-white et rounded-full
+        className="rounded-full border-gray-300 p-3 bg-white text-gray-800 shadow-sm hover:bg-gray-100 flex items-center justify-center"
         onClick={handleSearch}
       >
-        <Search className="h-5 w-5" /> {/* Ajustement de la taille de l'icône */}
-      </button>
+   
+        <Search className="h-5 w-5" /> 
+        </button>
       <div className="flex items-center relative">
         <Input
           type="text"

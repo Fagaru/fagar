@@ -21,7 +21,7 @@ const CorpoList = async({query}:{query:string})=>{
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
             {Array.isArray(corporations)&& filteredCorporations.map((corporation) => (
           <React.Fragment key={corporation._id}>
-            <CorpoCard key={corporation._id} Corpo={corporation} />;
+            <CorpoCard key={corporation._id} Corpo={corporation} />
           </React.Fragment>
     
         ))}
