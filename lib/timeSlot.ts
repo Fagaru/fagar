@@ -143,7 +143,7 @@ export function getTimeSlotsForDate(
     chosenDate: Date,
     durationBooking: string,
     bookedSlots: string[] // Liste des créneaux déjà réservés pour la date donnée
-): string[] {
+): TimeSlot[] {
     const dayOfWeek = chosenDate.getDay(); // Récupère le jour de la semaine de la date (0 pour dimanche, etc.)
 
     // Trouve le planning correspondant au jour de la semaine
@@ -152,7 +152,7 @@ export function getTimeSlotsForDate(
         return []; // Pas de créneaux disponibles si le jour est marqué comme fermé
     }
 
-    const timeSlots: string[] = [];
+    const timeSlots: TimeSlot[] = [];
 
     // Génère les créneaux du matin si disponibles
     if (scheduleForDay.begin_am && scheduleForDay.end_am) {

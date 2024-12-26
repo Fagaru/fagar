@@ -1,7 +1,7 @@
 export interface Booking {
     _id: string;
     corporationId: string;
-    userId: string;
+    userId: {first_name: string, last_name: string};
     status: string;
     date: Date;
     timeSlot: string;

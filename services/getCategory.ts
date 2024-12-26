@@ -1,6 +1,6 @@
 import qs from "query-string";
 
-import { City } from '@/types/city';
+import { Category } from "@/types/category";
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/categories/`;
 
@@ -8,7 +8,7 @@ interface Query {
   categoryId: string
 }
 
-const getCategory = async (query: Query): Promise<City> => {
+const getCategory = async (query: Query): Promise<Category> => {
   try {
     const url = URL+query.categoryId;
     console.log("URL Service ", url);

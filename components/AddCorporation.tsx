@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 import Loader from '@/components/loader';
 import { cn } from "@/lib/utils";
 interface AddCorporationProps{
-  description:String
+  description?:String
 
 }
 const AddCorporation:React.FC<AddCorporationProps> = ({

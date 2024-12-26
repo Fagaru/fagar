@@ -36,7 +36,7 @@ const Slider: React.FC<SliderProps> = ({ data }) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [clickPrev]);
+  }, [clickPrev, clickNext]);
 
   return (
     <main className="grid place-items-center  md:grid-cols-1">

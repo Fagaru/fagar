@@ -46,16 +46,16 @@ const HomePage = async() => {
                         Ensemble, nous avons développé une application web innovante, spécialement conçue pour offrir aux PME une vitrine numérique moderne, leur permettant de mettre en avant leurs produits et services de manière efficace et accessible.
                     </p>
                     <p className="text-gray-600 mt-4">
-                        Notre solution s'appuie sur une fonctionnalité clé : la <strong>géolocalisation</strong>. Grâce à cette technologie, les utilisateurs de notre plateforme peuvent facilement découvrir les produits et services disponibles près de chez eux. 
+                        Notre solution s&apos;appuie sur une fonctionnalité clé : la <strong>géolocalisation</strong>. Grâce à cette technologie, les utilisateurs de notre plateforme peuvent facilement découvrir les produits et services disponibles près de chez eux. 
                         Que ce soit pour trouver un restaurant local, un service de livraison, ou encore un artisan du quartier, notre application permet de connecter les clients aux entreprises de proximité en quelques clics.
                     </p>
                     <p className="text-gray-600 mt-4">
-                        Notre mission est de <strong>faciliter l'accès au numérique</strong> pour les PME, tout en favorisant les circuits courts et en rapprochant les commerçants de leurs clients potentiels. 
-                        Nous croyons fermement que chaque petite entreprise mérite d'être visible en ligne et de profiter des opportunités offertes par le digital, sans avoir besoin de compétences techniques avancées.
+                        Notre mission est de <strong>faciliter l&apos;accès au numérique</strong> pour les PME, tout en favorisant les circuits courts et en rapprochant les commerçants de leurs clients potentiels. 
+                        Nous croyons fermement que chaque petite entreprise mérite d&apos;être visible en ligne et de profiter des opportunités offertes par le digital, sans avoir besoin de compétences techniques avancées.
                     </p>
                     <p className="text-gray-600 mt-4">
-                        Si vous êtes une entreprise à la recherche d'une solution simple et efficace pour créer votre présence en ligne, ou un utilisateur curieux de découvrir ce qui se trouve autour de vous, notre plateforme est faite pour vous. 
-                        Nous sommes là pour vous accompagner dans cette aventure numérique, tout en mettant en avant l'humain et la proximité.
+                        Si vous êtes une entreprise à la recherche d&apos;une solution simple et efficace pour créer votre présence en ligne, ou un utilisateur curieux de découvrir ce qui se trouve autour de vous, notre plateforme est faite pour vous. 
+                        Nous sommes là pour vous accompagner dans cette aventure numérique, tout en mettant en avant l&apos;humain et la proximité.
                     </p>
                     <AddCorporation description={"Regnoindre Proximus Prime"} />
 
