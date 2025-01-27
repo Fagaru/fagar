@@ -11,10 +11,10 @@ import { useSearchParams } from "next/navigation";
 import { ModalBookingDurationProvider } from "@/providers/modal_booking_duration-provider";
 
 interface BookingsPageProps {
-  params: {corporationId: string}
+  params: Promise <{corporationId: string}>
 };
 
-const BookingsPage: React.FC<BookingsPageProps> = ({
+const BookingsPage: React.FC<BookingsPageProps> =  ({
   params
 }) => {
   const [bookings, setBookings] = useState<Booking[]>([]);

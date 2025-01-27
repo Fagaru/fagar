@@ -4,13 +4,13 @@ import getCategory from "@/services/getCategory";
 const CategoryPage = async ({
     params
 }: {
-    params: {categoryId: string}
+    params: Promise<{categoryId: string}>
 }) => {
     let category = null
 
-    if (params.categoryId !== "new") {
+    if ((await params).categoryId !== "new") {
         category = await getCategory({
-            categoryId: params.categoryId
+            categoryId: (await params).categoryId
         });
     }
 

@@ -13,7 +13,7 @@ interface AuthenticatedRequest extends Request {
 
 export async function PATCH (
     req: AuthenticatedRequest,
-    { params }: { params: {cityId: string}}
+    { params }: { params: Promise <{cityId: string}>}
 ) {
     try {
 
@@ -24,23 +24,23 @@ export async function PATCH (
 
         await dbConnect();
 
-        if (!mongoose.Types.ObjectId.isValid(params.cityId)) {
+        if (!mongoose.Types.ObjectId.isValid((await params).cityId)) {
             return createCorsResponse('Invalid city ID', { status: 400 });
         }
 
         // Récupérer la CITY actuelle
-        const currentCity = await City.findById(params.cityId);
+        const currentCity = await City.findById((await params).cityId);
     
         if (!currentCity) {
             return createCorsResponse('City not found', { status: 404 });
         }
     
         // Mettre à jour la CitY
-        const filter = {_id: params.cityId};
+        const filter = {_id: (await params).cityId};
         const updatedCity = await City.updateOne(
             filter, 
             { ...body, 
-                _id: params.cityId, 
+                _id: (await params).cityId, 
                 updateAt: Date.now()
             }
         );
@@ -56,7 +56,7 @@ export async function PATCH (
 
 export async function DELETE (
     req: AuthenticatedRequest,
-    { params }: { params: {cityId: string}}
+    { params }: { params: Promise <{cityId: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin'], req);
@@ -64,9 +64,9 @@ export async function DELETE (
 
         await dbConnect();
         
-        const filter = {_id: params.cityId};
+        const filter = {_id: (await params).cityId};
 
-        const currentCity = await City.findById(params.cityId);
+        const currentCity = await City.findById((await params).cityId);
         if (!currentCity) {
             throw new Error('CITY not found');
         }
@@ -82,11 +82,11 @@ export async function DELETE (
 
 export async function GET(
     req: Request,
-    { params }: { params: {cityId: string}}
+    { params }: { params: Promise <{cityId: string}>}
 ) {
     try {
         await dbConnect();
-        const filter = {_id: params.cityId};
+        const filter = {_id: (await params).cityId};
         const city = await City.findOne(filter);
 
         return createCorsResponse(city);

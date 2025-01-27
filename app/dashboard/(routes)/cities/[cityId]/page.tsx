@@ -4,12 +4,12 @@ import { CityForm } from "./components/city-form";
 const CityPage = async ({
     params
 }: {
-    params: {cityId: string}
+    params: Promise<{cityId: string}>
 }) => {
     let city = null;
-    if (params.cityId !== "new") {
+    if ((await params).cityId !== "new") {
         city = await getCity({
-            cityId: params.cityId
+            cityId: (await params).cityId
         });
     }
 

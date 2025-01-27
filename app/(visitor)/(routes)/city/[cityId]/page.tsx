@@ -11,23 +11,18 @@ import getCategories from "@/services/getCategories"
 import Filter from "./components/categoryFilter";
 
 interface CityPageProps {
-    params: {
-        cityId: string;
-    }
-    searchParams: {
-        categoryId: string;
-    }
+    params: Promise<{ cityId?: string }>;
+    searchParams: Promise<{
+        categoryId?: string;
+    }>
 }
 
 const CityPage:React.FC<CityPageProps> = async ({
     params,
     searchParams
 }) => {
-    const city = await getCity(params)
-    const Corporations = await getCorporations({
-        // cityId: params.cityId,
-        categoryId: searchParams.categoryId
-    })
+    const city = await getCity(await params)
+    const Corporations = await getCorporations(await searchParams)
    
     const categories= await getCategories ()
 

@@ -2,9 +2,9 @@ import { redirect } from "next/navigation";
 
 
 interface SettingsPageProps {
-    params: {
+    params:Promise< {
         userId: string;
-    }
+    }>
 };
 
 const SettingsPage: React.FC<SettingsPageProps> = async ({

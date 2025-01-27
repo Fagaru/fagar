@@ -4,12 +4,12 @@ import { SubscriptionForm } from "./components/subscription-form";
 const SubscriptionPage = async ({
     params
 }: {
-    params: {subscriptionId: string}
+    params: Promise <{subscriptionId: string}>
 }) => {
     let subscription = null;
-    if (params.subscriptionId !== "new") {
+    if ((await params).subscriptionId !== "new") {
         subscription = await getSubscription({
-            subscriptionId: params.subscriptionId
+            subscriptionId: (await params).subscriptionId
         });
     }
 

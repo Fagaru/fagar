@@ -3,7 +3,7 @@ import { Corporation } from '@/types/corporation';
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/corporations/`;
 
 interface Query {
-  corporationId: string
+  corporationId?: string
 }
 
 const getCorporation = async (query: Query): Promise<Corporation> => {

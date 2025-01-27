@@ -5,7 +5,7 @@ import { City } from '@/types/city';
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/cities/`;
 
 interface Query {
-  cityId: string
+  cityId?: string;
 }
 
 const getCity = async (query: Query): Promise<City> => {

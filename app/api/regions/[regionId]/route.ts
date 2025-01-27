@@ -12,7 +12,7 @@ interface AuthenticatedRequest extends Request {
 
 export async function PATCH (
     req: AuthenticatedRequest,
-    { params }: { params: {regionId: string}}
+    { params }: { params: Promise<{regionId: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin'], req);
@@ -23,18 +23,18 @@ export async function PATCH (
         await dbConnect();
     
         // Récupérer la REGION actuelle
-        const currentRegion = await Region.findById(params.regionId);
+        const currentRegion = await Region.findById((await params).regionId);
     
         if (!currentRegion) {
             return createCorsResponse('Region not found', { status: 404 });
         }
     
         // Mettre à jour la REGION
-        const filter = {_id: params.regionId};
+        const filter = {_id: (await params).regionId};
         const updatedRegion = await Region.updateOne(
             filter, 
             { ...body, 
-                _id: params.regionId, 
+                _id: (await params).regionId, 
                 updateAt: Date.now()
             }
         );
@@ -50,16 +50,16 @@ export async function PATCH (
 
 export async function DELETE (
     req: AuthenticatedRequest,
-    { params }: { params: {regionId: string}}
+    { params }: { params: Promise<{regionId: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin'], req);
         if (authResponse) return authResponse;
 
         await dbConnect();
-        const filter = {_id: params.regionId};
+        const filter = {_id: (await params).regionId};
 
-        const currentRegion = await Region.findById(params.regionId);
+        const currentRegion = await Region.findById((await params).regionId);
         if (!currentRegion) {
             return createCorsResponse('Region not found', { status: 404 });
         }
@@ -75,11 +75,11 @@ export async function DELETE (
 
 export async function GET(
     req: Request,
-    { params }: { params: {regionId: string}}
+    { params }: { params: Promise<{regionId: string}>}
 ) {
     try {
         await dbConnect();
-        const filter = {_id: params.regionId};
+        const filter = {_id: (await params).regionId};
         const region = await Region.findOne(filter);
 
         return createCorsResponse(region);

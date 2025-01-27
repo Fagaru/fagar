@@ -13,7 +13,7 @@ interface AuthenticatedRequest extends Request {
 
 export async function PATCH (
     req: AuthenticatedRequest,
-    { params }: { params: {sku: string}}
+    { params }: { params: Promise<{sku: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin', 'professional'], req);
@@ -35,7 +35,7 @@ export async function PATCH (
         } = body;
         
         // Récupérer la variant actuelle
-        const currentVariant = await Variant.findById(params.sku);
+        const currentVariant = await Variant.findById((await params).sku);
     
         if (!currentVariant) {
             return createCorsResponse('Variant not found', { status: 404 });
@@ -57,11 +57,11 @@ export async function PATCH (
     
         await dbConnect();
         // Mettre à jour la variant
-        const filter = {_id: params.sku};
+        const filter = {_id: (await params).sku};
         const updatedVariant = await Variant.updateOne(
             filter, 
             { ...body, 
-                sku: params.sku, 
+                sku: (await params).sku, 
                 updateAt: Date.now()
             }
         );
@@ -75,14 +75,14 @@ export async function PATCH (
 
 export async function DELETE (
     req: AuthenticatedRequest,
-    { params }: { params: {sku: string}}
+    { params }: { params: Promise <{sku: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin', 'professional'], req);
         if (authResponse) return authResponse;
 
         await dbConnect();
-        const filter = {sku: params.sku};
+        const filter = {sku: (await params).sku};
 
         const currentVariant = await Variant.findOne(filter);
         if (!currentVariant) {
@@ -104,11 +104,11 @@ export async function DELETE (
 
 export async function GET(
     req: Request,
-    { params }: { params: {sku: string}}
+    { params }: { params: Promise<{sku: string}>}
 ) {
     try {
         await dbConnect();
-        const filter = {sku: params.sku};
+        const filter = {sku: (await params).sku};
         const variant = await Variant.findOne(filter);
 
         return createCorsResponse(variant);

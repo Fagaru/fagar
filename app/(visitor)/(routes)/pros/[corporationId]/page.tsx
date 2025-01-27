@@ -20,7 +20,7 @@ import { ModalBookingProvider } from "@/providers/modal_booking-provider";
 const daysOfWeek = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
 interface CorporationPageProps {
-    params: {corporationId: string}
+    params: Promise<{ corporationId?: string }>;
 };
 
 const CorporationPage: React.FC<CorporationPageProps> = ({
@@ -31,14 +31,12 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
     const [error, setError] = useState<string | null>(null);
     // let category: any = null;
 
-    console.log("Corporation ID", params.corporationId);
+    // console.log("Corporation ID", params.corporationId);
 
     useEffect(() => {
         const fetchCorporation = async () => {
             try {
-                const data = await getCorporation({
-                    corporationId: params.corporationId
-                });
+                const data = await getCorporation(await params);
                 setCorporation(data);
             } catch (err) {
                 setError("Failed to fetch corporation");
@@ -46,7 +44,7 @@ const CorporationPage: React.FC<CorporationPageProps> = ({
         };
 
         fetchCorporation();
-    }, [params.corporationId]);
+    }, [params]);
 
     useEffect(() => {
         const fetchCategory = async () => {

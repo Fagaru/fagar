@@ -13,7 +13,7 @@ interface AuthenticatedRequest extends Request {
 
 export async function PATCH (
     req: AuthenticatedRequest,
-    { params }: { params: {psin: string}}
+    { params }: { params: Promise <{psin: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin', 'professional'], req);
@@ -34,7 +34,7 @@ export async function PATCH (
 
         
         // Récupérer la corporation actuelle
-        const currentProduct = await Product.findById(params.psin);
+        const currentProduct = await Product.findById( (await params).psin);
     
         if (!currentProduct) {
             return createCorsResponse('Product not found', { status: 404 });
@@ -55,11 +55,11 @@ export async function PATCH (
     
         await dbConnect();
         // Mettre à jour la corporation
-        const filter = {psin: params.psin};
+        const filter = {psin: (await params).psin};
         const updatedProduct = await Product.updateOne(
             filter, 
             { ...body, 
-                psin: params.psin, 
+                psin: (await params).psin, 
                 updateAt: Date.now()
             }
         );
@@ -73,14 +73,14 @@ export async function PATCH (
 
 export async function DELETE (
     req: AuthenticatedRequest,
-    { params }: { params: {psin: string}}
+    { params }: { params: Promise<{psin: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin', 'professional'], req);
         if (authResponse) return authResponse;
 
         await dbConnect();
-        const filter = {_id: params.psin};
+        const filter = {_id: (await params).psin};
 
         const currentProduct = await Product.findOne(filter);
         if (!currentProduct) {
@@ -102,11 +102,11 @@ export async function DELETE (
 
 export async function GET(
     req: Request,
-    { params }: { params: {psin: string}}
+    { params }: { params: Promise<{psin: string}>}
 ) {
     try {
         await dbConnect();
-        const filter = {psin: params.psin};
+        const filter = {psin: (await params).psin};
         const product = await Product.findOne(filter);
 
         return createCorsResponse(product);

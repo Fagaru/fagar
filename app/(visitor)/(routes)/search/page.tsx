@@ -7,12 +7,10 @@ import CorpoList from "@/components/search-corpolist"
 export const revalidate = 0;
 
 interface SearchProductsParams {
-    searchParams: {
-    query?: string;
-  }
+  searchParams: Promise<{ query?: string; }>;
 }
 const SearchPage : React.FC<SearchProductsParams> = async({searchParams}) => {
-    const query = searchParams?.query ||'';
+    const query = (await searchParams).query ||'';
 
     console.log("bigggggggggggggg Querry",query)
     return(

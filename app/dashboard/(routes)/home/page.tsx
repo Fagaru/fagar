@@ -3,10 +3,10 @@
 import { useAuth } from '@/context/authContext';
 
 
-const HomePage = ({
+const HomePage = async ({
     params
 }: {
-    params: { storeId: string }
+    params: Promise <{ storeId: string }>
 }) => {
     const { user, isAuthenticated, logout } = useAuth();
     console.log("Authenticated", isAuthenticated);

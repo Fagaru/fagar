@@ -13,7 +13,7 @@ interface AuthenticatedRequest extends Request {
 
 export async function PATCH (
     req: AuthenticatedRequest,
-    { params }: { params: {categoryId: string}}
+    { params }: { params: Promise<{categoryId: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin'], req);
@@ -23,23 +23,23 @@ export async function PATCH (
 
         await dbConnect();
         
-        if (!mongoose.Types.ObjectId.isValid(params.categoryId)) {
+        if (!mongoose.Types.ObjectId.isValid((await params).categoryId)) {
             return createCorsResponse('Invalid category ID', { status: 400 });
           }
         
         // Récupérer la CATEGORY actuelle
-        const currentCategory = await Category.findById(params.categoryId);
+        const currentCategory = await Category.findById((await params).categoryId);
     
         if (!currentCategory) {
             return createCorsResponse('Category not found', { status: 404 });
         }
     
         // Mettre à jour la CATEGORY
-        const filter = {_id: params.categoryId};
+        const filter = {_id: (await params).categoryId};
         const updatedCategory = await Category.updateOne(
             filter, 
             { ...body, 
-                _id: params.categoryId, 
+                _id: (await params).categoryId, 
                 updateAt: Date.now()
             }
         );
@@ -53,7 +53,7 @@ export async function PATCH (
 
 export async function DELETE (
     req: AuthenticatedRequest,
-    { params }: { params: {categoryId: string}}
+    { params }: { params: Promise<{categoryId: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin'], req);
@@ -61,9 +61,9 @@ export async function DELETE (
 
         await dbConnect();
         
-        const filter = {_id: params.categoryId};
+        const filter = {_id: (await params).categoryId};
 
-        const currentCategory = await Category.findById(params.categoryId);
+        const currentCategory = await Category.findById((await params).categoryId);
         if (!currentCategory) {
             throw new Error('CATEGORY not found');
         }
@@ -79,11 +79,11 @@ export async function DELETE (
 
 export async function GET(
     req: Request,
-    { params }: { params: {categoryId: string}}
+    { params }: { params: Promise<{categoryId: string}>}
 ) {
     try {
         await dbConnect();
-        const filter = {_id: params.categoryId};
+        const filter = {_id: (await params).categoryId};
         const category = await Category.findOne(filter);
 
         return createCorsResponse(category);

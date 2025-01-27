@@ -25,7 +25,7 @@ interface AuthenticatedRequest extends Request {
 
 export async function PATCH (
     req: AuthenticatedRequest,
-    { params }: { params: {corporationId: string}}
+    { params }: { params: Promise<{corporationId: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin', 'professional'], req);
@@ -42,7 +42,7 @@ export async function PATCH (
 
         
         // Récupérer la corporation actuelle
-        const currentCorporation = await Corporation.findById(params.corporationId);
+        const currentCorporation = await Corporation.findById((await params).corporationId);
     
         if (!currentCorporation) {
             return createCorsResponse('Corporation not found', { status: 404 });
@@ -84,13 +84,13 @@ export async function PATCH (
     
         await dbConnect();
         // Mettre à jour la corporation
-        const filter = {_id: params.corporationId};
+        const filter = {_id: (await params).corporationId};
         const updatedCorporation = await Corporation.updateOne(
             filter, 
             { ...body, 
                 schedules: updatedSchedules,
                 duration_booking: body.duration_booking,
-                _id: params.corporationId, 
+                _id: (await params).corporationId, 
                 updateAt: Date.now()
             }
         );
@@ -104,14 +104,14 @@ export async function PATCH (
 
 export async function DELETE (
     req: AuthenticatedRequest,
-    { params }: { params: {corporationId: string}}
+    { params }: { params: Promise <{corporationId: string}>}
 ) {
     try {
         const authResponse = await withAuth(['admin', 'professional'], req);
         if (authResponse) return authResponse;
 
         await dbConnect();
-        const filter = {_id: params.corporationId};
+        const filter = {_id: (await params).corporationId};
 
         const currentCorporation = await Corporation.findOne(filter);
         if (!currentCorporation) {
@@ -133,11 +133,11 @@ export async function DELETE (
 
 export async function GET(
     req: Request,
-    { params }: { params: {corporationId: string}}
+    { params }: { params: Promise <{corporationId: string}>}
 ) {
     try {
         await dbConnect();
-        const filter = {_id: params.corporationId};
+        const filter = {_id: (await params).corporationId};
         const corporation = await Corporation.findOne(filter);
 
         return createCorsResponse(corporation);

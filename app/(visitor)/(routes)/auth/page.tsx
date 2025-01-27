@@ -13,9 +13,8 @@ import Loader from "@/components/loader";
 const AuthPage = () => {
     const searchParams = useSearchParams();
     const tab = searchParams.get('tab'); // Lire le paramètre 'tab' de l'URL
-
     const role = searchParams.get('role');
-    
+
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <div className="max-w-xl">
@@ -27,32 +26,28 @@ const AuthPage = () => {
                     <TabsContent value="login">
                         <LoginForm />
                     </TabsContent>
-                    { role ?
-                        <>
-                            <TabsContent value="register">
-                                <RegisterForm role={role}/>
-                            </TabsContent>
-                        </>
-                        :
+                    {role ? (
                         <TabsContent value="register">
-                            <RegisterForm role="visitor"/>
+                            <RegisterForm role={role} />
                         </TabsContent>
-
-                    }
-                </Tabs>      
+                    ) : (
+                        <TabsContent value="register">
+                            <RegisterForm role="visitor" />
+                        </TabsContent>
+                    )}
+                </Tabs>
             </div>
         </div>
     );
 };
 
-export default AuthPage;
-
-// export default function WrappedAuthPage() {
-//     return (
-//       <ErrorBoundary FallbackComponent={ErrorFallback}>
-//         <Suspense fallback={<Loader />}>
-//           <AuthPage />
-//         </Suspense>
-//       </ErrorBoundary>
-//     );
-//   }
+// Envelopper AuthPage avec Suspense et ErrorBoundary
+export default function WrappedAuthPage() {
+    return (
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Suspense fallback={<Loader />}>
+                <AuthPage />
+            </Suspense>
+        </ErrorBoundary>
+    );
+}

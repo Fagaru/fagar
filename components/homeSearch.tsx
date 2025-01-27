@@ -5,6 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Search } from 'lucide-react';
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
+import ErrorFallback from "@/components/errorFallback";
+import { ErrorBoundary } from 'react-error-boundary';
+import { Suspense } from "react";
+import Loader from "@/components/loader";
+
 const HomeSearchBar = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -58,4 +63,16 @@ const HomeSearchBar = () => {
   );
 };
 
-export default HomeSearchBar;
+
+
+
+// Envelopper AuthPage avec Suspense et ErrorBoundary
+export default function WrappedHomeSearchBar() {
+  return (
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Suspense fallback={<Loader />}>
+              <HomeSearchBar />
+          </Suspense>
+      </ErrorBoundary>
+  );
+}

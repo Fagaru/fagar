@@ -1,5 +1,6 @@
 "use client";
-
+export const dynamic = 'force-static';
+// export const dynamic = 'force-dynamic';
 import { getUser } from '@/services/getUser';
 import { useAuth } from '@/context/authContext';
 import { format } from 'date-fns';
@@ -18,6 +19,7 @@ const AccountPage = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
+
     const fetchUser = async () => {
       if (isAuthenticated && user) {
         try {
@@ -93,7 +95,7 @@ const AccountPage = () => {
             </p>
           </div>
           <div className="relative col-span-4 p-4 gap-4 flex justify-between border-t">
-            <span>Supression du compte</span>
+            <span>Supression du compte</span>&
             <DeleteProfile userId={currentUser._id} />
           </div>
         </div>
@@ -104,12 +106,11 @@ const AccountPage = () => {
 
 export default AccountPage;
 
+// // Envelopper AuthPage avec Suspense et ErrorBoundary
 // export default function WrappedAccountPage() {
 //   return (
-//     <ErrorBoundary FallbackComponent={ErrorFallback}>
-//       <Suspense fallback={<Loader />}>
-//         <AccountPage />
-//       </Suspense>
-//     </ErrorBoundary>
+          
+//               <AccountPage />
+         
 //   );
 // }

@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { User } from "@/types/user";
 import toast from "react-hot-toast";
 
-const UserPage = ({
+const UserPage = async ({
     params
 }: {
-    params: {userId: string}
+    params: Promise <{userId: string}>
 }) => {
     const { token } = useAuth();
     const [user, setUser] = useState<User>();
@@ -26,7 +26,7 @@ const UserPage = ({
         const fetchData = async () => {
         try {
             const fetchedUser = await getUser4Admin({
-                userId: params.userId
+                userId: (await params).userId
                 },
                 token
             )
@@ -37,11 +37,11 @@ const UserPage = ({
         }
         };
 
-        if (params.userId !== "new") {
-            fetchData();   
-        }
+        // if (params.userId !== "new") {
+        //     fetchData();   
+        // }
         
-        }, [isMounted, token, params.userId]);
+        }, [isMounted, token]);
 
     if (!isMounted) {
         return null;

@@ -13,7 +13,7 @@ interface AuthenticatedRequest extends Request {
 
 export async function PATCH (
     req: AuthenticatedRequest,
-    { params }: { params: {subscriptionId: string}}
+    { params }: { params: Promise<{subscriptionId: string}>}
 ) {
     try {
         // Vérifiez l'authentification et les rôles
@@ -23,23 +23,23 @@ export async function PATCH (
 
         await dbConnect();
 
-        if (!mongoose.Types.ObjectId.isValid(params.subscriptionId)) {
+        if (!mongoose.Types.ObjectId.isValid((await params).subscriptionId)) {
             return createCorsResponse('Invalid Subscription ID', { status: 400 });
         }
         
         // Récupérer la Subscription actuelle
-        const currentSubscription = await Subscription.findById(params.subscriptionId);
+        const currentSubscription = await Subscription.findById((await params).subscriptionId);
     
         if (!currentSubscription) {
             return createCorsResponse('Subscription not found', { status: 404 });
         }
     
         // Mettre à jour la Subscription
-        const filter = {_id: params.subscriptionId};
+        const filter = {_id: (await params).subscriptionId};
         const updatedSubscription = await Subscription.updateOne(
             filter, 
             { ...body, 
-                _id: params.subscriptionId, 
+                _id: (await params).subscriptionId, 
                 updateAt: Date.now()
             }
         );
@@ -53,7 +53,7 @@ export async function PATCH (
 
 export async function DELETE (
     req: AuthenticatedRequest,
-    { params }: { params: {subscriptionId: string}}
+    { params }: { params: Promise<{subscriptionId: string}>}
 ) {
     try {
         // Vérifiez l'authentification et les rôles
@@ -62,18 +62,18 @@ export async function DELETE (
 
         await dbConnect();
         
-        if (!mongoose.Types.ObjectId.isValid(params.subscriptionId)) {
+        if (!mongoose.Types.ObjectId.isValid((await params).subscriptionId)) {
             return createCorsResponse('Invalid Subscription ID', { status: 400 });
         }
         
         // Récupérer la Subscription actuelle
-        const currentSubscription = await Subscription.findById(params.subscriptionId);
+        const currentSubscription = await Subscription.findById((await params).subscriptionId);
     
         if (!currentSubscription) {
             return createCorsResponse('Subscription not found', { status: 404 });
         }
 
-        const filter = {_id: params.subscriptionId};
+        const filter = {_id: (await params).subscriptionId};
         const deleteSubscription = await Subscription.deleteOne(filter);
         
         return createCorsResponse(deleteSubscription);
@@ -85,16 +85,16 @@ export async function DELETE (
 
 export async function GET(
     req: Request,
-    { params }: { params: {subscriptionId: string}}
+    { params }: { params: Promise<{subscriptionId: string}>}
 ) {
     try {
 
-        if (!mongoose.Types.ObjectId.isValid(params.subscriptionId)) {
+        if (!mongoose.Types.ObjectId.isValid((await params).subscriptionId)) {
             return createCorsResponse('Invalid Subscription ID', { status: 400 });
         }
         
         await dbConnect();
-        const filter = {_id: params.subscriptionId};
+        const filter = {_id: (await params).subscriptionId};
         const subscription = await Subscription.findOne(filter);
 
         return createCorsResponse(subscription);

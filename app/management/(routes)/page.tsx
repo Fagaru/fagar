@@ -2,7 +2,7 @@ import AddBooking from "@/components/AddBooking";
 import { ModalBookingProvider } from "@/providers/modal_booking-provider";
 
 interface ManagementPageProps {
-    params: {userId: string}
+    params:Promise <{userId: string}>
 };
 
 const ManagementPage: React.FC<ManagementPageProps> = async({

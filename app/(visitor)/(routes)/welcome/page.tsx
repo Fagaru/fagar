@@ -7,6 +7,7 @@ import NewCorps from '@/components/displayNewCorp';
 import Image from 'next/image';  
 import SearchBar from "@/components/searchBar";
 import AddCorporation from "@/components/AddCorporation";
+export const dynamic = 'force-dynamic';
 
 const HomePage = async() => {
     const query = { cityId: "6660463ed6a178f0fc300d50" };

@@ -4,12 +4,12 @@ import getRegion from "@/services/getRegion";
 const RegionPage = async ({
     params
 }: {
-    params: {regionId: string}
+    params: Promise <{regionId: string}>
 }) => {
     let region = null;
-    if (params.regionId !== "new") {
+    if ((await params).regionId !== "new") {
         region = await getRegion({
-            regionId: params.regionId
+            regionId: (await params).regionId
         });
         console.log("initialData REGION :", region);
     }

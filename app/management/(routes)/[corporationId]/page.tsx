@@ -10,10 +10,10 @@ import { useEffect, useState } from "react";
 
 
 interface ManagementPageProps {
-    params: {corporationId: string}
+    params: Promise<{corporationId: string}>
 };
 
-const ManagementPage: React.FC<ManagementPageProps> = ({
+const ManagementPage: React.FC<ManagementPageProps> = async ({
     params
 }) => {
     const { user, isAuthenticated } = useAuth();
@@ -25,7 +25,7 @@ const ManagementPage: React.FC<ManagementPageProps> = ({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const corporationData = await getCorporation({ corporationId: params.corporationId });
+                const corporationData = await getCorporation({ corporationId: (await params).corporationId });
                 const categoriesData = await getCategories();
                 
                 if (corporationData.userId !== user?.id && user.role !== "admin") {
@@ -48,7 +48,7 @@ const ManagementPage: React.FC<ManagementPageProps> = ({
             setLoading(true);
             router.push('/login');
         }
-    }, [isAuthenticated, user, params.corporationId, router]);
+    }, [isAuthenticated, user, (await params).corporationId, router]);
 
     if (loading) {
         return <Loader />; // Affiche un loader pendant la vérification de l'authentification et la récupération des données
